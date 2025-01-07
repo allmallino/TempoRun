@@ -1,66 +1,66 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from "expo-router";
+import React from "react";
+import { Platform } from "react-native";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { Colors } from "@/constants/Colors";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors.tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }) && {
-          backgroundColor: Colors[colorScheme ?? 'light'].tabBackgound,
-          height:70,
-          paddingTop:12,
+        tabBarStyle: {
+          backgroundColor: Colors.tabBackgound,
+          height: 70,
+          paddingTop: 12,
         },
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="statistic"
         options={{
-          title: 'Stats',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name='person.fill' color={color} />,
+          title: "Stats",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="person.fill" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="mode"
         options={{
-          title: 'Mode',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name='music.note' color={color} />,
+          title: "Mode",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="music.note" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Menu',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name='directions.run' color={color} />,
+          title: "Menu",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="directions.run" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="playlists"
         options={{
-          title: 'Playlists',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="headphones" color={color} />,
+          title: "Playlists",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="headphones" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name='gear' color={color} />,
+          title: "Settings",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="gear" color={color} />
+          ),
         }}
       />
     </Tabs>
