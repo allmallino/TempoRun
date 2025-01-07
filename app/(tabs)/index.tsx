@@ -1,4 +1,5 @@
-import {View, Image, StyleSheet} from 'react-native';
+import { Image } from 'expo-image';
+import {View, StyleSheet} from 'react-native';
 
 export default function HomeScreen() {
   return (
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     paddingTop:52
   },
   logo:{
-    height:144,
-    objectFit:'contain'
+    height:80,
+    width:323
   },
 });
