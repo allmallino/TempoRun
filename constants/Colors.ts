@@ -10,4 +10,12 @@ export const Colors = {
 
   buttonActiveBackground: "#85DC4B",
   buttonActiveText:"#163800",
+
+
+  dark:{
+    onSurface:"#C7C7C0",
+    outlineVariant:"#43483E",
+    surface:"#121410",
+    surfaceContainerHigh:"#292B26"
+  },
 };
