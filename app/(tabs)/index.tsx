@@ -1,6 +1,7 @@
 import { MusicModeContainer } from "@/components/mainMenu/MusicMode/MusicModeContainer";
 import { PlaylistsListContainer } from "@/components/mainMenu/PlaylistList/PlaylistsListContainer";
 import { ThemedButton } from "@/components/ThemedButton";
+import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
 import { View, StyleSheet } from "react-native";
 
@@ -23,10 +24,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal:16,
-    paddingTop:52
+    alignItems: "center",
+    gap: 25,
+    paddingHorizontal: 16,
+    paddingTop: 69,
+    paddingBottom: 25,
+    backgroundColor: Colors.background,
   },
   buttonContainer: {
     flex: 1,
