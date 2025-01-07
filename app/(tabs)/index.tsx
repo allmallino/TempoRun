@@ -1,10 +1,17 @@
-import { Image } from 'expo-image';
-import {View, StyleSheet} from 'react-native';
+import { ThemedButton } from "@/components/ThemedButton";
+import { Image } from "expo-image";
+import { View, StyleSheet } from "react-native";
 
 export default function HomeScreen() {
   return (
     <View style={styles.mainContainer}>
-      <Image source={require('@/assets/images/temporun-logo.png')} style={styles.logo} />
+      <Image
+        source={require("@/assets/images/temporun-logo.png")}
+        style={styles.logo}
+      />
+      <View style={styles.buttonContainer}>
+        <ThemedButton title="Let's run" />
+      </View>
     </View>
   );
 }
@@ -17,8 +24,12 @@ const styles = StyleSheet.create({
     paddingHorizontal:16,
     paddingTop:52
   },
-  logo:{
-    height:80,
-    width:323
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  logo: {
+    height: 80,
+    width: 323,
   },
 });

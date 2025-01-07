@@ -6,4 +6,8 @@ export const Colors = {
   tabBackgound: "#1E201C",
   tabIconDefault: "#C4C8BB",
   tabIconSelected: "#C4C8BB",
+
+
+  buttonActiveBackground: "#85DC4B",
+  buttonActiveText:"#163800",
 };
