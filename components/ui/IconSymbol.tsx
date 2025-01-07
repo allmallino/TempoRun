@@ -16,6 +16,7 @@ const MAPPING = {
   'gear':'settings',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'watch.analog':'access-time'
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],

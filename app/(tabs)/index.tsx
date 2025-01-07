@@ -1,3 +1,4 @@
+import { MusicModeContainer } from "@/components/mainMenu/MusicMode/MusicModeContainer";
 import { PlaylistsListContainer } from "@/components/mainMenu/PlaylistList/PlaylistsListContainer";
 import { ThemedButton } from "@/components/ThemedButton";
 import { Image } from "expo-image";
@@ -13,6 +14,7 @@ export default function HomeScreen() {
       <View style={styles.buttonContainer}>
         <ThemedButton title="Let's run" />
       </View>
+      <MusicModeContainer />
       <PlaylistsListContainer />
     </View>
   );
