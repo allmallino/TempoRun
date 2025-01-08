@@ -1,21 +1,19 @@
 export const Colors = {
-  text: "#ECEDEE",
-  background: "#1A1C18",
-  tint: "#C4C8BB",
-  icon: "#C4C8BB",
-  tabBackgound: "#1E201C",
-  tabIconDefault: "#C4C8BB",
-  tabIconSelected: "#C4C8BB",
+  black: "#000",
+  white: "#FFF",
 
+  dark: {
+    outlineVariant: "#43483E",
 
-  buttonActiveBackground: "#85DC4B",
-  buttonActiveText:"#163800",
+    surface: "#121410",
+    surfaceContainerLow: "#1A1C18",
+    surfaceContainer: "#1E201C",
+    surfaceContainerHigh: "#292B26",
+    surfaceContainerHighest: "#343531",
+    onSurface: "#C7C7C0",
+    onSurfaceVariant: "#C4C8BB",
 
-
-  dark:{
-    onSurface:"#C7C7C0",
-    outlineVariant:"#43483E",
-    surface:"#121410",
-    surfaceContainerHigh:"#292B26"
+    primary: "#85DC4B",
+    onPrimary: "#163800",
   },
 };

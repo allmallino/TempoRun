@@ -49,13 +49,13 @@ export function ThemedButton({
 
 const styles = StyleSheet.create({
   filled: {
-    backgroundColor: Colors.buttonActiveBackground,
+    backgroundColor: Colors.dark.primary,
     borderRadius: 100,
     paddingHorizontal: 48,
     paddingVertical: 20,
   },
   filledText: {
-    color: Colors.buttonActiveText,
+    color: Colors.dark.onPrimary,
   },
 
   outlined: {},
