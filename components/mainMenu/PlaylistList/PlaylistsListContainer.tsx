@@ -6,7 +6,7 @@ import { ElevatedContainer } from "@/components/ui/ElevatedContainer";
 export function PlaylistsListContainer() {
   const playlists = ["Hip-Hop", "Jazz", "Pop"];
   return (
-    <ElevatedContainer style={styles.container}>
+    <ElevatedContainer style={styles.container} elevation={3}>
       <ThemedText type="defaultSemiBold">Playlists</ThemedText>
       <PlaylistList playlists={playlists} />
     </ElevatedContainer>

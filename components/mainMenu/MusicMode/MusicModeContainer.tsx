@@ -9,7 +9,7 @@ export function MusicModeContainer() {
   const mode = "Timer";
 
   return (
-    <ElevatedContainer style={styles.container}>
+    <ElevatedContainer style={styles.container} elevation={4}>
       <IconSymbol size={28} name="watch.analog" color={color} />
       <MusicModeName name={mode} />
     </ElevatedContainer>
