@@ -4,7 +4,7 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { Colors } from "@/constants/Colors";
 import { Images } from "@/constants/Images";
 import { Image } from "expo-image";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 
 export default function HomeScreen() {
   return (
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 25,
     paddingHorizontal: 16,
-    paddingTop: 69,
+    paddingTop: 45 + (StatusBar.currentHeight || 0),
     paddingBottom: 25,
     backgroundColor: Colors.dark.surfaceContainerLow,
   },

@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 25,
     paddingHorizontal: 16,
-    paddingTop: 69,
+    paddingTop: 45 + (StatusBar.currentHeight || 0),
     backgroundColor: Colors.dark.surfaceContainerLow,
   },
 });
