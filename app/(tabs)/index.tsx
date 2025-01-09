@@ -2,16 +2,14 @@ import { MusicModeContainer } from "@/components/mainMenu/MusicMode/MusicModeCon
 import { PlaylistsListContainer } from "@/components/mainMenu/PlaylistList/PlaylistsListContainer";
 import { ThemedButton } from "@/components/ThemedButton";
 import { Colors } from "@/constants/Colors";
+import { Images } from "@/constants/Images";
 import { Image } from "expo-image";
 import { View, StyleSheet } from "react-native";
 
 export default function HomeScreen() {
   return (
     <View style={styles.mainContainer}>
-      <Image
-        source={require("@/assets/images/temporun-logo.png")}
-        style={styles.logo}
-      />
+      <Image source={Images.tempoRun.logo} style={styles.logo} />
       <View style={styles.buttonContainer}>
         <ThemedButton title="Let's run" />
       </View>
