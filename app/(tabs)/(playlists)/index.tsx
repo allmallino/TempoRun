@@ -2,11 +2,13 @@ import { View, StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
+import { PlaylistList } from "@/components/playlistMenu/PlaylistList/PlaylistList";
 
 export default function PlaylistsScreen() {
   return (
     <View style={styles.mainContainer}>
       <ThemedText type="title">Playlists</ThemedText>
+      <PlaylistList />
     </View>
   );
 }
@@ -18,7 +20,6 @@ const styles = StyleSheet.create({
     gap: 25,
     paddingHorizontal: 16,
     paddingTop: 69,
-    paddingBottom: 25,
     backgroundColor: Colors.dark.surfaceContainerLow,
   },
 });
