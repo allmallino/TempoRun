@@ -3,9 +3,11 @@ import { PlaylistList } from "./PlaylistsList";
 import { ThemedText } from "@/components/ThemedText";
 import { ElevatedContainer } from "@/components/ui/ElevatedContainer";
 import { Link } from "expo-router";
+import { useSelector } from "react-redux";
+import { getActivatedPlaylists } from "@/state/playlists/selectors";
 
 export function PlaylistsListContainer() {
-  const playlists = ["Hip-Hop", "Jazz", "Pop"];
+  const playlists = useSelector(getActivatedPlaylists);
   return (
     <Link href="/(tabs)/(playlists)">
       <ElevatedContainer style={styles.container} elevation={3}>
@@ -22,5 +24,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingTop: 12,
     paddingBottom: 30,
+    height: 270,
   },
 });

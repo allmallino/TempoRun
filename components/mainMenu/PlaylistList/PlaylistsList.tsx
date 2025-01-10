@@ -1,19 +1,23 @@
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { PlaylistItem } from "./PlaylistItem";
+import { PlaylistType } from "@/state/playlists/types";
 
-export function PlaylistList({ playlists }: { playlists: string[] }) {
+export function PlaylistList({ playlists }: { playlists: PlaylistType[] }) {
   return (
-    <View style={styles.container}>
-      {playlists.map((v, i) => (
-        <PlaylistItem name={v} key={i} />
-      ))}
-    </View>
+    <FlatList
+      data={playlists}
+      renderItem={({ item }) => <PlaylistItem name={item.info.name} />}
+      style={styles.container}
+      contentContainerStyle={{
+        gap: 8,
+      }}
+      showsVerticalScrollIndicator={false}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    gap:8,
-    width:"100%"
+    width: "100%",
   },
 });

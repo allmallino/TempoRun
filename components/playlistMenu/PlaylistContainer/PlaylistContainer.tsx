@@ -4,22 +4,25 @@ import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
 import { PlaylistInfo } from "./PlaylistInfo";
 import { Link } from "expo-router";
-import { useState } from "react";
 import { Images } from "@/constants/Images";
+import { PlaylistInfoType } from "@/state/playlists/types";
+import { useDispatch } from "react-redux";
+import { toggleActive } from "@/state/playlists/playlistSlice";
 
 type PlaylistContainerProps = {
-  name: string;
-  platform: "Spotify" | "Apple Music" | "YouTube Music";
-  activated?: boolean;
+  id: number;
+  info: PlaylistInfoType;
+  activated: boolean;
 };
 
 export function PlaylistContainer({
-  name,
-  platform,
-  activated = false,
+  info: { name, platform },
+  id,
+  activated,
 }: PlaylistContainerProps) {
   const color = Colors.dark.onSurface;
-  const [isActive, setActive] = useState(activated);
+  const dispatch = useDispatch();
+
   let platformLogo;
   switch (platform) {
     case "Spotify":
@@ -36,13 +39,17 @@ export function PlaylistContainer({
   return (
     <Pressable
       onPress={() => {
-        setActive(!isActive);
+        dispatch(toggleActive(id));
       }}
     >
       <View
         style={[
           styles.container,
-          isActive ? styles.containerActivated : styles.containerDeactivated,
+          {
+            backgroundColor: activated
+              ? Colors.dark.surfaceContainerHighest
+              : Colors.dark.surface,
+          },
         ]}
       >
         <Image source={platformLogo} style={styles.logo} />
@@ -65,14 +72,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.dark.outlineVariant,
     alignItems: "center",
     width: "100%",
-  },
-
-  containerActivated: {
-    backgroundColor: Colors.dark.surfaceContainerHighest,
-  },
-
-  containerDeactivated: {
-    backgroundColor: Colors.dark.surface,
   },
 
   logo: {
