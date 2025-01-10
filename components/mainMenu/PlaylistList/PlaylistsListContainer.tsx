@@ -2,14 +2,17 @@ import { StyleSheet } from "react-native";
 import { PlaylistList } from "./PlaylistsList";
 import { ThemedText } from "@/components/ThemedText";
 import { ElevatedContainer } from "@/components/ui/ElevatedContainer";
+import { Link } from "expo-router";
 
 export function PlaylistsListContainer() {
   const playlists = ["Hip-Hop", "Jazz", "Pop"];
   return (
-    <ElevatedContainer style={styles.container} elevation={3}>
-      <ThemedText type="defaultSemiBold">Playlists</ThemedText>
-      <PlaylistList playlists={playlists} />
-    </ElevatedContainer>
+    <Link href="/(tabs)/(playlists)">
+      <ElevatedContainer style={styles.container} elevation={3}>
+        <ThemedText type="defaultSemiBold">Playlists</ThemedText>
+        <PlaylistList playlists={playlists} />
+      </ElevatedContainer>
+    </Link>
   );
 }
 
