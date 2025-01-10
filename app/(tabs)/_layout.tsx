@@ -1,17 +1,19 @@
-import { Tabs } from "expo-router";
+import { Tabs, useSegments } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
 
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
+import { pagesToHideTabBar } from "@/constants/Navigation";
 
 export default function TabLayout() {
+  const page = useSegments().join("/");
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.dark.onSurfaceVariant,
         headerShown: false,
         tabBarStyle: {
+          display: pagesToHideTabBar.includes(page) ? "none" : "flex",
           backgroundColor: Colors.dark.surfaceContainer,
           height: 70,
           paddingTop: 12,
