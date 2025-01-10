@@ -15,7 +15,12 @@ export function FloatingActionButton({
   return (
     <View style={styles.outerShadow}>
       <View style={styles.innerShadow}>
-        <Pressable onPress={onPress} {...rest} style={styles.container}>
+        <Pressable
+          onPress={onPress}
+          {...rest}
+          style={styles.container}
+          android_ripple={{ color: Colors.dark.primaryOpacity[12] }}
+        >
           <IconSymbol size={28} name={icon} color={color} />
         </Pressable>
       </View>
@@ -26,7 +31,6 @@ export function FloatingActionButton({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.dark.surfaceContainerHigh,
-    borderRadius: 16,
     padding: 16,
   },
   outerShadow: {
@@ -50,5 +54,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 3,
     elevation: 3,
+    overflow: "hidden",
   },
 });
