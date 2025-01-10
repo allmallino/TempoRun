@@ -32,6 +32,7 @@ export function PlaylistList() {
       style={styles.container}
       contentContainerStyle={{
         gap: 8,
+        paddingBottom: 76,
       }}
       showsVerticalScrollIndicator={false}
     ></FlatList>

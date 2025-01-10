@@ -18,6 +18,7 @@ const MAPPING = {
   "chevron.right": "chevron-right",
   "watch.analog": "access-time",
   ellipsis: "more-vert",
+  plus: "add",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],
