@@ -53,7 +53,7 @@ export function PlaylistContainer({
           },
         ]}
       >
-        <Image source={platformLogo} style={styles.logo} />
+        <Image source={getPlatformIcon(platform)} style={styles.logo} />
         <PlaylistInfo name={name} platform={platform} />
         <IconButton
           onPress={() => {

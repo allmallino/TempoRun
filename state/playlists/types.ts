@@ -1,3 +1,5 @@
+export type PlatformType = "Spotify" | "Apple Music" | "YouTube Music";
+
 export type PlaylistType = {
   id: number;
   info: PlaylistInfoType;
@@ -8,7 +10,7 @@ export type PlaylistType = {
 
 export type PlaylistInfoType = {
   name: string;
-  platform: "Spotify" | "Apple Music" | "YouTube Music";
+  platform: PlatformType;
 };
 
 export type TrackType = {
