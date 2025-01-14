@@ -14,6 +14,7 @@ export function PlaylistList() {
           key={item.id}
           id={item.id}
           activated={item.active}
+          isImported={item.imported}
         />
       )}
       style={styles.container}

@@ -1,48 +1,40 @@
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
 import { PlaylistInfo } from "./PlaylistInfo";
-import { Link } from "expo-router";
-import { Images } from "@/constants/Images";
+import { router } from "expo-router";
 import { PlaylistInfoType } from "@/state/playlists/types";
 import { useDispatch } from "react-redux";
-import { toggleActive } from "@/state/playlists/playlistSlice";
+import { toggleActive, toggleImported } from "@/state/playlists/playlistSlice";
 import { IconButton } from "@/components/ui/IconButton";
+import { getPlatformIcon } from "@/helpers/helpers";
 
 type PlaylistContainerProps = {
   id: number;
   info: PlaylistInfoType;
-  activated: boolean;
+  activated?: boolean;
+  isImported?: boolean;
 };
 
 export function PlaylistContainer({
   info: { name, platform },
   id,
   activated,
+  isImported,
 }: PlaylistContainerProps) {
   const color = Colors.dark.onSurface;
   const dispatch = useDispatch();
 
-  let platformLogo;
-  switch (platform) {
-    case "Spotify":
-      platformLogo = Images.streamingServices.spotify.icon;
-      break;
-    case "Apple Music":
-      platformLogo = Images.streamingServices.appleMusic.icon;
-      break;
-    case "YouTube Music":
-      platformLogo = Images.streamingServices.youtubeMusic.icon;
-      break;
-  }
+  const toggleActivation = () => {
+    dispatch(toggleActive(id));
+  };
+
+  const toggleImport = () => {
+    dispatch(toggleImported(id));
+  };
 
   return (
-    <Pressable
-      onPress={() => {
-        dispatch(toggleActive(id));
-      }}
-    >
+    <Pressable onPress={isImported ? toggleActivation : null}>
       <View
         style={[
           styles.container,
@@ -53,16 +45,27 @@ export function PlaylistContainer({
           },
         ]}
       >
-        <Image source={getPlatformIcon(platform)} style={styles.logo} />
+        {isImported && (
+          <Image source={getPlatformIcon(platform)} style={styles.logo} />
+        )}
         <PlaylistInfo name={name} platform={platform} />
-        <IconButton
-          onPress={() => {
-            router.navigate("/settings");
-          }}
-          color={color}
-          icon="ellipsis"
-          style={styles.settingsButton}
-        />
+        {isImported ? (
+          <IconButton
+            onPress={() => {
+              router.navigate("/settings");
+            }}
+            color={color}
+            icon="ellipsis"
+            style={styles.settingsButton}
+          />
+        ) : (
+          <IconButton
+            onPress={toggleImport}
+            color={color}
+            icon="plus"
+            style={styles.settingsButton}
+          />
+        )}
       </View>
     </Pressable>
   );
