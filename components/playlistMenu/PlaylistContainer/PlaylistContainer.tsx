@@ -8,6 +8,7 @@ import { Images } from "@/constants/Images";
 import { PlaylistInfoType } from "@/state/playlists/types";
 import { useDispatch } from "react-redux";
 import { toggleActive } from "@/state/playlists/playlistSlice";
+import { IconButton } from "@/components/ui/IconButton";
 
 type PlaylistContainerProps = {
   id: number;
@@ -54,9 +55,14 @@ export function PlaylistContainer({
       >
         <Image source={platformLogo} style={styles.logo} />
         <PlaylistInfo name={name} platform={platform} />
-        <Link href={"/settings"} style={styles.settingsButton}>
-          <IconSymbol size={24} name="ellipsis" color={color} />
-        </Link>
+        <IconButton
+          onPress={() => {
+            router.navigate("/settings");
+          }}
+          color={color}
+          icon="ellipsis"
+          style={styles.settingsButton}
+        />
       </View>
     </Pressable>
   );

@@ -1,6 +1,7 @@
 import { Colors } from "@/constants/Colors";
-import { Pressable, PressableProps, StyleSheet, View } from "react-native";
-import { IconSymbol, IconSymbolName } from "./IconSymbol";
+import { PressableProps, StyleSheet, View } from "react-native";
+import { IconSymbolName } from "./IconSymbol";
+import { IconButton } from "./IconButton";
 
 type FloatingActionButtonPropsType = {
   icon: IconSymbolName;
@@ -9,20 +10,19 @@ type FloatingActionButtonPropsType = {
 export function FloatingActionButton({
   onPress,
   icon,
-  ...rest
 }: FloatingActionButtonPropsType) {
   const color = Colors.dark.primary;
   return (
     <View style={styles.outerShadow}>
       <View style={styles.innerShadow}>
-        <Pressable
+        <IconButton
+          icon={icon}
+          color={color}
           onPress={onPress}
-          {...rest}
           style={styles.container}
           android_ripple={{ color: Colors.dark.primaryOpacity[12] }}
-        >
-          <IconSymbol size={28} name={icon} color={color} />
-        </Pressable>
+          size={28}
+        />
       </View>
     </View>
   );
