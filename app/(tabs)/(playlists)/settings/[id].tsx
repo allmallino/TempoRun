@@ -2,11 +2,17 @@ import { View, StyleSheet, StatusBar } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
+import { useLocalSearchParams } from "expo-router";
+import { useSelector } from "react-redux";
+import { getPlaylistById } from "@/state/playlists/selectors";
 
 export default function PlaylistSettingsScreen() {
+  const { id } = useLocalSearchParams();
+  const playlist = useSelector(getPlaylistById(Number(id)));
+
   return (
     <View style={styles.mainContainer}>
-      <ThemedText type="title">Playlist Settings</ThemedText>
+      <ThemedText type="title">{playlist?.info.name}</ThemedText>
     </View>
   );
 }

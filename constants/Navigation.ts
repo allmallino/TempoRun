@@ -1,4 +1,4 @@
 export const pagesToHideTabBar = [
   "(tabs)/(playlists)/import",
-  "(tabs)/(playlists)/settings",
+  "(tabs)/(playlists)/settings/[id]",
 ];

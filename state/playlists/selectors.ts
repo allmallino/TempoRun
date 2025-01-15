@@ -21,3 +21,9 @@ export const getActivatedPlaylists = createSelector(
   (state: RootState) => state.playlist.value,
   (value) => value.filter((playlist) => playlist.active)
 );
+
+export const getPlaylistById = (id: number) =>
+  createSelector(
+    (state: RootState) => state.playlist.value,
+    (value) => value.find((playlist) => playlist.id === id)
+  );

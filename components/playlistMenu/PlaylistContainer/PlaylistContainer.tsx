@@ -52,7 +52,10 @@ export function PlaylistContainer({
         {isImported ? (
           <IconButton
             onPress={() => {
-              router.navigate("/settings");
+              router.navigate({
+                pathname: "/settings/[id]",
+                params: { id },
+              });
             }}
             color={color}
             icon="ellipsis"
