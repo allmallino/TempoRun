@@ -12,54 +12,154 @@ const initialState: playlistState = {
       id: 1,
       active: false,
       imported: true,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "Jazz", platform: "Spotify" },
       id: 2,
       active: false,
       imported: true,
+
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "Rock", platform: "YouTube Music" },
       id: 3,
       active: false,
-      imported: true,
+      imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "Pop", platform: "Spotify" },
       id: 4,
       active: false,
-      imported: true,
+      imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "Hyper Pop", platform: "Spotify" },
       id: 5,
-      active: true,
-      imported: true,
+      active: false,
+      imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "Death Grips collection", platform: "Apple Music" },
       id: 6,
       active: false,
       imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "This is Eminem", platform: "Spotify" },
       id: 7,
       active: false,
       imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "This is Kanye West", platform: "Spotify" },
       id: 8,
       active: false,
       imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
     {
       info: { name: "Rap", platform: "Apple Music" },
       id: 9,
       active: false,
       imported: false,
+      tracks: [
+        { id: 1, active: true },
+        { id: 2, active: true },
+        { id: 3, active: true },
+        { id: 4, active: true },
+        { id: 5, active: true },
+        { id: 6, active: true },
+        { id: 7, active: true },
+        { id: 8, active: true },
+        { id: 9, active: true },
+      ],
     },
   ],
 };
@@ -84,9 +184,26 @@ const playlistSlice = createSlice({
         return playlist;
       });
     },
+    toggleTrackActive: (state, action) => {
+      state.value = state.value.map((playlist) => {
+        if (playlist.id === action.payload.playlistId) {
+          return {
+            ...playlist,
+            tracks: playlist.tracks?.map((track) => {
+              if (track.id === action.payload.trackId) {
+                return { ...track, active: !track.active };
+              }
+              return track;
+            }),
+          };
+        }
+        return playlist;
+      });
+    },
   },
 });
 
-export const { toggleActive, toggleImported } = playlistSlice.actions;
+export const { toggleActive, toggleImported, toggleTrackActive } =
+  playlistSlice.actions;
 
 export default playlistSlice.reducer;

@@ -5,7 +5,7 @@ export type PlaylistType = {
   info: PlaylistInfoType;
   active: boolean;
   imported: boolean;
-  tracks?: TrackType[];
+  tracks: TrackType[];
 };
 
 export type PlaylistInfoType = {
@@ -15,11 +15,5 @@ export type PlaylistInfoType = {
 
 export type TrackType = {
   id: number;
-  info: TrackInfoType;
   active: boolean;
-};
-
-export type TrackInfoType = {
-  name: string;
-  artist: string;
 };
