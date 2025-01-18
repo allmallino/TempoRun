@@ -61,8 +61,13 @@ const styles = StyleSheet.create({
   outlined: {},
   outlinedText: {},
 
-  text: {},
-  textText: {},
+  text: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  textText: {
+    color: Colors.dark.primary,
+  },
 
   elevated: {},
   elevatedText: {},
