@@ -1,9 +1,9 @@
 import { View, StyleSheet, StatusBar } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
-import { ImportPlaylistList } from "@/components/playlistMenu/ImportPlaylistList/ImportPlaylistList";
-import { IconButton } from "@/components/ui/IconButton";
+import PlatformCardList from "@/components/playlistMenu/PlatformCardList";
+import IconButton from "@/components/ui/IconButton";
 import { router } from "expo-router";
 
 export default function ImportPlaylistsScreen() {
@@ -21,7 +21,7 @@ export default function ImportPlaylistsScreen() {
         />
       </View>
       <ThemedText type="title">Import playlists</ThemedText>
-      <ImportPlaylistList />
+      <PlatformCardList />
     </View>
   );
 }

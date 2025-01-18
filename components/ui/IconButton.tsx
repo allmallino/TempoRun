@@ -14,7 +14,7 @@ export type IconButtonProps = PressableProps & {
   size?: number;
 };
 
-export function IconButton({
+export default function IconButton({
   onPress,
   icon,
   color,

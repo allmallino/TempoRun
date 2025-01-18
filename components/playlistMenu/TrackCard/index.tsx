@@ -2,17 +2,17 @@ import { Colors } from "@/constants/Colors";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTrackActive } from "@/state/playlists/playlistSlice";
-import { TrackInfo } from "./TrackInfo";
+import CardInfo from "../CardInfo";
 import { getTrackInfoById } from "@/state/tracks/selectors";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useLocalSearchParams } from "expo-router";
 
-type TrackContainerProps = {
+type TrackCardProps = {
   trackId: number;
   active?: boolean;
 };
 
-export function TrackContainer({ trackId, active }: TrackContainerProps) {
+export default function TrackCard({ trackId, active }: TrackCardProps) {
   const color = Colors.dark.onSurface;
   const trackInfo = useSelector(getTrackInfoById(trackId));
   const { id } = useLocalSearchParams();
@@ -34,9 +34,9 @@ export function TrackContainer({ trackId, active }: TrackContainerProps) {
           },
         ]}
       >
-        <TrackInfo
-          name={trackInfo?.name || "Undefined"}
-          artist={trackInfo?.artist || "Undefined"}
+        <CardInfo
+          title={trackInfo?.name || "Undefined"}
+          text={trackInfo?.artist || "Undefined"}
         />
         {active ? (
           <IconSymbol

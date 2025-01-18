@@ -1,11 +1,11 @@
-import { ElevatedContainer } from "@/components/ui/ElevatedContainer";
+import ElevatedContainer from "@/components/ui/ElevatedContainer";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
-import { MusicModeName } from "./MusicModeName";
+import ModeCardTitle from "../ModeCardTitle";
 import { Link } from "expo-router";
 
-export function MusicModeContainer() {
+export default function ActiveModeCard() {
   const color = Colors.dark.onSurface;
   const mode = "Timer";
 
@@ -13,7 +13,7 @@ export function MusicModeContainer() {
     <Link href="/(tabs)/mode">
       <ElevatedContainer style={styles.container} elevation={4}>
         <IconSymbol size={28} name="watch.analog" color={color} />
-        <MusicModeName name={mode} />
+        <ModeCardTitle name={mode} />
       </ElevatedContainer>
     </Link>
   );

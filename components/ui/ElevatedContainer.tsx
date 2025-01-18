@@ -7,7 +7,7 @@ type ElevatedContainerPropsType = {
   elevation: ElevationType;
 } & ViewProps;
 
-export function ElevatedContainer({
+export default function ElevatedContainer({
   style,
   children,
   elevation,

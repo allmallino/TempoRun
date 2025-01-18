@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { StyleSheet, Pressable, View, ButtonProps } from "react-native";
-import { ThemedText } from "./ThemedText";
+import ThemedText from "./ThemedText";
 
 export type ThemedButtonProps = ButtonProps & {
   type?: "filled" | "outlined" | "text" | "elevated" | "tonal";
@@ -13,7 +13,7 @@ export type ThemedButtonProps = ButtonProps & {
     | undefined;
 };
 
-export function ThemedButton({
+export default function ThemedButton({
   onPress,
   type = "filled",
   icon,

@@ -1,13 +1,13 @@
 import { Colors } from "@/constants/Colors";
 import { PressableProps, StyleSheet, View } from "react-native";
 import { IconSymbolName } from "./IconSymbol";
-import { IconButton } from "./IconButton";
+import IconButton from "./IconButton";
 
 type FloatingActionButtonPropsType = {
   icon: IconSymbolName;
 } & PressableProps;
 
-export function FloatingActionButton({
+export default function FloatingActionButton({
   onPress,
   icon,
 }: FloatingActionButtonPropsType) {

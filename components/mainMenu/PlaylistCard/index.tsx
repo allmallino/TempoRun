@@ -1,8 +1,12 @@
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { StyleSheet, View } from "react-native";
 
-export function PlaylistItem({ name }: { name: string }) {
+type PlaylistCardProps = {
+  name: string;
+};
+
+export default function PlaylistCard({ name }: PlaylistCardProps) {
   return (
     <View style={styles.container}>
       <ThemedText style={styles.text}>{name}</ThemedText>

@@ -1,30 +1,29 @@
 import { FlatList, StyleSheet } from "react-native";
-import { PlaylistContainer } from "../PlaylistContainer/PlaylistContainer";
+import PlaylistCard from "../PlaylistCard";
 import { PlatformType, PlaylistType } from "@/state/playlists/types";
-import { ElevatedContainer } from "@/components/ui/ElevatedContainer";
-import { PlatformName } from "./PlatformName";
+import ElevatedContainer from "@/components/ui/ElevatedContainer";
+import PlatformCardTitle from "../PlatfromCardTitle";
 
-export function PlatformPlaylistList({
-  platform,
-  data,
-}: {
+type PlatformCardProps = {
   platform: PlatformType;
   data: PlaylistType[];
-}) {
+};
+
+export default function PlatformCard({ platform, data }: PlatformCardProps) {
   return (
     <ElevatedContainer elevation={2} style={styles.container}>
-      <PlatformName platform={platform} />
+      <PlatformCardTitle platform={platform} />
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <PlaylistContainer
+          <PlaylistCard
             info={item.info}
             key={item.id}
             id={item.id}
             isImported={item.imported}
           />
         )}
-        style={{ width: "100%", gap: 12 }}
+        style={styles.list}
         scrollEnabled={false}
       />
     </ElevatedContainer>
@@ -38,4 +37,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     gap: 20,
   },
+  list: { width: "100%", gap: 12 },
 });

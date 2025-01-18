@@ -1,16 +1,16 @@
 import { View, StyleSheet, StatusBar } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
-import { PlaylistList } from "@/components/playlistMenu/PlaylistList/PlaylistList";
-import { FloatingActionButton } from "@/components/ui/FloatingActionButton";
+import PlaylistCardList from "@/components/playlistMenu/PlaylistCardList";
+import FloatingActionButton from "@/components/ui/FloatingActionButton";
 import { router } from "expo-router";
 
 export default function PlaylistsScreen() {
   return (
     <View style={styles.mainContainer}>
       <ThemedText type="title">Playlists</ThemedText>
-      <PlaylistList />
+      <PlaylistCardList />
       <FloatingActionButton
         icon={"plus"}
         onPress={() => {

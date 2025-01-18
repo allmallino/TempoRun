@@ -1,8 +1,12 @@
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { StyleSheet, View } from "react-native";
 
-export function MusicModeName({ name }: { name: string }) {
+type ModeCardTitleProps = {
+  name: string;
+};
+
+export default function ModeCardTitle({ name }: ModeCardTitleProps) {
   return (
     <View style={styles.container}>
       <ThemedText type="defaultSemiBold" style={styles.text}>

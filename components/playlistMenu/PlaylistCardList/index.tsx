@@ -1,15 +1,16 @@
 import { FlatList, StyleSheet } from "react-native";
-import { PlaylistContainer } from "../PlaylistContainer/PlaylistContainer";
+import PlaylistCard from "../PlaylistCard";
 import { useSelector } from "react-redux";
 import { getImportedPlaylists } from "@/state/playlists/selectors";
 
-export function PlaylistList() {
+export default function PlaylistCardList() {
   const data = useSelector(getImportedPlaylists);
+
   return (
     <FlatList
       data={data}
       renderItem={({ item }) => (
-        <PlaylistContainer
+        <PlaylistCard
           info={item.info}
           key={item.id}
           id={item.id}
@@ -18,10 +19,7 @@ export function PlaylistList() {
         />
       )}
       style={styles.container}
-      contentContainerStyle={{
-        gap: 8,
-        paddingBottom: 76,
-      }}
+      contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
     />
   );
@@ -30,5 +28,9 @@ export function PlaylistList() {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+  },
+  list: {
+    gap: 8,
+    paddingBottom: 76,
   },
 });

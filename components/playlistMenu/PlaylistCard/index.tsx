@@ -1,27 +1,27 @@
 import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
-import { PlaylistInfo } from "./PlaylistInfo";
 import { router } from "expo-router";
 import { PlaylistInfoType } from "@/state/playlists/types";
 import { useDispatch } from "react-redux";
 import { toggleActive, toggleImported } from "@/state/playlists/playlistSlice";
-import { IconButton } from "@/components/ui/IconButton";
+import IconButton from "@/components/ui/IconButton";
 import { getPlatformIcon } from "@/helpers/helpers";
+import CardInfo from "../CardInfo";
 
-type PlaylistContainerProps = {
+type PlaylistCardProps = {
   id: number;
   info: PlaylistInfoType;
   activated?: boolean;
   isImported?: boolean;
 };
 
-export function PlaylistContainer({
+export default function PlaylistCard({
   info: { name, platform },
   id,
   activated,
   isImported,
-}: PlaylistContainerProps) {
+}: PlaylistCardProps) {
   const color = Colors.dark.onSurface;
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ export function PlaylistContainer({
         {isImported && (
           <Image source={getPlatformIcon(platform)} style={styles.logo} />
         )}
-        <PlaylistInfo name={name} platform={platform} />
+        <CardInfo title={name} text={platform} />
         {isImported ? (
           <IconButton
             onPress={() => {

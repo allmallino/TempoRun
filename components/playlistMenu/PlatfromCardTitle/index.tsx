@@ -1,10 +1,16 @@
 import { StyleSheet, View } from "react-native";
 import { PlatformType } from "@/state/playlists/types";
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { Image } from "expo-image";
 import { getPlatformIcon } from "@/helpers/helpers";
 
-export function PlatformName({ platform }: { platform: PlatformType }) {
+type PlatformCardTitleProps = {
+  platform: PlatformType;
+};
+
+export default function PlatformCardTitle({
+  platform,
+}: PlatformCardTitleProps) {
   return (
     <View style={styles.container}>
       <Image source={getPlatformIcon(platform)} style={styles.logo} />

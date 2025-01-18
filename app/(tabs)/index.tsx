@@ -1,6 +1,6 @@
-import { MusicModeContainer } from "@/components/mainMenu/MusicMode/MusicModeContainer";
-import { PlaylistsListContainer } from "@/components/mainMenu/PlaylistList/PlaylistsListContainer";
-import { ThemedButton } from "@/components/ThemedButton";
+import ActiveModeCard from "@/components/mainMenu/ActiveModeCard";
+import ActivePlaylistCardList from "@/components/mainMenu/ActivePlaylistCardList";
+import ThemedButton from "@/components/ThemedButton";
 import { Colors } from "@/constants/Colors";
 import { Images } from "@/constants/Images";
 import { Image } from "expo-image";
@@ -13,8 +13,8 @@ export default function HomeScreen() {
       <View style={styles.buttonContainer}>
         <ThemedButton title="Let's run" />
       </View>
-      <MusicModeContainer />
-      <PlaylistsListContainer />
+      <ActiveModeCard />
+      <ActivePlaylistCardList />
     </View>
   );
 }

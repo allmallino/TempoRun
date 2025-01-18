@@ -1,22 +1,21 @@
 import { FlatList, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { getUnimportedPlaylists } from "@/state/playlists/selectors";
-import { PlatformPlaylistList } from "./PlatformPlaylistList";
+import PlatformCard from "../PlatformCard";
 import { PlatformType } from "@/state/playlists/types";
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 
-export function ImportPlaylistList() {
+export default function PlatformCardList() {
   const data = useSelector(getUnimportedPlaylists);
+
   return Object.values(data).length ? (
     <FlatList
       data={Object.keys(data).sort() as PlatformType[]}
       renderItem={({ item }: { item: PlatformType }) => (
-        <PlatformPlaylistList platform={item} data={data[item]} />
+        <PlatformCard platform={item} data={data[item]} />
       )}
       style={styles.container}
-      contentContainerStyle={{
-        gap: 25,
-      }}
+      contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
     />
   ) : (
@@ -27,5 +26,8 @@ export function ImportPlaylistList() {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+  },
+  list: {
+    gap: 25,
   },
 });

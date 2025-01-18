@@ -1,14 +1,14 @@
 import { View, StyleSheet, StatusBar } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
+import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { router, useLocalSearchParams } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlaylistById } from "@/state/playlists/selectors";
-import { IconButton } from "@/components/ui/IconButton";
-import { ThemedButton } from "@/components/ThemedButton";
+import IconButton from "@/components/ui/IconButton";
+import ThemedButton from "@/components/ThemedButton";
 import { toggleImported } from "@/state/playlists/playlistSlice";
-import { TrackList } from "@/components/playlistMenu/TracksLists/TrackList";
+import TracksLists from "@/components/playlistMenu/TracksLists";
 
 export default function PlaylistSettingsScreen() {
   const { id } = useLocalSearchParams();
@@ -29,7 +29,7 @@ export default function PlaylistSettingsScreen() {
       </View>
       <ThemedText type="title">{playlist?.info.name}</ThemedText>
       {playlist ? (
-        <TrackList data={playlist.tracks} />
+        <TracksLists data={playlist.tracks} />
       ) : (
         <ThemedText type="defaultSemiBold">
           No music tracks to manage
