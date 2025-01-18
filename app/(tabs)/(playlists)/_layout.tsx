@@ -9,7 +9,7 @@ export default function PlaylistsLayout() {
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen name="settings" />
+      <Stack.Screen name="settings/[id]" />
       <Stack.Screen name="import" />
     </Stack>
   );

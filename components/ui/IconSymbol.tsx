@@ -20,6 +20,8 @@ const MAPPING = {
   ellipsis: "more-vert",
   plus: "add",
   "arrow.left": "arrow-back",
+  "eye.fill": "visibility",
+  "eye.slash.fill": "visibility-off",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],
