@@ -4,6 +4,9 @@ export const Colors = {
   clear: "#00000000",
 
   dark: {
+    error: "#FFB4AB",
+
+    outline: "#8E9286",
     outlineVariant: "#43483E",
 
     surface: "#121410",

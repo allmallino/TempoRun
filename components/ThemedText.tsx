@@ -1,8 +1,15 @@
 import { Colors } from "@/constants/Colors";
-import { Text, type TextProps, StyleSheet } from "react-native";
+import { type TextProps, StyleSheet } from "react-native";
+import Animated from "react-native-reanimated";
 
 export type ThemedTextProps = TextProps & {
-  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  type?:
+    | "small"
+    | "default"
+    | "title"
+    | "defaultSemiBold"
+    | "subtitle"
+    | "link";
 };
 
 export default function ThemedText({
@@ -13,9 +20,10 @@ export default function ThemedText({
   const color = Colors.dark.onSurface;
 
   return (
-    <Text
+    <Animated.Text
       style={[
         { color, fontFamily: "Roboto" },
+        type === "small" ? styles.small : undefined,
         type === "default" ? styles.default : undefined,
         type === "title" ? styles.title : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
@@ -29,6 +37,10 @@ export default function ThemedText({
 }
 
 const styles = StyleSheet.create({
+  small: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
   default: {
     fontSize: 16,
     lineHeight: 24,
