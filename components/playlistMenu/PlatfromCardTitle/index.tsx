@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { PlatformType } from "@/state/playlists/types";
 import ThemedText from "@/components/ThemedText";
 import { Image } from "expo-image";
-import { getPlatformIcon } from "@/helpers/helpers";
+import { getPlatformIcon } from "@/helpers";
 
 type PlatformCardTitleProps = {
   platform: PlatformType;

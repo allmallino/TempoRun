@@ -6,7 +6,7 @@ import { PlaylistInfoType } from "@/state/playlists/types";
 import { useDispatch } from "react-redux";
 import { toggleActive, toggleImported } from "@/state/playlists/playlistSlice";
 import IconButton from "@/components/ui/IconButton";
-import { getPlatformIcon } from "@/helpers/helpers";
+import { getPlatformIcon } from "@/helpers";
 import CardInfo from "../CardInfo";
 
 type PlaylistCardProps = {

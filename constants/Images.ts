@@ -5,11 +5,11 @@ export const Images = {
 
   streamingServices: {
     spotify: {
-      icon: require("@/assets/images/spotify-logo.png"),
+      icon: require("@/assets/images/spotify-icon.png"),
     },
 
     youtubeMusic: {
-      icon: require("@/assets/images/youtubemusic-logo.png"),
+      icon: require("@/assets/images/youtubemusic-icon.png"),
     },
 
     appleMusic: {

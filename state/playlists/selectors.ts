@@ -1,7 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { PlatformType, PlaylistType } from "./types";
-import { groupBy } from "@/helpers/helpers";
+import { groupBy } from "@/helpers";
 
 export const getImportedPlaylists = createSelector(
   (state: RootState) => state.playlist.value,
