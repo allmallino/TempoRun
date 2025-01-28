@@ -23,5 +23,12 @@ export const Colors = {
     primaryOpacity: {
       12: "#D0BCFF1F",
     },
+    onSurfaceOpacity: {
+      12: "#E6E0E91F",
+    },
+  },
+
+  neutral: {
+    35: "#52534E",
   },
 };
