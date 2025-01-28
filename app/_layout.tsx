@@ -1,3 +1,4 @@
+import SplashScreen from "@/components/loginPage/SplashScreen";
 import { store } from "@/state/store";
 import {
   DarkTheme,
@@ -6,36 +7,32 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
+// import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default function AuthLayout() {
   const colorScheme = useColorScheme();
+
   const [loaded] = useFonts({
     Roboto: require("../assets/fonts/Roboto-Regular.ttf"),
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
   if (!loaded) {
-    return null;
+    return <SplashScreen />;
   }
 
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(app)" />
+          <Stack.Screen name="login" />
+          <Stack.Screen name="registration" />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

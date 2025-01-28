@@ -1,20 +1,14 @@
-import ActiveModeCard from "@/components/mainMenu/ActiveModeCard";
-import ActivePlaylistCardList from "@/components/mainMenu/ActivePlaylistCardList";
-import ThemedButton from "@/components/ThemedButton";
+import RegistrationInputs from "@/components/loginPage/RegistrationInputs";
 import { Colors } from "@/constants/Colors";
 import { Images } from "@/constants/Images";
 import { Image } from "expo-image";
 import { View, StyleSheet, StatusBar } from "react-native";
 
-export default function HomeScreen() {
+export default function RegistrationScreen() {
   return (
     <View style={styles.mainContainer}>
       <Image source={Images.tempoRun.logo} style={styles.logo} />
-      <View style={styles.buttonContainer}>
-        <ThemedButton title="Let's run" />
-      </View>
-      <ActiveModeCard />
-      <ActivePlaylistCardList />
+      <RegistrationInputs />
     </View>
   );
 }
@@ -23,7 +17,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: "center",
-    gap: 25,
+    gap: 120,
     paddingHorizontal: 16,
     paddingTop: 45 + (StatusBar.currentHeight || 0),
     paddingBottom: 25,
