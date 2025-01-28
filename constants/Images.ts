@@ -16,4 +16,14 @@ export const Images = {
       icon: require("@/assets/images/applemusic-icon.png"),
     },
   },
+
+  social: {
+    google: {
+      icon: require("@/assets/images/google-icon.png"),
+    },
+  },
+
+  splashScreen: {
+    loading: require("@/assets/images/loading.gif"),
+  },
 };
