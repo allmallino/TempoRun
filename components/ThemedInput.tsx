@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import {
   StyleSheet,
   TextInput,
@@ -8,12 +7,15 @@ import {
   StyleProp,
 } from "react-native";
 import ThemedText from "./ThemedText";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { Theme } from "@/theme/types";
+import useTheme from "@/hooks/useTheme";
 
 export type ThemedInputProps = TextInputProps & {
   label: string;
@@ -42,7 +44,10 @@ const ThemedInput = React.memo(
     isLoading,
     ...rest
   }: ThemedInputProps) => {
-    const color = state === "default" ? Colors.dark.outline : Colors.dark.error;
+    const { theme } = useContext(ThemeContext);
+    const styles = useTheme(getStyles);
+
+    const color = state === "default" ? theme.outline : theme.error;
     const [isFocused, setIsFocused] = useState(false);
     const values = useSharedValue({ x: 16, y: 16, scale: 1 });
     const animatedStyle = useAnimatedStyle(() => ({
@@ -99,40 +104,41 @@ const ThemedInput = React.memo(
 
 export default ThemedInput;
 
-const styles = StyleSheet.create({
-  container: {
-    gap: 4,
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  inputContainer: {
-    width: "100%",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 4,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  title: {
-    position: "absolute",
-    paddingHorizontal: 4,
-    backgroundColor: Colors.dark.surfaceContainerLow,
-    top: -8,
-    left: 12,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  icon: {
-    padding: 8,
-  },
-  supportingText: {
-    flex: 1,
-    marginHorizontal: 16,
-    textAlign: "left",
-  },
-});
+const getStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      gap: 4,
+      flexDirection: "row",
+      alignItems: "center",
+      flexWrap: "wrap",
+    },
+    inputContainer: {
+      width: "100%",
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 4,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    title: {
+      position: "absolute",
+      paddingHorizontal: 4,
+      backgroundColor: theme.surfaceContainerLow,
+      top: -8,
+      left: 12,
+    },
+    input: {
+      flex: 1,
+      height: 40,
+      justifyContent: "center",
+      alignItems: "flex-start",
+    },
+    icon: {
+      padding: 8,
+    },
+    supportingText: {
+      flex: 1,
+      marginHorizontal: 16,
+      textAlign: "left",
+    },
+  });

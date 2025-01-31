@@ -10,7 +10,7 @@ export default function ActivePlaylistCardList() {
   const playlists = useSelector(getActivatedPlaylists);
 
   return (
-    <Link href="/(tabs)/(playlists)">
+    <Link href="/(app)/(tabs)/(playlists)">
       <ElevatedContainer style={styles.container} elevation={3}>
         <ThemedText type="defaultSemiBold">Playlists</ThemedText>
         <CompactPlaylistCardList playlists={playlists} />

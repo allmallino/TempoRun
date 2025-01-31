@@ -1,20 +1,22 @@
-import { Colors } from "@/constants/Colors";
 import { StyleSheet, Pressable, View, PressableProps } from "react-native";
 import ThemedText from "./ThemedText";
+import { Theme } from "@/theme/types";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { useContext } from "react";
 
 export type ButtonType = "filled" | "outlined" | "text";
 
 export type ThemedButtonProps = Omit<PressableProps, "children"> & {
   type?: ButtonType;
-  icon?: (props: {
-    focused: boolean;
-    color: string;
-    size: number;
-  }) => React.ReactNode;
+  icon?: (props: { color: string; size: number }) => React.ReactNode;
   title: string;
 };
 
-const getButtonStyles = (type: ButtonType, disabled?: boolean | null) => {
+const getButtonStyles = (
+  styles: ReturnType<typeof getStyles>,
+  type: ButtonType,
+  disabled?: boolean | null
+) => {
   const styleMap: Record<ButtonType, any> = {
     filled: styles.filled,
     outlined: styles.outlined,
@@ -29,7 +31,11 @@ const getButtonStyles = (type: ButtonType, disabled?: boolean | null) => {
   return disabled ? disabledStyleMap[type] : styleMap[type];
 };
 
-const getTextStyles = (type: ButtonType, disabled?: boolean | null) => {
+const getTextStyles = (
+  styles: ReturnType<typeof getStyles>,
+  type: ButtonType,
+  disabled?: boolean | null
+) => {
   const styleMap: Record<ButtonType, any> = {
     filled: styles.filledText,
     outlined: styles.outlinedText,
@@ -47,20 +53,30 @@ export default function ThemedButton({
   disabled = false,
   ...rest
 }: ThemedButtonProps) {
+  const { theme } = useContext(ThemeContext);
+  const styles = getStyles(theme);
+
+  const hasFixedDimensions =
+    style &&
+    ("width" in StyleSheet.flatten(style) ||
+      "height" in StyleSheet.flatten(style));
+
   return (
-    <View style={[styles.container, getButtonStyles(type, disabled), style]}>
+    <View
+      style={[styles.container, getButtonStyles(styles, type, disabled), style]}
+    >
       <Pressable
         onPress={onPress}
         android_ripple={{
-          color: disabled ? null : Colors.dark.primaryOpacity[12],
+          color: disabled ? null : theme.primaryOpacity[12],
         }}
-        style={styles.button}
+        style={[styles.button, hasFixedDimensions && { flex: 1 }]}
         {...rest}
       >
-        {icon && icon({ focused: false, color: Colors.dark.primary, size: 24 })}
+        {icon && icon({ color: theme.primary, size: 24 })}
         <ThemedText
           type="defaultSemiBold"
-          style={[styles.text, getTextStyles(type, disabled)]}
+          style={[styles.text, getTextStyles(styles, type, disabled)]}
         >
           {title}
         </ThemedText>
@@ -69,50 +85,52 @@ export default function ThemedButton({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 100,
-    overflow: "hidden",
-  },
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 100,
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    gap: 8,
-  },
-  text: {
-    textAlign: "center",
-  },
+const getStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      borderRadius: 100,
+      overflow: "hidden",
+      justifyContent: "center",
+    },
+    button: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 100,
+      paddingHorizontal: 24,
+      paddingVertical: 10,
+      gap: 12,
+    },
+    text: {
+      textAlign: "center",
+    },
 
-  filled: {
-    backgroundColor: Colors.dark.primary,
-  },
-  filledDisabled: {
-    backgroundColor: Colors.dark.onSurfaceOpacity[12],
-  },
-  filledText: {
-    color: Colors.dark.onPrimary,
-  },
+    filled: {
+      backgroundColor: theme.primary,
+    },
+    filledDisabled: {
+      backgroundColor: theme.onSurfaceOpacity[12],
+    },
+    filledText: {
+      color: theme.onPrimary,
+    },
 
-  outlined: {
-    borderColor: Colors.dark.outline,
-    borderWidth: 1,
-  },
-  outlinedDisabled: {
-    borderColor: Colors.dark.onSurface,
-  },
-  outlinedText: {
-    color: Colors.dark.primary,
-  },
+    outlined: {
+      borderColor: theme.outline,
+      borderWidth: 1,
+    },
+    outlinedDisabled: {
+      borderColor: theme.onSurface,
+    },
+    outlinedText: {
+      color: theme.primary,
+    },
 
-  textButtonText: {
-    color: Colors.dark.primary,
-  },
+    textButtonText: {
+      color: theme.primary,
+    },
 
-  textDisabled: {
-    color: Colors.dark.onSurface,
-  },
-});
+    textDisabled: {
+      color: theme.onSurface,
+    },
+  });

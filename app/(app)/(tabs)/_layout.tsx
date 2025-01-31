@@ -1,22 +1,25 @@
 import { Tabs, useSegments } from "expo-router";
-import React from "react";
-
+import React, { useContext } from "react";
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import { Colors } from "@/constants/Colors";
 import { pagesToHideTabBar } from "@/constants/Navigation";
+import { Theme } from "@/theme/types";
+import { StyleSheet } from "react-native";
+import useTheme from "@/hooks/useTheme";
+import { ThemeContext } from "@/theme/ThemeContext";
 
 export default function TabLayout() {
   const page = useSegments().join("/");
+  const styles = useTheme(getStyle);
+  const { theme } = useContext(ThemeContext);
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.dark.onSurfaceVariant,
+        tabBarActiveTintColor: theme.onSurfaceVariant,
         headerShown: false,
         tabBarStyle: {
           display: pagesToHideTabBar.includes(page) ? "none" : "flex",
-          backgroundColor: Colors.dark.surfaceContainer,
-          height: 70,
-          paddingTop: 12,
+          ...styles.container,
         },
       }}
     >
@@ -68,3 +71,13 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+const getStyle = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme.surfaceContainer,
+      height: 70,
+      paddingTop: 12,
+      borderTopWidth: 0,
+    },
+  });

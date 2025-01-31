@@ -1,13 +1,19 @@
 import { View, StyleSheet, StatusBar } from "react-native";
-
 import ThemedText from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
 import PlatformCardList from "@/components/playlistMenu/PlatformCardList";
 import IconButton from "@/components/ui/IconButton";
 import { router } from "expo-router";
+import { Theme } from "@/theme/types";
+import useTheme from "@/hooks/useTheme";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { useContext } from "react";
 
 export default function ImportPlaylistsScreen() {
-  const color = Colors.dark.onSurfaceVariant;
+  const { theme } = useContext(ThemeContext);
+  const styles = useTheme(getStyles);
+
+  const color = theme.onSurfaceVariant;
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerButtonsContainer}>
@@ -16,7 +22,7 @@ export default function ImportPlaylistsScreen() {
           icon="gear"
           color={color}
           onPress={() => {
-            router.navigate("/(tabs)/appSettings");
+            router.navigate("/(app)/(tabs)/appSettings");
           }}
         />
       </View>
@@ -26,20 +32,21 @@ export default function ImportPlaylistsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    alignItems: "center",
-    gap: 25,
-    paddingHorizontal: 16,
-    paddingTop: 5 + (StatusBar.currentHeight || 0),
-    backgroundColor: Colors.dark.surfaceContainerLow,
-  },
-  headerButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    marginBottom: -20,
-  },
-});
+const getStyles = (theme: Theme) =>
+  StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+      alignItems: "center",
+      gap: 25,
+      paddingHorizontal: 16,
+      paddingTop: 5 + (StatusBar.currentHeight || 0),
+      backgroundColor: theme.surfaceContainerLow,
+    },
+    headerButtonsContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "100%",
+      marginBottom: -20,
+    },
+  });

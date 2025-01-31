@@ -1,7 +1,5 @@
 import { View, StyleSheet, StatusBar } from "react-native";
-
 import ThemedText from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
 import { router, useLocalSearchParams } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlaylistById } from "@/state/playlists/selectors";
@@ -9,12 +7,19 @@ import IconButton from "@/components/ui/IconButton";
 import ThemedButton from "@/components/ThemedButton";
 import { toggleImported } from "@/state/playlists/playlistSlice";
 import TracksLists from "@/components/playlistMenu/TracksLists";
+import useTheme from "@/hooks/useTheme";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { useContext } from "react";
+import { Theme } from "@/theme/types";
 
 export default function PlaylistSettingsScreen() {
+  const { theme } = useContext(ThemeContext);
+  const styles = useTheme(getStyles);
   const { id } = useLocalSearchParams();
   const playlist = useSelector(getPlaylistById(Number(id)));
-  const color = Colors.dark.onSurfaceVariant;
   const dispatch = useDispatch();
+
+  const color = theme.onSurfaceVariant;
 
   const toggleImport = () => {
     dispatch(toggleImported(Number(id)));
@@ -39,20 +44,21 @@ export default function PlaylistSettingsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    alignItems: "center",
-    gap: 25,
-    paddingHorizontal: 16,
-    paddingTop: 5 + (StatusBar.currentHeight || 0),
-    backgroundColor: Colors.dark.surfaceContainerLow,
-  },
-  headerButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    marginBottom: -20,
-  },
-});
+const getStyles = (theme: Theme) =>
+  StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+      alignItems: "center",
+      gap: 25,
+      paddingHorizontal: 16,
+      paddingTop: 5 + (StatusBar.currentHeight || 0),
+      backgroundColor: theme.surfaceContainerLow,
+    },
+    headerButtonsContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "100%",
+      marginBottom: -20,
+    },
+  });

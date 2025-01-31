@@ -1,4 +1,5 @@
-import { Colors } from "@/constants/Colors";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { useContext } from "react";
 import { type TextProps, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 
@@ -17,7 +18,9 @@ export default function ThemedText({
   type = "default",
   ...rest
 }: ThemedTextProps) {
-  const color = Colors.dark.onSurface;
+  const { theme } = useContext(ThemeContext);
+
+  const color = theme.onSurface;
 
   return (
     <Animated.Text

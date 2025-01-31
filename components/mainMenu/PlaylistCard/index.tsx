@@ -1,5 +1,6 @@
 import ThemedText from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
+import useTheme from "@/hooks/useTheme";
+import { Theme } from "@/theme/types";
 import { StyleSheet, View } from "react-native";
 
 type PlaylistCardProps = {
@@ -7,6 +8,8 @@ type PlaylistCardProps = {
 };
 
 export default function PlaylistCard({ name }: PlaylistCardProps) {
+  const styles = useTheme(getStyle);
+
   return (
     <View style={styles.container}>
       <ThemedText style={styles.text}>{name}</ThemedText>
@@ -14,15 +17,16 @@ export default function PlaylistCard({ name }: PlaylistCardProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.dark.surface,
-    borderRadius: 12,
-    borderColor: Colors.dark.outlineVariant,
-    borderWidth: 1,
-    padding: 16,
-  },
-  text: {
-    color: Colors.dark.onSurface,
-  },
-});
+const getStyle = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme.surface,
+      borderRadius: 12,
+      borderColor: theme.outlineVariant,
+      borderWidth: 1,
+      padding: 16,
+    },
+    text: {
+      color: theme.onSurface,
+    },
+  });

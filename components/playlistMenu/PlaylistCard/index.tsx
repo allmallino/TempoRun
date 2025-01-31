@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
@@ -8,6 +7,10 @@ import { toggleActive, toggleImported } from "@/state/playlists/playlistSlice";
 import IconButton from "@/components/ui/IconButton";
 import { getPlatformIcon } from "@/helpers";
 import CardInfo from "../CardInfo";
+import { useContext } from "react";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { Theme } from "@/theme/types";
+import useTheme from "@/hooks/useTheme";
 
 type PlaylistCardProps = {
   id: number;
@@ -22,8 +25,11 @@ export default function PlaylistCard({
   activated,
   isImported,
 }: PlaylistCardProps) {
-  const color = Colors.dark.onSurface;
+  const { theme } = useContext(ThemeContext);
+  const styles = useTheme(getStyle);
   const dispatch = useDispatch();
+
+  const color = theme.onSurface;
 
   const toggleActivation = () => {
     dispatch(toggleActive(id));
@@ -40,8 +46,8 @@ export default function PlaylistCard({
           styles.container,
           {
             backgroundColor: activated
-              ? Colors.dark.surfaceContainerHighest
-              : Colors.dark.surface,
+              ? theme.surfaceContainerHighest
+              : theme.surface,
           },
         ]}
       >
@@ -74,25 +80,26 @@ export default function PlaylistCard({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    padding: 16,
-    gap: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.dark.outlineVariant,
-    alignItems: "center",
-    width: "100%",
-  },
+const getStyle = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      padding: 16,
+      gap: 16,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: theme.outlineVariant,
+      alignItems: "center",
+      width: "100%",
+    },
 
-  logo: {
-    width: 40,
-    height: 40,
-    padding: 8,
-  },
+    logo: {
+      width: 40,
+      height: 40,
+      padding: 8,
+    },
 
-  settingsButton: {
-    padding: 16,
-  },
-});
+    settingsButton: {
+      padding: 16,
+    },
+  });

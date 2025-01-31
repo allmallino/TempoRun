@@ -1,22 +1,26 @@
 import SplashScreen from "@/components/loginPage/SplashScreen";
+import { getTheme } from "@/helpers";
 import { store } from "@/state/store";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { dark, light } from "@/theme";
+import { ThemeContext } from "@/theme/ThemeContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-// import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useColorScheme } from "react-native";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-// SplashScreen.preventAutoHideAsync();
-
 export default function AuthLayout() {
-  const colorScheme = useColorScheme();
+  const [theme, setTheme] = useState(dark);
+
+  const changeTheme = () => {
+    setTheme(theme === dark ? light : dark);
+    AsyncStorage.setItem("theme", theme === dark ? "light" : "dark");
+  };
+
+  useEffect(() => {
+    getTheme(setTheme);
+  }, []);
 
   const [loaded] = useFonts({
     Roboto: require("../assets/fonts/Roboto-Regular.ttf"),
@@ -28,14 +32,14 @@ export default function AuthLayout() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <ThemeContext.Provider value={{ theme, changeTheme }}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(app)" />
           <Stack.Screen name="login" />
           <Stack.Screen name="registration" />
         </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+        <StatusBar style={theme.dark ? "light" : "dark"} />
+      </ThemeContext.Provider>
     </Provider>
   );
 }

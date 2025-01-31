@@ -20,9 +20,10 @@ export default function IconButton({
   color,
   style,
   size,
+  ...rest
 }: IconButtonProps) {
   return (
-    <Pressable onPress={onPress} style={[styles.container, style]}>
+    <Pressable onPress={onPress} style={[styles.container, style]} {...rest}>
       <IconSymbol name={icon} color={color} size={size} />
     </Pressable>
   );

@@ -1,4 +1,7 @@
 import { Colors } from "@/constants/Colors";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { Theme } from "@/theme/types";
+import { useContext } from "react";
 import { StyleSheet, View, ViewProps } from "react-native";
 
 type ElevationType = 1 | 2 | 3 | 4 | 5;
@@ -12,13 +15,15 @@ export default function ElevatedContainer({
   children,
   elevation,
 }: ElevatedContainerPropsType) {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <View style={[styles.outerShadow, getOuterShadowStyle(elevation)]}>
       <View style={[styles.innerShadow, getInnerShadowStyle(elevation)]}>
         <View
           style={[
             styles.container,
-            { backgroundColor: getContentBackgroundColor(elevation) },
+            { backgroundColor: getContentBackgroundColor(theme, elevation) },
             style,
           ]}
         >
@@ -29,18 +34,18 @@ export default function ElevatedContainer({
   );
 }
 
-const getContentBackgroundColor = (elevation: ElevationType) => {
+const getContentBackgroundColor = (theme: Theme, elevation: ElevationType) => {
   switch (elevation) {
     case 1:
-      return Colors.dark.surfaceContainerLow;
+      return theme.surfaceContainerLow;
     case 2:
-      return Colors.dark.surfaceContainer;
+      return theme.surfaceContainer;
     case 3:
-      return Colors.dark.surfaceContainerHigh;
+      return theme.surfaceContainerHigh;
     case 4:
-      return Colors.dark.surfaceContainerHigh;
+      return theme.surfaceContainerHigh;
     case 5:
-      return Colors.dark.surfaceContainerHighest;
+      return theme.surfaceContainerHighest;
   }
 };
 

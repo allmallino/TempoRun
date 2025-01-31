@@ -1,6 +1,7 @@
 export const Images = {
   tempoRun: {
     logo: require("@/assets/images/temporun-logo.png"),
+    logoBlack: require("@/assets/images/temporun-logo-black.png"),
   },
 
   streamingServices: {
