@@ -70,7 +70,11 @@ export default function ThemedButton({
         android_ripple={{
           color: disabled ? null : theme.primaryOpacity[12],
         }}
-        style={[styles.button, hasFixedDimensions && { flex: 1 }]}
+        style={[
+          styles.button,
+          type === "text" && { paddingHorizontal: 12 },
+          hasFixedDimensions && { flex: 1 },
+        ]}
         {...rest}
       >
         {icon && icon({ color: theme.primary, size: 24 })}
