@@ -9,7 +9,7 @@ import { ThemeContext } from "@/theme/ThemeContext";
 export default function ActiveModeCard() {
   const { theme } = useContext(ThemeContext);
   const color = theme.onSurface;
-  const mode = "Timer";
+  const mode = "timer";
 
   return (
     <Link href="/mode">

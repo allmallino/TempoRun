@@ -1,20 +1,27 @@
 import ThemedButton from "@/components/ThemedButton";
 import ThemedInput from "@/components/ThemedInput";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 export default function RegistrationInputs() {
   const [name, setName] = useState("");
+  const { t } = useTranslation();
+  const i18nRoot = "auth:register";
 
   const handleClick = () => {};
 
   return (
     <View style={styles.container}>
-      <ThemedInput value={name} onChangeText={setName} label="Your name" />
+      <ThemedInput
+        value={name}
+        onChangeText={setName}
+        label={t(`${i18nRoot}.name`)}
+      />
 
       <View style={styles.buttonContainer}>
         <ThemedButton
-          title="Sign In"
+          title={t(`${i18nRoot}.signUp`)}
           type="filled"
           disabled={name.length === 0}
           onPress={handleClick}

@@ -11,6 +11,7 @@ import useTheme from "@/hooks/useTheme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { Theme } from "@/theme/types";
+import { useTranslation } from "react-i18next";
 
 export default function PlaylistSettingsScreen() {
   const { theme } = useContext(ThemeContext);
@@ -25,19 +26,26 @@ export default function PlaylistSettingsScreen() {
     dispatch(toggleImported(Number(id)));
     router.back();
   };
+  const { t } = useTranslation();
+  const i18nRoot = "app:playlists";
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerButtonsContainer}>
         <IconButton icon="arrow.left" color={color} onPress={router.back} />
-        <ThemedButton type="text" title="Delete" onPress={toggleImport} />
+        <ThemedButton
+          type="text"
+          title={t(`${i18nRoot}.delete`)}
+          onPress={toggleImport}
+        />
       </View>
       <ThemedText type="title">{playlist?.info.name}</ThemedText>
+
       {playlist ? (
         <TracksLists data={playlist.tracks} />
       ) : (
         <ThemedText type="defaultSemiBold">
-          No music tracks to manage
+          {t(`${i18nRoot}.noTracks`)}
         </ThemedText>
       )}
     </View>

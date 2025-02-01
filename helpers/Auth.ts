@@ -9,11 +9,12 @@ function validatePassword(password: string) {
 
 export function validateAuthForm(values: { email: string; password: string }) {
   const errors: { [key: string]: string } = {};
+  const i18nRoot = "auth:error";
   if (!validateEmail(values.email)) {
-    errors.email = "Invalid email address";
+    errors.email = `${i18nRoot}.invalidEmail`;
   }
   if (!validatePassword(values.password)) {
-    errors.password = "Password must be at least 6 characters long";
+    errors.password = `${i18nRoot}.smallPassword`;
   }
   return errors;
 }
@@ -22,27 +23,27 @@ export function getFirebaseErrorMessage(error: string): {
   field: "email" | "password" | "all";
   message: string;
 } {
-  console.log({ error });
+  const i18nRoot = "auth:error";
   switch (error) {
     case "auth/invalid-credential":
-      return { field: "all", message: "Invalid email or password" };
+      return { field: "all", message: `${i18nRoot}.invalidCredential` };
 
     case "auth/invalid-email":
-      return { field: "email", message: "Invalid email address" };
+      return { field: "email", message: `${i18nRoot}.invalidEmail` };
 
     case "auth/invalid-password":
-      return { field: "password", message: "Invalid password" };
+      return { field: "password", message: `${i18nRoot}.invalidPassword` };
 
     case "auth/user-not-found":
-      return { field: "all", message: "User not found" };
+      return { field: "all", message: `${i18nRoot}.userNotFound` };
 
     case "auth/wrong-password":
-      return { field: "password", message: "Wrong password" };
+      return { field: "password", message: `${i18nRoot}.wrongPassword` };
 
     case "auth/email-already-in-use":
-      return { field: "email", message: "Email already in use" };
+      return { field: "email", message: `${i18nRoot}.emailAlreadyInUse` };
 
     default:
-      return { field: "all", message: error };
+      return { field: "all", message: `${i18nRoot}.error` };
   }
 }

@@ -7,13 +7,15 @@ import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ImportPlaylistsScreen() {
   const { theme } = useContext(ThemeContext);
   const styles = useTheme(getStyles);
 
   const color = theme.onSurfaceVariant;
-
+  const { t } = useTranslation();
+  const i18nRoot = "app:playlists";
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerButtonsContainer}>
@@ -26,7 +28,7 @@ export default function ImportPlaylistsScreen() {
           }}
         />
       </View>
-      <ThemedText type="title">Import playlists</ThemedText>
+      <ThemedText type="title">{t(`${i18nRoot}.import`)}</ThemedText>
       <PlatformCardList />
     </View>
   );

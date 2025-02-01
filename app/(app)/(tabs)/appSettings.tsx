@@ -3,13 +3,15 @@ import ThemedText from "@/components/ThemedText";
 import { Theme } from "@/theme/types";
 import SettingsContainer from "@/components/settingPage/SettingsContainer";
 import useTheme from "@/hooks/useTheme";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsScreen() {
   const styles = useTheme(getStyle);
-
+  const { t } = useTranslation();
+  const i18nRoot = "app:settings";
   return (
     <View style={styles.mainContainer}>
-      <ThemedText type="title">Settings</ThemedText>
+      <ThemedText type="title">{t(`${i18nRoot}.title`)}</ThemedText>
       <SettingsContainer />
     </View>
   );

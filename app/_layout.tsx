@@ -9,6 +9,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
+import "@/localization/i18n";
 
 export default function AuthLayout() {
   const [theme, setTheme] = useState(dark);

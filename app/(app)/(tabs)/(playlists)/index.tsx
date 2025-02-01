@@ -5,13 +5,15 @@ import FloatingActionButton from "@/components/ui/FloatingActionButton";
 import { router } from "expo-router";
 import useTheme from "@/hooks/useTheme";
 import { Theme } from "@/theme/types";
+import { useTranslation } from "react-i18next";
 
 export default function PlaylistsScreen() {
   const styles = useTheme(getStyles);
-
+  const { t } = useTranslation();
+  const i18nRoot = "app:playlists";
   return (
     <View style={styles.mainContainer}>
-      <ThemedText type="title">Playlists</ThemedText>
+      <ThemedText type="title">{t(`${i18nRoot}.title`)}</ThemedText>
       <PlaylistCardList />
       <FloatingActionButton
         icon={"plus"}

@@ -6,16 +6,21 @@ import useTheme from "@/hooks/useTheme";
 import { Image } from "expo-image";
 import { View, StyleSheet, StatusBar } from "react-native";
 import useLogo from "@/hooks/useLogo";
+import { useTranslation } from "react-i18next";
 
 export default function HomeScreen() {
   const styles = useTheme(getStyle);
   const logo = useLogo();
-
+  const { t } = useTranslation();
+  const i18nRoot = "app:menu";
   return (
     <View style={styles.mainContainer}>
       <Image source={logo} style={styles.logo} />
       <View style={styles.buttonContainer}>
-        <ThemedButton title="Let's run" style={styles.letsRunButton} />
+        <ThemedButton
+          title={t(`${i18nRoot}.run`)}
+          style={styles.letsRunButton}
+        />
       </View>
       <ActiveModeCard />
       <ActivePlaylistCardList />

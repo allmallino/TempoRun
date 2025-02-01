@@ -4,10 +4,12 @@ import { getUnimportedPlaylists } from "@/state/playlists/selectors";
 import PlatformCard from "../PlatformCard";
 import { PlatformType } from "@/state/playlists/types";
 import ThemedText from "@/components/ThemedText";
+import { useTranslation } from "react-i18next";
 
 export default function PlatformCardList() {
+  const { t } = useTranslation();
   const data = useSelector(getUnimportedPlaylists);
-
+  const i18nRoot = "app:playlists";
   return Object.values(data).length ? (
     <FlatList
       data={Object.keys(data).sort() as PlatformType[]}
@@ -19,7 +21,9 @@ export default function PlatformCardList() {
       showsVerticalScrollIndicator={false}
     />
   ) : (
-    <ThemedText type="defaultSemiBold">No playlists to import</ThemedText>
+    <ThemedText type="defaultSemiBold">
+      {t(`${i18nRoot}.noPlaylists`)}
+    </ThemedText>
   );
 }
 

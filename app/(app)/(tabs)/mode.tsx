@@ -2,13 +2,16 @@ import { StatusBar, StyleSheet, View } from "react-native";
 import ThemedText from "@/components/ThemedText";
 import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
+import { useTranslation } from "react-i18next";
 
 export default function ModeScreen() {
   const styles = useTheme(getStyle);
+  const { t } = useTranslation();
+  const i18nRoot = "app:mode";
 
   return (
     <View style={styles.mainContainer}>
-      <ThemedText type="title">Mode</ThemedText>
+      <ThemedText type="title">{t(`${i18nRoot}.title`)}</ThemedText>
     </View>
   );
 }

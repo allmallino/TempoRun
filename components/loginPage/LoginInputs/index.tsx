@@ -14,6 +14,7 @@ import {
 import { router } from "expo-router";
 import useForm from "@/hooks/useForm";
 import { getFirebaseErrorMessage, validateAuthForm } from "@/helpers/Auth";
+import { useTranslation } from "react-i18next";
 
 export default function LoginInputs() {
   const [isBlured, setBlured] = useState(true);
@@ -38,6 +39,8 @@ export default function LoginInputs() {
     ),
     [isBlured]
   );
+  const { t } = useTranslation();
+  const i18nRoot = "auth:login";
 
   const handleLoginClick = async () => {
     setLoading(true);
@@ -73,33 +76,33 @@ export default function LoginInputs() {
         value={values.email}
         onChangeText={handleChange("email")}
         state={errors.email ? "error" : "default"}
-        label="Email"
+        label={t(`${i18nRoot}.email`)}
         textContentType="emailAddress"
         keyboardType="email-address"
-        supportingText={errors.email}
+        supportingText={t(errors.email)}
         autoCapitalize="none"
       />
 
       <ThemedInput
         state={errors.password ? "error" : "default"}
-        label="Password"
+        label={t(`${i18nRoot}.password`)}
         value={values.password}
         onChangeText={handleChange("password")}
         secureTextEntry={isBlured}
         textContentType="password"
         trailingIcon={iconButton}
-        supportingText={errors.password}
+        supportingText={t(errors.password)}
       />
 
       <View style={styles.buttonContainer}>
         <ThemedButton
-          title="Sign In"
+          title={t(`${i18nRoot}.signUp`)}
           onPress={() => handleSubmit(handleRegistrationClick)}
           type="outlined"
           style={styles.button}
         />
         <ThemedButton
-          title="Login"
+          title={t(`${i18nRoot}.logIn`)}
           onPress={() => handleSubmit(handleLoginClick)}
           type="filled"
           style={styles.button}

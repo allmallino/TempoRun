@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import ThemedText from "@/components/ThemedText";
+import { useTranslation } from "react-i18next";
 
 export type SocialLoginButtonProps = PressableProps & {
   type?: "filled" | "outlined" | "text" | "elevated" | "tonal";
@@ -29,6 +30,8 @@ export default function SocialLoginButton({
   style,
   ...rest
 }: SocialLoginButtonProps) {
+  const { t } = useTranslation();
+  const i18nRoot = "auth:login";
   return (
     <View style={[styles.container, { backgroundColor }, style]}>
       <Pressable onPress={onPress} style={styles.button} {...rest}>
@@ -36,7 +39,7 @@ export default function SocialLoginButton({
         <ThemedText
           type="defaultSemiBold"
           style={styles.text}
-          children={`Log in with ${title}`}
+          children={`${t(`${i18nRoot}.logInWith`)} ${title}`}
         />
       </Pressable>
     </View>
