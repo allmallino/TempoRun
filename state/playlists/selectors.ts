@@ -12,7 +12,7 @@ export const getUnimportedPlaylists = createSelector(
   (value) =>
     groupBy(
       value.filter((playlist) => !playlist.imported),
-      (playlist) => playlist.info.platform
+      (playlist) => playlist.streamingServiceId
     )
 );
 

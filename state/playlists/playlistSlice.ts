@@ -10,6 +10,7 @@ const initialState: playlistState = {
     {
       info: { name: "Hip-Hop", platform: "Spotify" },
       id: 1,
+      streamingServiceId: 1,
       active: false,
       imported: true,
       tracks: [
@@ -27,9 +28,9 @@ const initialState: playlistState = {
     {
       info: { name: "Jazz", platform: "Spotify" },
       id: 2,
+      streamingServiceId: 1,
       active: false,
       imported: true,
-
       tracks: [
         { id: 1, active: true },
         { id: 2, active: true },
@@ -45,6 +46,7 @@ const initialState: playlistState = {
     {
       info: { name: "Rock", platform: "YouTube Music" },
       id: 3,
+      streamingServiceId: 3,
       active: false,
       imported: false,
       tracks: [
@@ -62,6 +64,7 @@ const initialState: playlistState = {
     {
       info: { name: "Pop", platform: "Spotify" },
       id: 4,
+      streamingServiceId: 1,
       active: false,
       imported: false,
       tracks: [
@@ -79,6 +82,7 @@ const initialState: playlistState = {
     {
       info: { name: "Hyper Pop", platform: "Spotify" },
       id: 5,
+      streamingServiceId: 1,
       active: false,
       imported: false,
       tracks: [
@@ -96,6 +100,7 @@ const initialState: playlistState = {
     {
       info: { name: "Death Grips collection", platform: "Apple Music" },
       id: 6,
+      streamingServiceId: 2,
       active: false,
       imported: false,
       tracks: [
@@ -113,6 +118,7 @@ const initialState: playlistState = {
     {
       info: { name: "This is Eminem", platform: "Spotify" },
       id: 7,
+      streamingServiceId: 1,
       active: false,
       imported: false,
       tracks: [
@@ -130,6 +136,7 @@ const initialState: playlistState = {
     {
       info: { name: "This is Kanye West", platform: "Spotify" },
       id: 8,
+      streamingServiceId: 1,
       active: false,
       imported: false,
       tracks: [
@@ -147,6 +154,7 @@ const initialState: playlistState = {
     {
       info: { name: "Rap", platform: "Apple Music" },
       id: 9,
+      streamingServiceId: 2,
       active: false,
       imported: false,
       tracks: [

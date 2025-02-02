@@ -6,13 +6,18 @@ import PlatformCardTitle from "../PlatfromCardTitle";
 
 type PlatformCardProps = {
   platform: PlatformType;
+  name: string;
   data: PlaylistType[];
 };
 
-export default function PlatformCard({ platform, data }: PlatformCardProps) {
+export default function PlatformCard({
+  platform,
+  name,
+  data,
+}: PlatformCardProps) {
   return (
     <ElevatedContainer elevation={2} style={styles.container}>
-      <PlatformCardTitle platform={platform} />
+      <PlatformCardTitle platform={platform} name={name} />
       <FlatList
         data={data}
         renderItem={({ item }) => (

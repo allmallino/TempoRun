@@ -2,20 +2,31 @@ import { FlatList, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { getUnimportedPlaylists } from "@/state/playlists/selectors";
 import PlatformCard from "../PlatformCard";
-import { PlatformType } from "@/state/playlists/types";
 import ThemedText from "@/components/ThemedText";
 import { useTranslation } from "react-i18next";
+import { getStreamingServices } from "@/state/streaming/selectors";
 
 export default function PlatformCardList() {
   const { t } = useTranslation();
   const data = useSelector(getUnimportedPlaylists);
+  const streamingServices = useSelector(getStreamingServices);
   const i18nRoot = "app:playlists";
+
   return Object.values(data).length ? (
     <FlatList
-      data={Object.keys(data).sort() as PlatformType[]}
-      renderItem={({ item }: { item: PlatformType }) => (
-        <PlatformCard platform={item} data={data[item]} />
-      )}
+      data={Object.keys(data).sort()}
+      renderItem={({ item }) => {
+        const streamingService = streamingServices.find(
+          (service) => service.id === Number(item)
+        );
+        return streamingService ? (
+          <PlatformCard
+            platform={streamingService.info.platform}
+            name={streamingService.info.name}
+            data={data[Number(item)]}
+          />
+        ) : null;
+      }}
       style={styles.container}
       contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
