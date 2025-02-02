@@ -6,15 +6,17 @@ import { getPlatformIcon } from "@/helpers";
 
 type PlatformCardTitleProps = {
   platform: PlatformType;
+  name: string;
 };
 
 export default function PlatformCardTitle({
   platform,
+  name,
 }: PlatformCardTitleProps) {
   return (
     <View style={styles.container}>
       <Image source={getPlatformIcon(platform)} style={styles.logo} />
-      <ThemedText type="defaultSemiBold">{platform}</ThemedText>
+      <ThemedText type="defaultSemiBold">{name}</ThemedText>
     </View>
   );
 }

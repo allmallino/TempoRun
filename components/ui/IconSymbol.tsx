@@ -22,6 +22,11 @@ const MAPPING = {
   "arrow.left": "arrow-back",
   "eye.fill": "visibility",
   "eye.slash.fill": "visibility-off",
+  globe: "language",
+  moon: "dark-mode",
+  "sun.max": "light-mode",
+  "xmark.circle": "close",
+  "person.crop.circle.fill": "account-circle",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],

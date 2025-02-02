@@ -46,7 +46,7 @@ export default {
     },
 
     settings: {
-      title: "Налаштування",
+      title: "Опції",
       appSettings: {
         title: "Додаток",
         theme: "Тема: ",
@@ -60,6 +60,7 @@ export default {
       accountLinkage: {
         title: "Прив'язані облікові записи",
         link: "Прив'язати: ",
+        noServices: "Немає прив'язаних облікових записів",
       },
       theme: {
         dark: "Темна",
