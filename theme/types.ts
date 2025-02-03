@@ -16,6 +16,8 @@ export type Theme = {
   primary: string;
   onPrimary: string;
 
+  secondaryContainer: string;
+
   primaryOpacity: {
     12: string;
   };

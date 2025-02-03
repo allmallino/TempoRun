@@ -3,6 +3,7 @@ import ThemedText from "@/components/ThemedText";
 import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
 import { useTranslation } from "react-i18next";
+import Table from "@/components/modePage/Table";
 
 export default function ModeScreen() {
   const styles = useTheme(getStyle);
@@ -12,6 +13,7 @@ export default function ModeScreen() {
   return (
     <View style={styles.mainContainer}>
       <ThemedText type="title">{t(`${i18nRoot}.title`)}</ThemedText>
+      <Table />
     </View>
   );
 }

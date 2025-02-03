@@ -17,6 +17,7 @@ export const light: Theme = {
 
   primary: "#246D00",
   onPrimary: "#FFFFFF",
+  secondaryContainer: "#E6E7E1",
 
   primaryOpacity: {
     12: "#2460001F",
@@ -43,6 +44,7 @@ export const dark: Theme = {
 
   primary: "#85DC4B",
   onPrimary: "#163800",
+  secondaryContainer: "#3E4A35",
 
   primaryOpacity: {
     12: "#D0BCFF1F",
