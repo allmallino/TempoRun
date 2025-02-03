@@ -16,9 +16,9 @@ export const getUnimportedPlaylists = createSelector(
     )
 );
 
-export const getActivatedPlaylists = createSelector(
+export const getActivatedPlaylist = createSelector(
   (state: RootState) => state.playlist.value,
-  (value) => value.filter((playlist) => playlist.active)
+  (value) => value.find((playlist) => playlist.active)
 );
 
 export const getPlaylistById = (id: number) =>

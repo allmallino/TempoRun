@@ -34,14 +34,15 @@ export default {
     },
 
     menu: {
-      mode: "Режим: ",
+      mode: "Режим",
       run: "Побігли",
-      activePlaylists: "Активні плейлисти",
+      activePlaylist: "Активний плейлист",
+      noActivePlaylist: "Не обрано",
       mods: {
         timer: "Таймер",
-        geolocation: "Геолокація",
+        map: "Карта",
+        length: "Відстань",
         pace: "Темп",
-        distance: "Відстань",
       },
     },
 
@@ -80,9 +81,9 @@ export default {
       title: "Режим підбору пісень",
       mods: {
         timer: "Таймер",
-        geolocation: "Геолокація",
+        map: "Карта",
+        length: "Відстань",
         pace: "Темп",
-        distance: "Відстань",
       },
     },
 

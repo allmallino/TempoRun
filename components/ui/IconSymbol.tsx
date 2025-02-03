@@ -27,6 +27,9 @@ const MAPPING = {
   "sun.max": "light-mode",
   "xmark.circle": "close",
   "person.crop.circle.fill": "account-circle",
+  "map.fill": "map",
+  speedometer: "speed",
+  "location.north.line.fill": "route",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],

@@ -180,6 +180,8 @@ const playlistSlice = createSlice({
       state.value = state.value.map((playlist) => {
         if (playlist.id === action.payload) {
           return { ...playlist, active: !playlist.active };
+        } else if (playlist.active) {
+          return { ...playlist, active: false };
         }
         return playlist;
       });

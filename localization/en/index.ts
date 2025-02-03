@@ -34,14 +34,15 @@ export default {
     },
 
     menu: {
-      mode: "Mode: ",
+      mode: "Mode",
       run: "Run",
-      activePlaylists: "Active Playlists",
+      activePlaylist: "Active playlist",
+      noActivePlaylist: "Not selected",
       mods: {
         timer: "Timer",
-        geolocation: "Geolocation",
+        map: "Map",
+        length: "Length",
         pace: "Pace",
-        distance: "Distance",
       },
     },
 
@@ -81,9 +82,9 @@ export default {
       title: "Music mode",
       mods: {
         timer: "Timer",
-        geolocation: "Geolocation",
+        map: "Map",
+        length: "Length",
         pace: "Pace",
-        distance: "Distance",
       },
     },
 
