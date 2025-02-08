@@ -3,13 +3,15 @@ import ThemedText from "./ThemedText";
 import { Theme } from "@/theme/types";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
+import { IconSymbol, IconSymbolName } from "./ui/IconSymbol";
 
 export type ButtonType = "filled" | "outlined" | "text";
 
 export type ThemedButtonProps = Omit<PressableProps, "children"> & {
   type?: ButtonType;
-  icon?: (props: { color: string; size: number }) => React.ReactNode;
+  icon?: IconSymbolName;
   title: string;
+  color?: string;
 };
 
 const getButtonStyles = (
@@ -51,6 +53,7 @@ export default function ThemedButton({
   title,
   style,
   disabled = false,
+  color,
   ...rest
 }: ThemedButtonProps) {
   const { theme } = useContext(ThemeContext);
@@ -77,10 +80,15 @@ export default function ThemedButton({
         ]}
         {...rest}
       >
-        {icon && icon({ color: theme.primary, size: 24 })}
+        {icon && (
+          <IconSymbol name={icon} color={color || theme.primary} size={24} />
+        )}
         <ThemedText
           type="defaultSemiBold"
-          style={[styles.text, getTextStyles(styles, type, disabled)]}
+          style={[
+            styles.text,
+            color ? { color } : getTextStyles(styles, type, disabled),
+          ]}
         >
           {title}
         </ThemedText>

@@ -11,9 +11,9 @@ export enum Mode {
 }
 
 export enum MusicTempo {
-  LOW = "Low",
-  MEDIUM = "Medium",
-  HIGH = "High",
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
 }
 
 export type ModInfoType = {
@@ -22,5 +22,5 @@ export type ModInfoType = {
 
 export type ModeOptionType = {
   indicator: string;
-  musicTempo: number;
+  musicTempo: MusicTempo;
 };

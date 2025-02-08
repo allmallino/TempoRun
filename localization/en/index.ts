@@ -86,6 +86,25 @@ export default {
         length: "Length",
         pace: "Pace",
       },
+      addingModal: {
+        selectTime: "Select Time",
+        minutes: "Minutes",
+        seconds: "Seconds",
+        cancel: "Cancel",
+        ok: "OK",
+      },
+      table: {
+        addOption: "Add Option",
+        header: {
+          time: "Time",
+          tempo: "Tempo",
+        },
+        tempo: {
+          low: "Low",
+          medium: "Medium",
+          high: "High",
+        },
+      },
     },
 
     stats: {

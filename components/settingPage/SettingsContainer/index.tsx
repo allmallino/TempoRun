@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import Divider from "../Divider";
+import Divider from "../../ui/Divider";
 import SettingsSection from "../SettingsSection";
 import SettingButton from "../SettingButton";
 import useAuth from "@/hooks/useAuth";

@@ -85,6 +85,25 @@ export default {
         length: "Відстань",
         pace: "Темп",
       },
+      addingModal: {
+        selectTime: "Обрати час",
+        minutes: "Хвилини",
+        seconds: "Секунди",
+        cancel: "Відмінити",
+        ok: "Прийняти",
+      },
+      table: {
+        addOption: "Додати опцію",
+        header: {
+          time: "Час",
+          tempo: "Темп",
+        },
+        tempo: {
+          low: "Малий",
+          medium: "Середній",
+          high: "Великий",
+        },
+      },
     },
 
     stats: {

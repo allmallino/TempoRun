@@ -3,6 +3,8 @@ export const Colors = {
   white: "#FFF",
   clear: "transparent",
 
+  shadowBackdrop: "#00000045",
+
   neutral: {
     35: "#52534E",
   },
