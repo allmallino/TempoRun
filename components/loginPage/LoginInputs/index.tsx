@@ -6,11 +6,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import SocialLoginButton from "../SocialLoginButton";
 import { Images } from "@/constants/Images";
 import { FirebaseError } from "@firebase/app";
-import { auth } from "@/firebase/firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
 import useForm from "@/hooks/useForm";
 import { getFirebaseErrorMessage, validateAuthForm } from "@/helpers/Auth";
@@ -41,11 +37,10 @@ export default function LoginInputs() {
   );
   const { t } = useTranslation();
   const i18nRoot = "auth:login";
-
   const handleLoginClick = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      await auth().signInWithEmailAndPassword(values.email, values.password);
       router.replace("/");
     } catch (err) {
       const error = err as FirebaseError;
@@ -59,7 +54,10 @@ export default function LoginInputs() {
   const handleRegistrationClick = async () => {
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      await auth().createUserWithEmailAndPassword(
+        values.email,
+        values.password
+      );
       router.replace("/");
     } catch (err) {
       const error = err as FirebaseError;

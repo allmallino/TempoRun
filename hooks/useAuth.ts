@@ -1,11 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "@/state/user/selectors";
-
-import { auth } from "@/firebase/firebaseConfig";
-import { signOut } from "firebase/auth";
 import { clearUser } from "@/state/user/userSlice";
 import { UserType } from "@/state/user/types";
 import { setUser } from "@/state/user/userSlice";
+import auth from "@react-native-firebase/auth";
 
 export function useAuth() {
   const user = useSelector(getUser);
@@ -22,7 +20,7 @@ export function useAuth() {
     },
     signOut: () => {
       dispatch(clearUser());
-      signOut(auth);
+      auth().signOut();
     },
   };
 }

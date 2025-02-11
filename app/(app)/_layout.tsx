@@ -2,8 +2,7 @@ import { Redirect, Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import SplashScreen from "@/components/loginPage/SplashScreen";
 import useAuth from "@/hooks/useAuth";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase/firebaseConfig";
+import auth from "@react-native-firebase/auth";
 import { UserType } from "@/state/user/types";
 
 export default function AppLayout() {
@@ -11,7 +10,7 @@ export default function AppLayout() {
   const { login, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const subscriber = onAuthStateChanged(auth, (user) => {
+    const subscriber = auth().onAuthStateChanged((user) => {
       setIsInitialized(false);
       if (user) {
         const userData: UserType = {
