@@ -21,6 +21,11 @@ export default {
       emailAlreadyInUse: "Email already in use",
       smallPassword: "Password must be at least 6 characters long",
       error: "An error occurred",
+      inProgress:
+        "Please wait. The Google authentication is still in progress.",
+      playServicesNotAvailable:
+        "Google authentification is not working. There are no Google Play services available on your system.",
+      signInCancelled: "Google authentification was canceled.",
     },
   },
 

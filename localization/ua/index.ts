@@ -21,6 +21,11 @@ export default {
       emailAlreadyInUse: "Ця електронна пошта вже використовується",
       smallPassword: "Пароль має бути не менше 6 символів",
       error: "Сталася помилка",
+      inProgress:
+        "Будь ласка, зачекайте. Авторизація через Google все ще триває.",
+      playServicesNotAvailable:
+        "Авторизація через Google не працює. На вашій системі відсутні Google Play services.",
+      signInCancelled: "Авторизація через Google була відмінена.",
     },
   },
 

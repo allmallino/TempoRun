@@ -9,8 +9,21 @@ import { FirebaseError } from "@firebase/app";
 import auth from "@react-native-firebase/auth";
 import { router } from "expo-router";
 import useForm from "@/hooks/useForm";
-import { getFirebaseErrorMessage, validateAuthForm } from "@/helpers/Auth";
+import {
+  getFirebaseErrorMessage,
+  getGoogleApiErrorMessage,
+  validateAuthForm,
+} from "@/helpers";
 import { useTranslation } from "react-i18next";
+import {
+  GoogleSignin,
+  isErrorWithCode,
+  isSuccessResponse,
+} from "@react-native-google-signin/google-signin";
+
+GoogleSignin.configure({
+  webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+});
 
 export default function LoginInputs() {
   const [isBlured, setBlured] = useState(true);
@@ -68,6 +81,30 @@ export default function LoginInputs() {
     }
   };
 
+  const onGoogleButtonPress = async () => {
+    setLoading(true);
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      const signInResult = await GoogleSignin.signIn();
+
+      if (isSuccessResponse(signInResult)) {
+        const googleCredential = auth.GoogleAuthProvider.credential(
+          signInResult.data.idToken
+        );
+        await auth().signInWithCredential(googleCredential);
+        router.replace("/");
+      }
+    } catch (err) {
+      if (isErrorWithCode(err)) {
+        alert(getGoogleApiErrorMessage(err.code));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ThemedInput
@@ -111,6 +148,7 @@ export default function LoginInputs() {
           title="Google"
           style={styles.button}
           logo={Images.social.google.icon}
+          onPress={onGoogleButtonPress}
         />
       </View>
     </View>

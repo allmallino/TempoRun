@@ -4,6 +4,7 @@ import { clearUser } from "@/state/user/userSlice";
 import { UserType } from "@/state/user/types";
 import { setUser } from "@/state/user/userSlice";
 import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export function useAuth() {
   const user = useSelector(getUser);
@@ -18,9 +19,13 @@ export function useAuth() {
     login: (user: UserType) => {
       dispatch(setUser(user));
     },
-    signOut: () => {
+    signOut: async () => {
       dispatch(clearUser());
-      auth().signOut();
+      await auth().signOut();
+      if (GoogleSignin.hasPreviousSignIn()) {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
     },
   };
 }

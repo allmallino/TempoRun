@@ -1,3 +1,5 @@
+import { statusCodes } from "@react-native-google-signin/google-signin";
+
 function validateEmail(email: string) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -46,4 +48,14 @@ export function getFirebaseErrorMessage(error: string): {
     default:
       return { field: "all", message: `${i18nRoot}.error` };
   }
+}
+
+export function getGoogleApiErrorMessage(error: string) {
+  const i18nRoot = "auth:error";
+  const errorRecord = {
+    [statusCodes.IN_PROGRESS]: `${i18nRoot}.inProgress`,
+    [statusCodes.PLAY_SERVICES_NOT_AVAILABLE]: `${i18nRoot}.playServicesNotAvailable`,
+    [statusCodes.SIGN_IN_CANCELLED]: `${i18nRoot}.signInCancelled`,
+  };
+  return errorRecord[error];
 }
