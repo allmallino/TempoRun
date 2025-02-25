@@ -7,20 +7,21 @@ export enum Platform {
 }
 
 export type PlaylistType = {
-  id: number;
-  streamingServiceId: number;
+  id: string;
+  streamingServiceId: string;
   info: PlaylistInfoType;
   active: boolean;
   imported: boolean;
-  tracks: TrackType[];
+  tracks?: TrackType[];
 };
 
 export type PlaylistInfoType = {
   name: string;
   platform: PlatformType;
+  imageUrl: string;
 };
 
 export type TrackType = {
-  id: number;
+  id: string;
   active: boolean;
 };

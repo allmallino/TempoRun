@@ -17,13 +17,13 @@ export default function PlatformCardList() {
       data={Object.keys(data).sort()}
       renderItem={({ item }) => {
         const streamingService = streamingServices.find(
-          (service) => service.id === Number(item)
+          (service) => service.id === item
         );
         return streamingService ? (
           <PlatformCard
             platform={streamingService.info.platform}
             name={streamingService.info.name}
-            data={data[Number(item)]}
+            data={data[item]}
           />
         ) : null;
       }}

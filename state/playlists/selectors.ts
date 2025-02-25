@@ -21,7 +21,7 @@ export const getActivatedPlaylist = createSelector(
   (value) => value.find((playlist) => playlist.active)
 );
 
-export const getPlaylistById = (id: number) =>
+export const getPlaylistById = (id: string) =>
   createSelector(
     (state: RootState) => state.playlist.value,
     (value) => value.find((playlist) => playlist.id === id)

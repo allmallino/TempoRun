@@ -7,34 +7,7 @@ interface streamingServicesState {
 }
 
 const initialState: streamingServicesState = {
-  value: [
-    {
-      id: 1,
-      info: {
-        platform: Platform.SPOTIFY,
-        name: "allmall",
-        profileImage: require("@/assets/images/profile-icon.png"),
-      },
-    },
-
-    {
-      id: 2,
-      info: {
-        platform: Platform.APPLE_MUSIC,
-        name: "allmall",
-        profileImage: require("@/assets/images/profile-icon.png"),
-      },
-    },
-
-    {
-      id: 3,
-      info: {
-        platform: Platform.YOUTUBE_MUSIC,
-        name: "allmall",
-        profileImage: require("@/assets/images/profile-icon.png"),
-      },
-    },
-  ],
+  value: [],
 };
 
 const streamingServicesSlice = createSlice({

@@ -20,14 +20,7 @@ export default function PlatformCard({
       <PlatformCardTitle platform={platform} name={name} />
       <FlatList
         data={data}
-        renderItem={({ item }) => (
-          <PlaylistCard
-            info={item.info}
-            key={item.id}
-            id={item.id}
-            isImported={item.imported}
-          />
-        )}
+        renderItem={({ item }) => <PlaylistCard {...item} />}
         style={styles.list}
         scrollEnabled={false}
       />

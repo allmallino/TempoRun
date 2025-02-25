@@ -9,6 +9,7 @@ import { useContext } from "react";
 import useTheme from "@/hooks/useTheme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { Theme } from "@/theme/types";
+import { Image } from "expo-image";
 
 type TrackCardProps = {
   trackId: number;
@@ -26,7 +27,7 @@ export default function TrackCard({ trackId, active }: TrackCardProps) {
   const color = theme.onSurface;
 
   const toggleActivation = () => {
-    dispatch(toggleTrackActive({ playlistId: Number(id), trackId }));
+    dispatch(toggleTrackActive({ playlistId: id, trackId }));
   };
 
   return (
@@ -41,6 +42,7 @@ export default function TrackCard({ trackId, active }: TrackCardProps) {
           },
         ]}
       >
+        <Image source={trackInfo?.imageUrl} style={styles.logo} />
         <CardInfo
           title={trackInfo?.name || "Undefined"}
           text={trackInfo?.artist || "Undefined"}
@@ -77,7 +79,13 @@ const getStyle = (theme: Theme) =>
       alignItems: "center",
       width: "100%",
     },
-
+    logo: {
+      width: 48,
+      height: 48,
+      borderRadius: 2,
+      overflow: "hidden",
+      padding: 8,
+    },
     icon: {
       padding: 16,
     },

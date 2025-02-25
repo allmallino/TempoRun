@@ -1,9 +1,10 @@
 export type TrackType = {
-  id: number;
+  id: string;
   info: TrackInfoType;
 };
 
 export type TrackInfoType = {
   name: string;
   artist: string;
+  imageUrl: string;
 };

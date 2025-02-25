@@ -1,175 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PlaylistType } from "./types";
+import { groupBy } from "@/helpers";
 
 interface playlistState {
   value: PlaylistType[];
 }
 
 const initialState: playlistState = {
-  value: [
-    {
-      info: { name: "Hip-Hop", platform: "Spotify" },
-      id: 1,
-      streamingServiceId: 1,
-      active: false,
-      imported: true,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "Jazz", platform: "Spotify" },
-      id: 2,
-      streamingServiceId: 1,
-      active: false,
-      imported: true,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "Rock", platform: "YouTube Music" },
-      id: 3,
-      streamingServiceId: 3,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "Pop", platform: "Spotify" },
-      id: 4,
-      streamingServiceId: 1,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "Hyper Pop", platform: "Spotify" },
-      id: 5,
-      streamingServiceId: 1,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "Death Grips collection", platform: "Apple Music" },
-      id: 6,
-      streamingServiceId: 2,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "This is Eminem", platform: "Spotify" },
-      id: 7,
-      streamingServiceId: 1,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "This is Kanye West", platform: "Spotify" },
-      id: 8,
-      streamingServiceId: 1,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-    {
-      info: { name: "Rap", platform: "Apple Music" },
-      id: 9,
-      streamingServiceId: 2,
-      active: false,
-      imported: false,
-      tracks: [
-        { id: 1, active: true },
-        { id: 2, active: true },
-        { id: 3, active: true },
-        { id: 4, active: true },
-        { id: 5, active: true },
-        { id: 6, active: true },
-        { id: 7, active: true },
-        { id: 8, active: true },
-        { id: 9, active: true },
-      ],
-    },
-  ],
+  value: [],
 };
 
 const playlistSlice = createSlice({
@@ -189,31 +27,56 @@ const playlistSlice = createSlice({
     toggleImported: (state, action) => {
       state.value = state.value.map((playlist) => {
         if (playlist.id === action.payload) {
-          return { ...playlist, imported: !playlist.imported };
+          return { ...playlist, imported: !playlist.imported, active: false };
         }
         return playlist;
       });
     },
     toggleTrackActive: (state, action) => {
-      state.value = state.value.map((playlist) => {
-        if (playlist.id === action.payload.playlistId) {
-          return {
-            ...playlist,
-            tracks: playlist.tracks?.map((track) => {
-              if (track.id === action.payload.trackId) {
-                return { ...track, active: !track.active };
-              }
-              return track;
-            }),
-          };
+      const index = state.value.findIndex(
+        (playlist) => playlist.id === action.payload.playlistId
+      );
+      if (index >= 0 && state.value[index].tracks) {
+        const trackIndex = state.value[index].tracks.findIndex(
+          (track) => track.id === action.payload.trackId
+        );
+        if (trackIndex >= 0) {
+          const track = state.value[index].tracks[trackIndex];
+          track.active = !track.active;
         }
-        return playlist;
+      }
+    },
+    updatePlaylists: (state, action) => {
+      const incoming = action.payload;
+      incoming.forEach((newPlaylist: PlaylistType) => {
+        const existingIndex = state.value.findIndex(
+          (oldPlaylist) => oldPlaylist.id === newPlaylist.id
+        );
+        if (existingIndex >= 0) {
+          state.value[existingIndex] = newPlaylist;
+        } else {
+          state.value.push(newPlaylist);
+        }
       });
+    },
+    updatePlaylistTracks: (state, action) => {
+      const incoming = action.payload;
+      const index = state.value.findIndex(
+        (playlist) => playlist.id === incoming.id
+      );
+      if (index >= 0) {
+        state.value[index].tracks = incoming.tracks;
+      }
     },
   },
 });
 
-export const { toggleActive, toggleImported, toggleTrackActive } =
-  playlistSlice.actions;
+export const {
+  toggleActive,
+  toggleImported,
+  toggleTrackActive,
+  updatePlaylists,
+  updatePlaylistTracks,
+} = playlistSlice.actions;
 
 export default playlistSlice.reducer;

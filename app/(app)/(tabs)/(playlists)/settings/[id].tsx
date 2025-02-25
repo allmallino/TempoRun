@@ -17,13 +17,13 @@ export default function PlaylistSettingsScreen() {
   const { theme } = useContext(ThemeContext);
   const styles = useTheme(getStyles);
   const { id } = useLocalSearchParams();
-  const playlist = useSelector(getPlaylistById(Number(id)));
+  const playlist = useSelector(getPlaylistById(id.toString()));
   const dispatch = useDispatch();
 
   const color = theme.onSurfaceVariant;
 
   const toggleImport = () => {
-    dispatch(toggleImported(Number(id)));
+    dispatch(toggleImported(id));
     router.back();
   };
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export default function PlaylistSettingsScreen() {
       </View>
       <ThemedText type="title">{playlist?.info.name}</ThemedText>
 
-      {playlist ? (
+      {playlist?.tracks ? (
         <TracksLists data={playlist.tracks} />
       ) : (
         <ThemedText type="defaultSemiBold">
