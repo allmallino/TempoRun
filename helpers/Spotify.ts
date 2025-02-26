@@ -1,6 +1,11 @@
 import { Platform, PlaylistType, TrackType } from "@/state/playlists/types";
-import { playlistInfoType, trackInfoType } from "@/types/spotifyAPI";
+import {
+  playlistInfoType,
+  playlistTrackInfo,
+  trackInfoType,
+} from "@/types/spotifyAPI";
 import { SpotifyAPI_v1 } from "@/constants/API";
+import { Images } from "@/constants/Images";
 
 export async function getSpotifyUserProfile(accessToken: string) {
   try {
@@ -16,7 +21,9 @@ export async function getSpotifyUserProfile(accessToken: string) {
       info: {
         platform: Platform.SPOTIFY,
         name: userInfo.display_name,
-        profileImage: userInfo.images[0].url,
+        profileImage: userInfo.images[0]
+          ? userInfo.images[0].url
+          : Images.notFound.image,
       },
     };
   } catch (error) {
@@ -44,7 +51,9 @@ export async function getSpotifyUserPlaylists(
         info: {
           name: playlistInfo.name,
           platform: Platform.SPOTIFY,
-          imageUrl: playlistInfo.images[0].url,
+          imageUrl: playlistInfo.images[0]
+            ? playlistInfo.images[0].url
+            : Images.notFound.image,
         },
         active: false,
         imported: false,
@@ -62,21 +71,24 @@ export async function getSpotifyPlaylistTracks(
 ): Promise<TrackType[] | null> {
   try {
     const response = await fetch(
-      `${SpotifyAPI_v1}/playlists/${paylistId}/tracks?fields=items%28track%28id%29%29`,
+      `${SpotifyAPI_v1}/playlists/${paylistId}/tracks?fields=items%28track%28id%2Cduration_ms%29%29`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }
     );
-    const playlistsTracks = (await response.json()).items;
+    const playlistsTracks: Array<playlistTrackInfo> = (await response.json())
+      .items;
 
-    return playlistsTracks.map((trackInfo: { track: { id: number } }) => {
-      return {
-        id: trackInfo.track.id,
-        active: true,
-      };
-    });
+    return playlistsTracks
+      .filter(({ track }) => track.duration_ms > 0)
+      .map(({ track }) => {
+        return {
+          id: track.id,
+          active: true,
+        };
+      });
   } catch (error) {
     console.error("Failed to fetch playlist's tracks:", error);
     return null;
@@ -100,7 +112,9 @@ export async function getSpotifyTrackInfo(
       info: {
         name: trackInfo.name,
         artist: trackInfo.artists.map((v) => v.name).join(`, `),
-        imageUrl: trackInfo.album.images[0].url,
+        imageUrl: trackInfo.album.images[0]
+          ? trackInfo.album.images[0].url
+          : Images.notFound.image,
       },
     };
   } catch (error) {
@@ -121,13 +135,14 @@ export async function getSpotifyTracksInfo(
       },
     });
     const tracksInfo: Array<trackInfoType> = (await response.json()).tracks;
-
     return tracksInfo.map((trackInfo) => ({
       id: trackInfo.id,
       info: {
         name: trackInfo.name,
         artist: trackInfo.artists.map((v) => v.name).join(`, `),
-        imageUrl: trackInfo.album.images[0].url,
+        imageUrl: trackInfo.album.images[0]
+          ? trackInfo.album.images[0].url
+          : Images.notFound.image,
       },
     }));
   } catch (error) {

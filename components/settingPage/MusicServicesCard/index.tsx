@@ -1,24 +1,38 @@
 import ThemedText from "@/components/ThemedText";
 import { getPlatformIcon } from "@/helpers";
 import useTheme from "@/hooks/useTheme";
+import { Platform } from "@/state/playlists/types";
 import { StreamingServiceInfoType } from "@/state/streaming/types";
 import { Theme } from "@/theme/types";
 import { Image } from "expo-image";
+import { openBrowserAsync } from "expo-web-browser";
 import { Pressable, StyleSheet, View } from "react-native";
 
 type MusicServicesCardProps = StreamingServiceInfoType & {
-  onPress?: () => void;
+  id: string;
+};
+
+const MusicServicesProfileUrl = {
+  [Platform.SPOTIFY]: "https://open.spotify.com/user/",
+  [Platform.APPLE_MUSIC]: "",
+  [Platform.YOUTUBE_MUSIC]: "",
 };
 
 export default function MusicServicesCard({
   platform,
+  id,
   name,
   profileImage,
-  onPress,
 }: MusicServicesCardProps) {
   const styles = useTheme(getStyles);
+  const url = `${MusicServicesProfileUrl[platform]}/${id}`;
   return (
-    <Pressable style={styles.container} onPress={onPress}>
+    <Pressable
+      style={styles.container}
+      onPress={() => {
+        openBrowserAsync(url);
+      }}
+    >
       <View style={styles.infoContainer}>
         <Image
           style={styles.platformImage}

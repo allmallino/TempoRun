@@ -66,7 +66,6 @@ export default {
       accountLinkage: {
         title: "Прив'язані облікові записи",
         link: "Прив'язати: ",
-        noServices: "Немає прив'язаних облікових записів",
       },
       theme: {
         dark: "Темна",

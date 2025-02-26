@@ -61,6 +61,13 @@ export type playlistInfoType = {
   uri: string;
 };
 
+export type playlistTrackInfo = {
+  track: {
+    id: string;
+    duration_ms: number;
+  };
+};
+
 export type trackInfoType = {
   album: {
     album_type: string;

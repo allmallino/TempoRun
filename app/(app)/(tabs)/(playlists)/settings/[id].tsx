@@ -39,7 +39,9 @@ export default function PlaylistSettingsScreen() {
           onPress={toggleImport}
         />
       </View>
-      <ThemedText type="title">{playlist?.info.name}</ThemedText>
+      <ThemedText type="title" style={styles.titleText}>
+        {playlist?.info.name}
+      </ThemedText>
 
       {playlist?.tracks ? (
         <TracksLists data={playlist.tracks} />
@@ -68,5 +70,8 @@ const getStyles = (theme: Theme) =>
       alignItems: "center",
       width: "100%",
       marginBottom: -20,
+    },
+    titleText: {
+      textAlign: "center",
     },
   });

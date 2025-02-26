@@ -9,8 +9,10 @@ type CardInfoProps = {
 export default function CardInfo({ title, text }: CardInfoProps) {
   return (
     <View style={styles.container}>
-      <ThemedText type="defaultSemiBold">{title}</ThemedText>
-      <ThemedText>{text}</ThemedText>
+      <ThemedText type="defaultSemiBold" numberOfLines={1}>
+        {title}
+      </ThemedText>
+      <ThemedText numberOfLines={1}>{text}</ThemedText>
     </View>
   );
 }

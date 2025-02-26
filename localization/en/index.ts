@@ -66,7 +66,6 @@ export default {
       accountLinkage: {
         title: "Linked accounts",
         link: "Link: ",
-        noServices: "No linked accounts",
       },
 
       theme: {

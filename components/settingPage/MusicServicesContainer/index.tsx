@@ -14,21 +14,22 @@ export default function MusicServicesContainer() {
 
   return (
     <ElevatedContainer elevation={2} style={styles.container}>
-      <ThemedText style={styles.title}>{t(`${i18nRoot}.title`)}</ThemedText>
-      <View style={styles.listContainer}>
-        {data.length ? (
-          data.map(({ info, id }) => (
-            <MusicServicesCard
-              key={id}
-              platform={info.platform}
-              name={info.name}
-              profileImage={info.profileImage}
-            />
-          ))
-        ) : (
-          <ThemedText>{t(`${i18nRoot}.noServices`)}</ThemedText>
-        )}
-      </View>
+      {data.length ? (
+        <>
+          <ThemedText style={styles.title}>{t(`${i18nRoot}.title`)}</ThemedText>
+          <View style={styles.listContainer}>
+            {data.map(({ info, id }) => (
+              <MusicServicesCard
+                key={id}
+                id={id}
+                platform={info.platform}
+                name={info.name}
+                profileImage={info.profileImage}
+              />
+            ))}
+          </View>
+        </>
+      ) : null}
 
       <AddMusicServicesContainer />
     </ElevatedContainer>

@@ -27,4 +27,8 @@ export const Images = {
   splashScreen: {
     loading: require("@/assets/images/loading.gif"),
   },
+
+  notFound: {
+    image: require("@/assets/images/not-found.png"),
+  },
 };
