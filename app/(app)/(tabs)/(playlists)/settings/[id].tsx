@@ -1,4 +1,4 @@
-import { View, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet } from "react-native";
 import ThemedText from "@/components/ThemedText";
 import { router, useLocalSearchParams } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,15 +7,13 @@ import IconButton from "@/components/ui/IconButton";
 import ThemedButton from "@/components/ThemedButton";
 import { toggleImported } from "@/state/playlists/playlistSlice";
 import TracksLists from "@/components/playlistMenu/TracksLists";
-import useTheme from "@/hooks/useTheme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
-import { Theme } from "@/theme/types";
 import { useTranslation } from "react-i18next";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PlaylistSettingsScreen() {
   const { theme } = useContext(ThemeContext);
-  const styles = useTheme(getStyles);
   const { id } = useLocalSearchParams();
   const playlist = useSelector(getPlaylistById(id.toString()));
   const dispatch = useDispatch();
@@ -30,7 +28,7 @@ export default function PlaylistSettingsScreen() {
   const i18nRoot = "app:playlists";
 
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer} edges={["left", "right", "top"]}>
       <View style={styles.headerButtonsContainer}>
         <IconButton icon="arrow.left" color={color} onPress={router.back} />
         <ThemedButton
@@ -50,28 +48,25 @@ export default function PlaylistSettingsScreen() {
           {t(`${i18nRoot}.noTracks`)}
         </ThemedText>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
-const getStyles = (theme: Theme) =>
-  StyleSheet.create({
-    mainContainer: {
-      flex: 1,
-      alignItems: "center",
-      gap: 25,
-      paddingHorizontal: 16,
-      paddingTop: 5 + (StatusBar.currentHeight || 0),
-      backgroundColor: theme.surfaceContainerLow,
-    },
-    headerButtonsContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "100%",
-      marginBottom: -20,
-    },
-    titleText: {
-      textAlign: "center",
-    },
-  });
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    alignItems: "center",
+    gap: 25,
+    marginTop: -45,
+  },
+  headerButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: -20,
+  },
+  titleText: {
+    textAlign: "center",
+  },
+});

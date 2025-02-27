@@ -3,17 +3,21 @@ import useLogo from "@/hooks/useLogo";
 import useTheme from "@/hooks/useTheme";
 import { Theme } from "@/theme/types";
 import { Image } from "expo-image";
-import { View, StyleSheet, StatusBar } from "react-native";
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
   const styles = useTheme(getStyle);
   const logo = useLogo();
 
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView
+      style={styles.mainContainer}
+      edges={["left", "right", "top", "bottom"]}
+    >
       <Image source={logo} style={styles.logo} />
       <LoginInputs />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -24,8 +28,7 @@ const getStyle = (theme: Theme) =>
       alignItems: "center",
       gap: 25,
       paddingHorizontal: 16,
-      paddingTop: 45 + (StatusBar.currentHeight || 0),
-      paddingBottom: 25,
+      paddingTop: 45,
       backgroundColor: theme.surfaceContainerLow,
     },
     buttonContainer: {

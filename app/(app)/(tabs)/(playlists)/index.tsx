@@ -1,18 +1,17 @@
-import { View, StyleSheet, StatusBar } from "react-native";
+import { StyleSheet } from "react-native";
 import ThemedText from "@/components/ThemedText";
 import PlaylistCardList from "@/components/playlistMenu/PlaylistCardList";
 import FloatingActionButton from "@/components/ui/FloatingActionButton";
 import { router } from "expo-router";
-import useTheme from "@/hooks/useTheme";
-import { Theme } from "@/theme/types";
 import { useTranslation } from "react-i18next";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PlaylistsScreen() {
-  const styles = useTheme(getStyles);
   const { t } = useTranslation();
   const i18nRoot = "app:playlists";
+
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer} edges={["left", "right", "top"]}>
       <ThemedText type="title">{t(`${i18nRoot}.title`)}</ThemedText>
       <PlaylistCardList />
       <FloatingActionButton
@@ -21,18 +20,14 @@ export default function PlaylistsScreen() {
           router.navigate("/import");
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
-const getStyles = (theme: Theme) =>
-  StyleSheet.create({
-    mainContainer: {
-      flex: 1,
-      alignItems: "center",
-      gap: 25,
-      paddingHorizontal: 16,
-      paddingTop: 45 + (StatusBar.currentHeight || 0),
-      backgroundColor: theme.surfaceContainerLow,
-    },
-  });
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    alignItems: "center",
+    gap: 25,
+  },
+});
