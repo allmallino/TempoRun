@@ -1,4 +1,5 @@
 import { getSpotifyUserPlaylists, getSpotifyUserProfile } from "@/helpers";
+import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 import { updatePlaylists } from "@/state/playlists/playlistSlice";
 import { addStreamingService } from "@/state/streaming/streamingSlice";
 import {
@@ -49,6 +50,7 @@ export default function useSpotifyAuth() {
       } else if (response.type === "success" && !!request?.codeVerifier) {
         const { code } = response.params;
         try {
+          dispatch(setLoaderVisibility(true));
           const tokenResult = await exchangeCodeAsync(
             {
               code,
@@ -83,6 +85,8 @@ export default function useSpotifyAuth() {
           setIsAuthenticated(true);
         } catch (e) {
           setError(e);
+        } finally {
+          dispatch(setLoaderVisibility(false));
         }
       }
     }

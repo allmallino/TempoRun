@@ -17,6 +17,7 @@ import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
 import { getStreamingServiceTokenById } from "@/state/streaming/selectors";
 import { updateTracks } from "@/state/tracks/trackSlice";
+import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 
 type PlaylistCardProps = {
   id: string;
@@ -46,12 +47,14 @@ export default function PlaylistCard({
 
   const toggleImport = async () => {
     if (!isImported && accessToken) {
+      dispatch(setLoaderVisibility(true));
       const tracks = (await getSpotifyPlaylistTracks(accessToken, id)) ?? [];
       const tracksIDs = tracks.map((v) => v.id);
       const tracksInfo =
         (await getSpotifyTracksInfo(accessToken, tracksIDs)) ?? [];
       dispatch(updateTracks(tracksInfo));
       dispatch(updatePlaylistTracks({ id, tracks }));
+      dispatch(setLoaderVisibility(false));
     }
     dispatch(toggleImported(id));
   };

@@ -7,6 +7,9 @@ import { StyleSheet, View } from "react-native";
 import useTheme from "@/hooks/useTheme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useTranslation } from "react-i18next";
+import LoadingScreen from "@/components/LoadingScreen";
+import { useSelector } from "react-redux";
+import { getLoaderVisibility } from "@/state/loader/selectors";
 
 export default function TabLayout() {
   const page = useSegments().join("/");
@@ -14,6 +17,8 @@ export default function TabLayout() {
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
   const i18nRoot = "app:tabs";
+  const loaderIsVisible = useSelector(getLoaderVisibility);
+
   return (
     <View style={styles.mainContainer}>
       <Tabs
@@ -74,6 +79,7 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
+      {loaderIsVisible && <LoadingScreen />}
     </View>
   );
 }

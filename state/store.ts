@@ -4,6 +4,7 @@ import trackReducer from "./tracks/trackSlice";
 import userReducer from "./user/userSlice";
 import streamingServicesReducer from "./streaming/streamingSlice";
 import modeReducer from "./mode/modeSlice";
+import loaderReducer from "./loader/loaderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     user: userReducer,
     streaming: streamingServicesReducer,
     mode: modeReducer,
+    loader: loaderReducer,
   },
 });
 
