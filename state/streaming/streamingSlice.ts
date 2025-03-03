@@ -22,10 +22,22 @@ const streamingServicesSlice = createSlice({
         (service) => service.id !== action.payload
       );
     },
+    updateStreamingCredentials: (state, action) => {
+      const incoming = action.payload;
+      const index = state.value.findIndex(
+        (service) => service.id === incoming.id
+      );
+      if (index >= 0) {
+        state.value[index].credentials = incoming.credentials;
+      }
+    },
   },
 });
 
-export const { addStreamingService, removeStreamingService } =
-  streamingServicesSlice.actions;
+export const {
+  addStreamingService,
+  removeStreamingService,
+  updateStreamingCredentials,
+} = streamingServicesSlice.actions;
 
 export default streamingServicesSlice.reducer;

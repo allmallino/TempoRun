@@ -3,8 +3,7 @@ import { PlatformType } from "../playlists/types";
 export type StreamingServiceType = {
   id: string;
   info: StreamingServiceInfoType;
-  accessToken: string;
-  systemInfo?: StreamingServiceSystemInfoType;
+  credentials: StreamingServiceCredentialsType;
 };
 
 export type StreamingServiceInfoType = {
@@ -13,7 +12,8 @@ export type StreamingServiceInfoType = {
   profileImage: string;
 };
 
-export type StreamingServiceSystemInfoType = {
+export type StreamingServiceCredentialsType = {
+  accessToken: string;
   expiresIn: number;
   issuedAt: number;
   refreshToken: string;

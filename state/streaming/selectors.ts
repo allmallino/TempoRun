@@ -9,8 +9,8 @@ export const getStreamingServiceInfoById = (id: string) =>
     (value) => value.find((service) => service.id === id)?.info
   );
 
-export const getStreamingServiceTokenById = (id: string) =>
+export const getStreamingServiceCredetialsById = (id: string) =>
   createSelector(
     (state: RootState) => state.streaming.value,
-    (value) => value.find((service) => service.id === id)?.accessToken
+    (value) => value.find((service) => service.id === id)?.credentials
   );

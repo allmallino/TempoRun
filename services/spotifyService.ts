@@ -4,12 +4,14 @@ import {
   playlistTrackInfo,
   trackInfoType,
 } from "@/types/spotifyAPI";
-import { SpotifyAPI_v1 } from "@/constants/API";
+import { Spotify } from "@/constants/API";
 import { Images } from "@/constants/Images";
+import { StreamingServiceCredentialsType } from "@/state/streaming/types";
+import { refreshAsync } from "expo-auth-session";
 
 export async function getSpotifyUserProfile(accessToken: string) {
   try {
-    const response = await fetch(`${SpotifyAPI_v1}/me`, {
+    const response = await fetch(`${Spotify.url.apiV1Endpoint}/me`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -37,7 +39,7 @@ export async function getSpotifyUserPlaylists(
   userId: string
 ): Promise<PlaylistType[] | null> {
   try {
-    const response = await fetch(`${SpotifyAPI_v1}/me/playlists`, {
+    const response = await fetch(`${Spotify.url.apiV1Endpoint}/me/playlists`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -71,7 +73,7 @@ export async function getSpotifyPlaylistTracks(
 ): Promise<TrackType[] | null> {
   try {
     const response = await fetch(
-      `${SpotifyAPI_v1}/playlists/${paylistId}/tracks?fields=items%28track%28id%2Cduration_ms%29%29`,
+      `${Spotify.url.apiV1Endpoint}/playlists/${paylistId}/tracks?fields=items%28track%28id%2Cduration_ms%29%29`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -100,11 +102,14 @@ export async function getSpotifyTrackInfo(
   trackId: string
 ) {
   try {
-    const response = await fetch(`${SpotifyAPI_v1}/tracks/${trackId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await fetch(
+      `${Spotify.url.apiV1Endpoint}/tracks/${trackId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     const trackInfo: trackInfoType = await response.json();
 
     return {
@@ -129,11 +134,14 @@ export async function getSpotifyTracksInfo(
 ) {
   try {
     const ids = trackIds.join(`,`);
-    const response = await fetch(`${SpotifyAPI_v1}/tracks?ids=${ids}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await fetch(
+      `${Spotify.url.apiV1Endpoint}/tracks?ids=${ids}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     const tracksInfo: Array<trackInfoType> = (await response.json()).tracks;
     return tracksInfo.map((trackInfo) => ({
       id: trackInfo.id,
@@ -149,4 +157,45 @@ export async function getSpotifyTracksInfo(
     console.error("Failed to fetch track info:", error);
     return null;
   }
+}
+
+export async function getRefreshedToken(refreshToken: string) {
+  try {
+    const tokenResult = await refreshAsync(
+      {
+        clientId: Spotify.env.clientId,
+        refreshToken: refreshToken,
+      },
+      {
+        tokenEndpoint: Spotify.url.tokenEndpoint,
+      }
+    );
+    return {
+      accessToken: tokenResult.accessToken,
+      expiresIn: tokenResult.expiresIn ?? 3600,
+      issuedAt: tokenResult.issuedAt,
+      refreshToken: tokenResult.refreshToken ?? refreshToken,
+    };
+  } catch (error) {
+    console.error("Failed to refresh user token:", error);
+    throw error;
+  }
+}
+
+export async function getValidSpotifyToken(
+  credentials: StreamingServiceCredentialsType
+): Promise<StreamingServiceCredentialsType> {
+  const { refreshToken, expiresIn, issuedAt } = credentials;
+
+  const lastRefreshedDate = new Date(issuedAt);
+  const now = Date.now();
+  if (now - lastRefreshedDate.getTime() > expiresIn - 600) {
+    const newCreds = await getRefreshedToken(refreshToken);
+    return {
+      ...credentials,
+      ...newCreds,
+    };
+  }
+
+  return credentials;
 }

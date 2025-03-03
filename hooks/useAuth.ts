@@ -5,6 +5,10 @@ import { UserType } from "@/state/user/types";
 import { setUser } from "@/state/user/userSlice";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { clearOptions } from "@/state/mode/modeSlice";
+import { clearPlaylists } from "@/state/playlists/playlistSlice";
+import { clearServices } from "@/state/streaming/streamingSlice";
+import { clearTracks } from "@/state/tracks/trackSlice";
 
 export function useAuth() {
   const user = useSelector(getUser);
@@ -21,6 +25,11 @@ export function useAuth() {
     },
     signOut: async () => {
       dispatch(clearUser());
+      dispatch(clearOptions());
+      dispatch(clearPlaylists());
+      dispatch(clearServices());
+      dispatch(clearTracks());
+
       await auth().signOut();
       if (GoogleSignin.hasPreviousSignIn()) {
         await GoogleSignin.revokeAccess();

@@ -1,25 +1,20 @@
-import { getSpotifyUserPlaylists, getSpotifyUserProfile } from "@/helpers";
+import { Spotify } from "@/constants/API";
+import {
+  getSpotifyUserPlaylists,
+  getSpotifyUserProfile,
+} from "@/services/spotifyService";
 import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 import { updatePlaylists } from "@/state/playlists/playlistSlice";
 import { addStreamingService } from "@/state/streaming/streamingSlice";
-import {
-  exchangeCodeAsync,
-  makeRedirectUri,
-  useAuthRequest,
-} from "expo-auth-session";
+import { exchangeCodeAsync, useAuthRequest } from "expo-auth-session";
 import { maybeCompleteAuthSession } from "expo-web-browser";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const discovery = {
-  authorizationEndpoint: "https://accounts.spotify.com/authorize",
-  tokenEndpoint: "https://accounts.spotify.com/api/token",
+  authorizationEndpoint: Spotify.url.authorizationEndpoint,
+  tokenEndpoint: Spotify.url.tokenEndpoint,
 };
-
-const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? "";
-const redirectUri = makeRedirectUri({
-  path: process.env.EXPO_PUBLIC_SPOTIFY_REDIRECT_URI ?? "",
-});
 
 maybeCompleteAuthSession();
 
@@ -29,10 +24,10 @@ export default function useSpotifyAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId,
+      clientId: Spotify.env.clientId,
       scopes: ["user-read-private", "playlist-read-private"],
       usePKCE: true,
-      redirectUri,
+      redirectUri: Spotify.env.redirectUri,
       extraParams: {
         show_dialog: "true",
       },
@@ -54,8 +49,8 @@ export default function useSpotifyAuth() {
           const tokenResult = await exchangeCodeAsync(
             {
               code,
-              clientId,
-              redirectUri,
+              clientId: Spotify.env.clientId,
+              redirectUri: Spotify.env.redirectUri,
               extraParams: {
                 code_verifier: request.codeVerifier ?? "",
               },
@@ -68,8 +63,8 @@ export default function useSpotifyAuth() {
           dispatch(
             addStreamingService({
               ...userInfo,
-              accessToken: tokenResult.accessToken,
-              systemInfo: {
+              credentials: {
+                accessToken: tokenResult.accessToken,
                 expiresIn: tokenResult.expiresIn ?? 3600,
                 issuedAt: tokenResult.issuedAt,
                 refreshToken: tokenResult.refreshToken ?? "",

@@ -2,22 +2,25 @@ import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
 import { PlaylistInfoType } from "@/state/playlists/types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   toggleActive,
   toggleImported,
   updatePlaylistTracks,
 } from "@/state/playlists/playlistSlice";
 import IconButton from "@/components/ui/IconButton";
-import { getSpotifyPlaylistTracks, getSpotifyTracksInfo } from "@/helpers";
+import {
+  getSpotifyPlaylistTracks,
+  getSpotifyTracksInfo,
+} from "@/services/spotifyService";
 import CardInfo from "../CardInfo";
 import { useContext } from "react";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
-import { getStreamingServiceTokenById } from "@/state/streaming/selectors";
 import { updateTracks } from "@/state/tracks/trackSlice";
 import { setLoaderVisibility } from "@/state/loader/loaderSlice";
+import { useStreamingServiceToken } from "@/hooks/useStreamingServiceToken";
 
 type PlaylistCardProps = {
   id: string;
@@ -37,15 +40,14 @@ export default function PlaylistCard({
   const { theme } = useContext(ThemeContext);
   const styles = useTheme(getStyle);
   const dispatch = useDispatch();
-  const accessToken = useSelector(
-    getStreamingServiceTokenById(streamingServiceId)
-  );
+  const { getToken } = useStreamingServiceToken(streamingServiceId);
   const color = theme.onSurface;
   const toggleActivation = () => {
     dispatch(toggleActive(id));
   };
 
   const toggleImport = async () => {
+    const accessToken = await getToken();
     if (!isImported && accessToken) {
       dispatch(setLoaderVisibility(true));
       const tracks = (await getSpotifyPlaylistTracks(accessToken, id)) ?? [];
