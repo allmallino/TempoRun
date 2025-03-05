@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Mode, ModeOptionType, ModeType, MusicTempo } from "./types";
+import { revertAll } from "../actions";
 
 interface modeState {
   value: ModeType;
@@ -75,6 +76,7 @@ const modeSlice = createSlice({
       ].filter((_, index) => index !== action.payload);
     },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
 export const {

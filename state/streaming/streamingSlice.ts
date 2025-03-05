@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { StreamingServiceType } from "./types";
-import { Platform } from "../playlists/types";
+import { revertAll } from "../actions";
 
 interface streamingServicesState {
   value: StreamingServiceType[];
@@ -32,6 +32,7 @@ const streamingServicesSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
 export const {

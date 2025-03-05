@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TrackType } from "./types";
+import { revertAll } from "../actions";
 
 interface trackState {
   value: TrackType[];
@@ -25,6 +26,7 @@ const tracksSlice = createSlice({
       });
     },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
 export const { updateTracks } = tracksSlice.actions;

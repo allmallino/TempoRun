@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PlaylistType } from "./types";
-import { groupBy } from "@/helpers";
+import { revertAll } from "../actions";
 
 interface playlistState {
   value: PlaylistType[];
@@ -69,6 +69,7 @@ const playlistSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
 export const {

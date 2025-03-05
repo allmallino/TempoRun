@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserType } from "./types";
+import { revertAll } from "../actions";
 
 interface userState {
   user: UserType;
@@ -16,12 +17,10 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    clearUser: (state) => {
-      state.user = null;
-    },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
 export default userSlice.reducer;
