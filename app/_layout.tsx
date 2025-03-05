@@ -1,6 +1,7 @@
 import SplashScreen from "@/components/loginPage/SplashScreen";
 import { getTheme } from "@/helpers";
-import { store } from "@/state/store";
+import { persistor, store } from "@/state/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { dark, light } from "@/theme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,14 +34,16 @@ export default function AuthLayout() {
 
   return (
     <Provider store={store}>
-      <ThemeContext.Provider value={{ theme, changeTheme }}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(app)" />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="registration" />
-        </Stack>
-        <StatusBar style={theme.dark ? "light" : "dark"} />
-      </ThemeContext.Provider>
+      <PersistGate loading={<SplashScreen />} persistor={persistor}>
+        <ThemeContext.Provider value={{ theme, changeTheme }}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(app)" />
+            <Stack.Screen name="login" />
+            <Stack.Screen name="registration" />
+          </Stack>
+          <StatusBar style={theme.dark ? "light" : "dark"} />
+        </ThemeContext.Provider>
+      </PersistGate>
     </Provider>
   );
 }
