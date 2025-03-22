@@ -1,3 +1,5 @@
+globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
+
 import SplashScreen from "@/components/loginPage/SplashScreen";
 import { getTheme } from "@/helpers";
 import { persistor, store } from "@/state/store";
