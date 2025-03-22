@@ -4,37 +4,30 @@ import { getUnimportedPlaylists } from "@/state/playlists/selectors";
 import PlatformCard from "../PlatformCard";
 import ThemedText from "@/components/ThemedText";
 import { useTranslation } from "react-i18next";
-import { getStreamingServices } from "@/state/streaming/selectors";
+import { getStreamingServiceInfo } from "@/state/streaming/selectors";
 
 export default function PlatformCardList() {
   const { t } = useTranslation();
   const data = useSelector(getUnimportedPlaylists);
-  const streamingServices = useSelector(getStreamingServices);
+  const streamingService = useSelector(getStreamingServiceInfo);
   const i18nRoot = "app:playlists";
-
-  return Object.values(data).length ? (
+  return (
     <FlatList
       data={Object.keys(data).sort()}
       renderItem={({ item }) => {
-        const streamingService = streamingServices.find(
-          (service) => service.id === item
-        );
         return streamingService ? (
-          <PlatformCard
-            platform={streamingService.info.platform}
-            name={streamingService.info.name}
-            data={data[item]}
-          />
+          <PlatformCard name={streamingService.name} data={data[item]} />
         ) : null;
       }}
       style={styles.container}
       contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
+      ListEmptyComponent={
+        <ThemedText type="defaultSemiBold">
+          {t(`${i18nRoot}.noPlaylists`)}
+        </ThemedText>
+      }
     />
-  ) : (
-    <ThemedText type="defaultSemiBold">
-      {t(`${i18nRoot}.noPlaylists`)}
-    </ThemedText>
   );
 }
 

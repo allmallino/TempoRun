@@ -3,11 +3,11 @@ import { StreamingServiceType } from "./types";
 import { revertAll } from "../actions";
 
 interface streamingServicesState {
-  value: StreamingServiceType[];
+  value: StreamingServiceType | null;
 }
 
 const initialState: streamingServicesState = {
-  value: [],
+  value: null,
 };
 
 const streamingServicesSlice = createSlice({
@@ -15,21 +15,13 @@ const streamingServicesSlice = createSlice({
   initialState,
   reducers: {
     addStreamingService: (state, action) => {
-      state.value.push(action.payload);
+      state.value = action.payload;
     },
-    removeStreamingService: (state, action) => {
-      state.value = state.value.filter(
-        (service) => service.id !== action.payload
-      );
+    removeStreamingService: (state) => {
+      state.value = null;
     },
     updateStreamingCredentials: (state, action) => {
-      const incoming = action.payload;
-      const index = state.value.findIndex(
-        (service) => service.id === incoming.id
-      );
-      if (index >= 0) {
-        state.value[index].credentials = incoming.credentials;
-      }
+      if (state.value) state.value.credentials = action.payload;
     },
   },
   extraReducers: (builder) => builder.addCase(revertAll, () => initialState),

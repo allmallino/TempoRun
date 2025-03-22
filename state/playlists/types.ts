@@ -17,7 +17,6 @@ export type PlaylistType = {
 
 export type PlaylistInfoType = {
   name: string;
-  platform: PlatformType;
   imageUrl: string;
 };
 

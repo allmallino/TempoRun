@@ -24,23 +24,21 @@ import { useStreamingServiceToken } from "@/hooks/useStreamingServiceToken";
 
 type PlaylistCardProps = {
   id: string;
-  streamingServiceId: string;
   info: PlaylistInfoType;
   activated?: boolean;
   isImported?: boolean;
 };
 
 export default function PlaylistCard({
-  info: { name, platform, imageUrl },
+  info: { name, imageUrl },
   id,
-  streamingServiceId,
   activated,
   isImported,
 }: PlaylistCardProps) {
   const { theme } = useContext(ThemeContext);
   const styles = useTheme(getStyle);
   const dispatch = useDispatch();
-  const { getToken } = useStreamingServiceToken(streamingServiceId);
+  const { getToken } = useStreamingServiceToken();
   const color = theme.onSurface;
   const toggleActivation = () => {
     dispatch(toggleActive(id));
@@ -74,7 +72,7 @@ export default function PlaylistCard({
         ]}
       >
         <Image source={imageUrl} style={styles.logo} />
-        <CardInfo title={name} text={platform} />
+        <CardInfo title={name} text={"Spotify"} />
         {isImported ? (
           <IconButton
             onPress={() => {

@@ -1,43 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
 import { updateStreamingCredentials } from "@/state/streaming/streamingSlice";
 import { getValidSpotifyToken } from "@/services/spotifyService";
-import {
-  getStreamingServiceCredetialsById,
-  getStreamingServiceInfoById,
-} from "@/state/streaming/selectors";
-import { Platform } from "@/state/playlists/types";
-import { StreamingServiceCredentialsType } from "@/state/streaming/types";
+import { getStreamingServiceCredetials } from "@/state/streaming/selectors";
 
-const getValidToken: Record<
-  Platform,
-  (
-    credentials: StreamingServiceCredentialsType
-  ) => Promise<StreamingServiceCredentialsType> | null
-> = {
-  [Platform.SPOTIFY]: getValidSpotifyToken,
-  [Platform.APPLE_MUSIC]: () => null,
-  [Platform.YOUTUBE_MUSIC]: () => null,
-};
-
-export function useStreamingServiceToken(id: string) {
+export function useStreamingServiceToken() {
   const dispatch = useDispatch();
-  const credentials = useSelector(getStreamingServiceCredetialsById(id));
-  const info = useSelector(getStreamingServiceInfoById(id));
+  const credentials = useSelector(getStreamingServiceCredetials);
 
   async function getToken() {
     try {
-      if (credentials && info) {
-        const updatedCredentials = await getValidToken[info.platform](
-          credentials
-        );
+      if (credentials) {
+        const updatedCredentials = await getValidSpotifyToken(credentials);
 
         if (
           updatedCredentials &&
           updatedCredentials.accessToken !== credentials.accessToken
         ) {
-          dispatch(
-            updateStreamingCredentials({ id, credentials: updatedCredentials })
-          );
+          dispatch(updateStreamingCredentials(updatedCredentials));
         }
 
         return updatedCredentials ? updatedCredentials.accessToken : null;

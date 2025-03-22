@@ -1,7 +1,6 @@
 import ThemedText from "@/components/ThemedText";
 import { getPlatformIcon } from "@/helpers";
 import useTheme from "@/hooks/useTheme";
-import { Platform } from "@/state/playlists/types";
 import { StreamingServiceInfoType } from "@/state/streaming/types";
 import { Theme } from "@/theme/types";
 import { Image } from "expo-image";
@@ -12,20 +11,13 @@ type MusicServicesCardProps = StreamingServiceInfoType & {
   id: string;
 };
 
-const MusicServicesProfileUrl = {
-  [Platform.SPOTIFY]: "https://open.spotify.com/user/",
-  [Platform.APPLE_MUSIC]: "",
-  [Platform.YOUTUBE_MUSIC]: "",
-};
-
 export default function MusicServicesCard({
-  platform,
   id,
   name,
   profileImage,
 }: MusicServicesCardProps) {
   const styles = useTheme(getStyles);
-  const url = `${MusicServicesProfileUrl[platform]}/${id}`;
+  const url = `https://open.spotify.com/user/${id}`;
   return (
     <Pressable
       style={styles.container}
@@ -36,7 +28,7 @@ export default function MusicServicesCard({
       <View style={styles.infoContainer}>
         <Image
           style={styles.platformImage}
-          source={getPlatformIcon(platform)}
+          source={getPlatformIcon("Spotify")}
         />
         <ThemedText>{name}</ThemedText>
       </View>

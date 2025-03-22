@@ -1,4 +1,4 @@
-import { Platform, PlaylistType, TrackType } from "@/state/playlists/types";
+import { PlaylistType, TrackType } from "@/state/playlists/types";
 import {
   playlistInfoType,
   playlistTrackInfo,
@@ -19,13 +19,12 @@ export async function getSpotifyUserProfile(accessToken: string) {
     const userInfo = await response.json();
 
     return {
-      id: userInfo.id,
+      id: userInfo.id as string,
       info: {
-        platform: Platform.SPOTIFY,
-        name: userInfo.display_name,
-        profileImage: userInfo.images[0]
+        name: userInfo.display_name as string,
+        profileImage: (userInfo.images[0]
           ? userInfo.images[0].url
-          : Images.notFound.image,
+          : Images.notFound.image) as string,
       },
     };
   } catch (error) {
@@ -52,7 +51,6 @@ export async function getSpotifyUserPlaylists(
         streamingServiceId: userId,
         info: {
           name: playlistInfo.name,
-          platform: Platform.SPOTIFY,
           imageUrl: playlistInfo.images[0]
             ? playlistInfo.images[0].url
             : Images.notFound.image,

@@ -12,7 +12,7 @@ import { Theme } from "@/theme/types";
 import { Image } from "expo-image";
 
 type TrackCardProps = {
-  trackId: number;
+  trackId: string;
   active?: boolean;
 };
 

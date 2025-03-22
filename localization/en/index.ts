@@ -64,7 +64,7 @@ export default {
         logout: "Log out",
       },
       accountLinkage: {
-        title: "Linked accounts",
+        title: "Linked account",
         link: "Link: ",
       },
 

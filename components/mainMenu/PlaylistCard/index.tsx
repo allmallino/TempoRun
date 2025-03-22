@@ -1,18 +1,16 @@
 import ThemedText from "@/components/ThemedText";
-import { PlatformType } from "@/state/playlists/types";
 import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
-import { getPlatformIcon } from "@/helpers";
 
 type PlaylistCardProps = {
   name: string;
-  platform: PlatformType;
+  imageUrl: string;
 };
 
-export default function PlaylistCard({ name, platform }: PlaylistCardProps) {
+export default function PlaylistCard({ name, imageUrl }: PlaylistCardProps) {
   return (
     <View style={styles.container}>
-      <Image source={getPlatformIcon(platform)} style={styles.image} />
+      <Image source={imageUrl} style={styles.image} />
       <ThemedText>{name}</ThemedText>
     </View>
   );

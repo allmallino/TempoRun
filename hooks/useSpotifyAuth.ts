@@ -5,11 +5,12 @@ import {
 } from "@/services/spotifyService";
 import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 import { updatePlaylists } from "@/state/playlists/playlistSlice";
+import { getStreamingServiceStatus } from "@/state/streaming/selectors";
 import { addStreamingService } from "@/state/streaming/streamingSlice";
 import { exchangeCodeAsync, useAuthRequest } from "expo-auth-session";
 import { maybeCompleteAuthSession } from "expo-web-browser";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const discovery = {
   authorizationEndpoint: Spotify.url.authorizationEndpoint,
@@ -21,7 +22,8 @@ maybeCompleteAuthSession();
 export default function useSpotifyAuth() {
   const dispatch = useDispatch();
   const [error, setError] = useState<any | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = useSelector(getStreamingServiceStatus);
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: Spotify.env.clientId,
@@ -74,10 +76,9 @@ export default function useSpotifyAuth() {
 
           const playlists = await getSpotifyUserPlaylists(
             tokenResult.accessToken,
-            userInfo?.id
+            userInfo?.id ?? ""
           );
           dispatch(updatePlaylists(playlists));
-          setIsAuthenticated(true);
         } catch (e) {
           setError(e);
         } finally {

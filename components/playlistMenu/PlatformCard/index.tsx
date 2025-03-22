@@ -1,23 +1,18 @@
 import { FlatList, StyleSheet } from "react-native";
 import PlaylistCard from "../PlaylistCard";
-import { PlatformType, PlaylistType } from "@/state/playlists/types";
+import { PlaylistType } from "@/state/playlists/types";
 import ElevatedContainer from "@/components/ui/ElevatedContainer";
 import PlatformCardTitle from "../PlatfromCardTitle";
 
 type PlatformCardProps = {
-  platform: PlatformType;
   name: string;
   data: PlaylistType[];
 };
 
-export default function PlatformCard({
-  platform,
-  name,
-  data,
-}: PlatformCardProps) {
+export default function PlatformCard({ name, data }: PlatformCardProps) {
   return (
     <ElevatedContainer elevation={2} style={styles.container}>
-      <PlatformCardTitle platform={platform} name={name} />
+      <PlatformCardTitle platform={"Spotify"} name={name} />
       <FlatList
         data={data}
         renderItem={({ item }) => <PlaylistCard {...item} />}

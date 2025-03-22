@@ -9,27 +9,17 @@ export default function MusicButtonsContainer() {
   const { t } = useTranslation();
   const i18nRoot = "app:settings:accountLinkage";
   const [error, isAuthenticated, authenticateAsync] = useSpotifyAuth();
-  return (
+  return !isAuthenticated ? (
     <View style={styles.container}>
       <ThemedText>{t(`${i18nRoot}.link`)}</ThemedText>
       <ScrollView horizontal contentContainerStyle={styles.buttonContainer}>
-        {!isAuthenticated && (
-          <MusicServiceButton
-            icon={getPlatformIcon("Spotify")}
-            onPress={authenticateAsync}
-          />
-        )}
         <MusicServiceButton
-          icon={getPlatformIcon("Apple Music")}
-          onPress={() => {}}
-        />
-        <MusicServiceButton
-          icon={getPlatformIcon("YouTube Music")}
-          onPress={() => {}}
+          icon={getPlatformIcon("Spotify")}
+          onPress={authenticateAsync}
         />
       </ScrollView>
     </View>
-  );
+  ) : null;
 }
 
 const styles = StyleSheet.create({

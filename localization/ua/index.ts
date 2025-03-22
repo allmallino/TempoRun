@@ -64,7 +64,7 @@ export default {
         logout: "Вийти",
       },
       accountLinkage: {
-        title: "Прив'язані облікові записи",
+        title: "Прив'язаний обліковий запис",
         link: "Прив'язати: ",
       },
       theme: {
