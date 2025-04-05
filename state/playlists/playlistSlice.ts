@@ -1,6 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaylistType } from "./types";
 import { revertAll } from "../actions";
+import {
+  getUserPlaylistInfo,
+  initUserPlaylistInfo,
+} from "@/services/firestoreService";
+import { getSpotifyUserPlaylists } from "@/services/spotifyService";
+import { getStreamingServiceCredetials } from "../streaming/selectors";
+import { RootState } from "../store";
 
 interface playlistState {
   value: PlaylistType[];
@@ -69,7 +76,14 @@ const playlistSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
+  extraReducers: (builder) =>
+    builder
+      .addCase(revertAll, () => initialState)
+      .addCase(initPlaylistsStateAsync.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.value = action.payload;
+        }
+      }),
 });
 
 export const {
@@ -79,5 +93,24 @@ export const {
   updatePlaylists,
   updatePlaylistTracks,
 } = playlistSlice.actions;
+
+export const initPlaylistsStateAsync = createAsyncThunk(
+  "playlists/initPlaylistsStateAsync",
+  async (userId: string, { getState }) => {
+    const state = getState() as RootState;
+    const playlistInfo = await getUserPlaylistInfo(userId);
+    const serviceCredentials = getStreamingServiceCredetials(state);
+    if (!playlistInfo) {
+      await initUserPlaylistInfo(userId);
+    }
+    if (serviceCredentials) {
+      const servicePlaylists = await getSpotifyUserPlaylists(
+        serviceCredentials.accessToken,
+        userId
+      );
+      return servicePlaylists;
+    }
+  }
+);
 
 export default playlistSlice.reducer;

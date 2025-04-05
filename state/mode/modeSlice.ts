@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Mode, ModeOptionType, ModeType, MusicTempo } from "./types";
 import { revertAll } from "../actions";
+import { getUserModeInfo, initUserModeInfo } from "@/services/firestoreService";
 
 interface modeState {
   value: ModeType;
@@ -76,7 +77,14 @@ const modeSlice = createSlice({
       ].filter((_, index) => index !== action.payload);
     },
   },
-  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
+  extraReducers: (builder) =>
+    builder
+      .addCase(revertAll, () => initialState)
+      .addCase(initModeStateAsync.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.value = action.payload;
+        }
+      }),
 });
 
 export const {
@@ -87,5 +95,16 @@ export const {
   changeTempo,
   changeIndicator,
 } = modeSlice.actions;
+
+export const initModeStateAsync = createAsyncThunk(
+  "mode/initModeStateAsync",
+  async (userId: string) => {
+    const modeInfo = await getUserModeInfo(userId);
+    if (!modeInfo) {
+      await initUserModeInfo(userId);
+    }
+    return modeInfo;
+  }
+);
 
 export default modeSlice.reducer;

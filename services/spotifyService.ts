@@ -186,7 +186,7 @@ export async function getValidSpotifyToken(
   const { refreshToken, expiresIn, issuedAt } = credentials;
 
   const lastRefreshedDate = new Date(issuedAt);
-  const now = Date.now();
+  const now = Date.now() / 1000;
   if (now - lastRefreshedDate.getTime() > expiresIn - 600) {
     const newCreds = await getRefreshedToken(refreshToken);
     return {

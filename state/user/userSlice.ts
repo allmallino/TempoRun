@@ -3,11 +3,11 @@ import { UserType } from "./types";
 import { revertAll } from "../actions";
 
 interface userState {
-  user: UserType;
+  value: UserType;
 }
 
 const initialState: userState = {
-  user: null,
+  value: null,
 };
 
 const userSlice = createSlice({
@@ -15,7 +15,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.value = action.payload;
     },
   },
   extraReducers: (builder) => builder.addCase(revertAll, () => initialState),

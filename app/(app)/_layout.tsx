@@ -10,20 +10,31 @@ export default function AppLayout() {
   const { login, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) => {
-      setIsInitialized(false);
-      if (user) {
-        const userData: UserType = {
-          uid: user.uid,
-          email: user.email ?? "",
-          displayName: user.displayName ?? "",
-          photoURL: user.photoURL ?? "",
-        };
-        login(userData);
+    let processedUid: string | null = null;
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      if (!user) {
+        setIsInitialized(true);
+        return;
       }
+
+      if (processedUid === user.uid) {
+        setIsInitialized(true);
+        return;
+      }
+
+      processedUid = user.uid;
+      setIsInitialized(false);
+      const userData: UserType = {
+        uid: user.uid,
+        email: user.email ?? "",
+        displayName: user.displayName ?? "",
+        photoURL: user.photoURL ?? "",
+      };
+      login(userData);
       setIsInitialized(true);
     });
-    return subscriber;
+
+    return unsubscribe;
   }, []);
 
   if (!isInitialized) {
