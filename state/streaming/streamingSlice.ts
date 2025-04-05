@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { StreamingServiceType } from "./types";
+import { StreamingServiceCredentialsType, StreamingServiceType } from "./types";
 import { revertAll } from "../actions";
 import {
   getUserStreamingInfo,
@@ -24,14 +24,8 @@ const streamingServicesSlice = createSlice({
   name: "streamingServices",
   initialState,
   reducers: {
-    addStreamingService: (state, action) => {
-      state.value = action.payload;
-    },
     removeStreamingService: (state) => {
       state.value = null;
-    },
-    updateStreamingCredentials: (state, action) => {
-      if (state.value) state.value.credentials = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -41,14 +35,19 @@ const streamingServicesSlice = createSlice({
         if (action.payload) {
           state.value = action.payload;
         }
+      })
+      .addCase(setStreamingServiceAsync.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.value = action.payload;
+        }
+      })
+      .addCase(updateStreamingCredentialsAsync.fulfilled, (state, action) => {
+        if (state.value && action.payload)
+          state.value.credentials = action.payload;
       }),
 });
 
-export const {
-  addStreamingService,
-  removeStreamingService,
-  updateStreamingCredentials,
-} = streamingServicesSlice.actions;
+export const { removeStreamingService } = streamingServicesSlice.actions;
 
 export const initStreamingStateAsync = createAsyncThunk(
   "streamingServices/initStreamingStateAsync",
@@ -79,4 +78,35 @@ export const initStreamingStateAsync = createAsyncThunk(
   }
 );
 
+export const setStreamingServiceAsync = createAsyncThunk(
+  "streamingServices/setStreamingServiceAsync",
+  async ({
+    userId,
+    service,
+  }: {
+    userId: string;
+    service: StreamingServiceType;
+  }) => {
+    if (userId) {
+      await setUserStreamingInfo(userId, service.credentials);
+    }
+    return service;
+  }
+);
+
+export const updateStreamingCredentialsAsync = createAsyncThunk(
+  "streamingServices/updateStreamingCredentialsAsync",
+  async ({
+    userId,
+    credentials,
+  }: {
+    userId: string;
+    credentials: StreamingServiceCredentialsType;
+  }) => {
+    if (userId) {
+      await setUserStreamingInfo(userId, credentials);
+    }
+    return credentials;
+  }
+);
 export default streamingServicesSlice.reducer;

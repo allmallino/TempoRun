@@ -5,8 +5,10 @@ import {
 } from "@/services/spotifyService";
 import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 import { updatePlaylists } from "@/state/playlists/playlistSlice";
+import { AppDispatch } from "@/state/store";
 import { getStreamingServiceStatus } from "@/state/streaming/selectors";
-import { addStreamingService } from "@/state/streaming/streamingSlice";
+import { setStreamingServiceAsync } from "@/state/streaming/streamingSlice";
+import { getUserUId } from "@/state/user/selectors";
 import { exchangeCodeAsync, useAuthRequest } from "expo-auth-session";
 import { maybeCompleteAuthSession } from "expo-web-browser";
 import { useEffect, useState } from "react";
@@ -20,9 +22,10 @@ const discovery = {
 maybeCompleteAuthSession();
 
 export default function useSpotifyAuth() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<any | null>(null);
   const isAuthenticated = useSelector(getStreamingServiceStatus);
+  const userId = useSelector(getUserUId);
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -61,9 +64,8 @@ export default function useSpotifyAuth() {
           );
 
           const userInfo = await getSpotifyUserProfile(tokenResult.accessToken);
-
-          dispatch(
-            addStreamingService({
+          if (userInfo && userId) {
+            const service = {
               ...userInfo,
               credentials: {
                 accessToken: tokenResult.accessToken,
@@ -71,14 +73,21 @@ export default function useSpotifyAuth() {
                 issuedAt: tokenResult.issuedAt,
                 refreshToken: tokenResult.refreshToken ?? "",
               },
-            })
-          );
-
-          const playlists = await getSpotifyUserPlaylists(
-            tokenResult.accessToken,
-            userInfo?.id ?? ""
-          );
-          dispatch(updatePlaylists(playlists));
+            };
+            dispatch(
+              setStreamingServiceAsync({
+                userId,
+                service,
+              })
+            );
+            const playlists = await getSpotifyUserPlaylists(
+              tokenResult.accessToken,
+              userInfo?.id ?? ""
+            );
+            dispatch(updatePlaylists(playlists));
+          } else {
+            throw Error("Failed to get user profile info.");
+          }
         } catch (e) {
           setError(e);
         } finally {
