@@ -7,7 +7,8 @@ import Divider from "@/components/ui/Divider";
 import React from "react";
 import AddOptionButton from "../AddOptionButton";
 import { useDispatch } from "react-redux";
-import { changeTempo, removeOption } from "@/state/mode/modeSlice";
+import { changeTempoAsync, removeOptionAsync } from "@/state/mode/modeSlice";
+import { AppDispatch } from "@/state/store";
 type TableContainerProps = {
   values: ModeOptionType[];
   onClickFactory: (index: number) => (() => void) | null;
@@ -18,7 +19,7 @@ export default function TableContainer({
   onClickFactory,
 }: TableContainerProps) {
   const { theme } = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <ScrollView style={styles.container}>
@@ -26,7 +27,7 @@ export default function TableContainer({
         <View key={"row-" + index}>
           <TableRow
             onTempoChange={(tempo: MusicTempo) => {
-              dispatch(changeTempo({ index, tempo }));
+              dispatch(changeTempoAsync({ index, musicTempo: tempo }));
             }}
             value={value.indicator}
             tempo={value.musicTempo}
@@ -34,7 +35,7 @@ export default function TableContainer({
             onRemoveClick={
               index !== 0
                 ? () => {
-                    dispatch(removeOption(index));
+                    dispatch(removeOptionAsync(index));
                   }
                 : null
             }

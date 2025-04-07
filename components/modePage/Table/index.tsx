@@ -2,8 +2,8 @@ import { View, StyleSheet } from "react-native";
 import SegmentedButtonsContainer from "../SegmentedButtonsContainer";
 import { Mode } from "@/state/mode/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getOptionByModeName, getSelectedMode } from "@/state/mode/selectors";
-import { setSelectedMode } from "@/state/mode/modeSlice";
+import { getSelectedOption, getSelectedMode } from "@/state/mode/selectors";
+import { setSelectedModeAsync } from "@/state/mode/modeSlice";
 import TableHeader from "../TableHeader";
 import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
@@ -12,9 +12,10 @@ import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext, useState } from "react";
 import TableContainer from "../TableContainer";
 import AddingModal from "../AddingModal";
+import { AppDispatch } from "@/state/store";
 
 export default function Table() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const styles = useTheme(getStyle);
   const { theme } = useContext(ThemeContext);
 
@@ -22,7 +23,7 @@ export default function Table() {
   const titles = ["time", "tempo"];
 
   const selectedMode = useSelector(getSelectedMode);
-  const options = useSelector(getOptionByModeName(selectedMode));
+  const options = useSelector(getSelectedOption);
   const mods = Object.values(Mode);
 
   const [selectedItem, selectItem] = useState("");
@@ -53,7 +54,7 @@ export default function Table() {
         selectedValue={selectedMode}
         i18nRoot={i18nRoot}
         onPressFactory={(v) => () => {
-          dispatch(setSelectedMode(v));
+          dispatch(setSelectedModeAsync(v));
         }}
       />
       <View style={styles.table}>

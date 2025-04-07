@@ -57,7 +57,6 @@ export const initStreamingStateAsync = createAsyncThunk(
       await initUserStreamingInfo(userId);
     } else if (streamingInfo?.accessToken) {
       const credentials = await getValidSpotifyToken(streamingInfo);
-      console.log(credentials);
       if (credentials) {
         if (credentials.accessToken !== streamingInfo.accessToken) {
           await setUserStreamingInfo(userId, credentials);

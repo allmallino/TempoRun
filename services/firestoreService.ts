@@ -1,4 +1,4 @@
-import { Mode, ModeType, MusicTempo } from "@/state/mode/types";
+import { Mode, ModeOptionType, ModeType, MusicTempo } from "@/state/mode/types";
 import { PlaylistType } from "@/state/playlists/types";
 import { StreamingServiceCredentialsType } from "@/state/streaming/types";
 import {
@@ -52,6 +52,26 @@ export async function initUserModeInfo(userId: string) {
 export async function setUserModeInfo(userId: string, mode: ModeType) {
   await firestore().collection("user_mode").doc(userId).set(mode);
 }
+
+export async function updateSelectedUserModeInfo(userId: string, mode: Mode) {
+  await firestore()
+    .collection("user_mode")
+    .doc(userId)
+    .update({ selectedMode: mode });
+}
+
+export async function updateUserModeInfo(
+  userId: string,
+  mode: Mode,
+  modeOption: ModeOptionType[]
+) {
+  const key = "modsInfo." + mode;
+  await firestore()
+    .collection("user_mode")
+    .doc(userId)
+    .update({ [key]: modeOption });
+}
+
 // User Streaming info
 export async function getUserStreamingInfo(userId: string) {
   const streamingServices = await firestore()
@@ -71,6 +91,7 @@ export async function setUserStreamingInfo(
 ) {
   await firestore().collection("user_streaming").doc(userId).set(service);
 }
+
 // Playlists
 export async function getUserPlaylistInfo(userId: string) {
   const playlists = await firestore()

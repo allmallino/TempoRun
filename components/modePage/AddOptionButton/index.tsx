@@ -1,6 +1,7 @@
 import ThemedButton from "@/components/ThemedButton";
-import { addOption } from "@/state/mode/modeSlice";
+import { addOptionAsync } from "@/state/mode/modeSlice";
 import { MusicTempo } from "@/state/mode/types";
+import { AppDispatch } from "@/state/store";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,13 +10,13 @@ import { useDispatch } from "react-redux";
 
 export default function AddOptionButton() {
   const { theme } = useContext(ThemeContext);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const i18nRoot = "app:mode:table";
 
   const handleClick = () => {
     dispatch(
-      addOption({
+      addOptionAsync({
         indicator: "",
         musicTempo: MusicTempo.MEDIUM,
       })

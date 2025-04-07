@@ -3,7 +3,8 @@ import ThemedText from "@/components/ThemedText";
 import ElevatedContainer from "@/components/ui/ElevatedContainer";
 import { Colors } from "@/constants/Colors";
 import useTheme from "@/hooks/useTheme";
-import { changeIndicator } from "@/state/mode/modeSlice";
+import { changeIndicatorAsync } from "@/state/mode/modeSlice";
+import { AppDispatch } from "@/state/store";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { Theme } from "@/theme/types";
 import { useContext, useEffect, useState } from "react";
@@ -26,7 +27,7 @@ export default function AddingModal({
   setVisible,
   index,
 }: AddingModalType) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const styles = useTheme(getStyles);
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
@@ -90,7 +91,7 @@ export default function AddingModal({
                 type="text"
                 onPress={() => {
                   dispatch(
-                    changeIndicator({
+                    changeIndicatorAsync({
                       index,
                       indicator: `${min.padStart(2, "0")}:${sec.padStart(
                         2,
