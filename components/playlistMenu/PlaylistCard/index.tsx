@@ -4,8 +4,8 @@ import { router } from "expo-router";
 import { PlaylistInfoType } from "@/state/playlists/types";
 import { useDispatch } from "react-redux";
 import {
-  toggleActive,
-  toggleImported,
+  toggleActiveAsync,
+  toggleImportedAsync,
   updatePlaylistTracks,
 } from "@/state/playlists/playlistSlice";
 import IconButton from "@/components/ui/IconButton";
@@ -21,6 +21,7 @@ import useTheme from "@/hooks/useTheme";
 import { updateTracks } from "@/state/tracks/trackSlice";
 import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 import { useStreamingServiceToken } from "@/hooks/useStreamingServiceToken";
+import { AppDispatch } from "@/state/store";
 
 type PlaylistCardProps = {
   id: string;
@@ -37,11 +38,11 @@ export default function PlaylistCard({
 }: PlaylistCardProps) {
   const { theme } = useContext(ThemeContext);
   const styles = useTheme(getStyle);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { getToken } = useStreamingServiceToken();
   const color = theme.onSurface;
   const toggleActivation = () => {
-    dispatch(toggleActive(id));
+    dispatch(toggleActiveAsync(id));
   };
 
   const toggleImport = async () => {
@@ -56,7 +57,7 @@ export default function PlaylistCard({
       dispatch(updatePlaylistTracks({ id, tracks }));
       dispatch(setLoaderVisibility(false));
     }
-    dispatch(toggleImported(id));
+    dispatch(toggleImportedAsync(id));
   };
 
   return (

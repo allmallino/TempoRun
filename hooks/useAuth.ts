@@ -9,7 +9,16 @@ import { initStreamingStateAsync } from "@/state/streaming/streamingSlice";
 import { initPlaylistsStateAsync } from "@/state/playlists/playlistSlice";
 import { initModeStateAsync } from "@/state/mode/modeSlice";
 import { AppDispatch } from "@/state/store";
+import { setLoaderVisibility } from "@/state/loader/loaderSlice";
+import { Alert } from "react-native";
 
+const signOut = async () => {
+  await auth().signOut();
+  if (GoogleSignin.hasPreviousSignIn()) {
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+  }
+};
 export function useAuth() {
   const user = useSelector(getUser);
 
@@ -22,19 +31,26 @@ export function useAuth() {
     isAuthenticated: !!user,
     login: async (user: UserType) => {
       if (user) {
-        dispatch(setUser(user));
-        await dispatch(initModeStateAsync(user.uid));
-        await dispatch(initStreamingStateAsync(user.uid));
-        await dispatch(initPlaylistsStateAsync(user.uid));
+        try {
+          dispatch(setLoaderVisibility(true));
+          dispatch(setUser(user));
+          await dispatch(initModeStateAsync(user.uid));
+          await dispatch(initStreamingStateAsync(user.uid));
+          await dispatch(initPlaylistsStateAsync(user.uid));
+        } catch (error) {
+          Alert.alert("Error", "There was an error. Please try login again.");
+          dispatch(revertAll());
+          await signOut();
+        } finally {
+          dispatch(setLoaderVisibility(false));
+        }
       }
     },
     signOut: async () => {
+      dispatch(setLoaderVisibility(true));
       dispatch(revertAll());
-      await auth().signOut();
-      if (GoogleSignin.hasPreviousSignIn()) {
-        await GoogleSignin.revokeAccess();
-        await GoogleSignin.signOut();
-      }
+      await signOut();
+      dispatch(setLoaderVisibility(false));
     },
   };
 }

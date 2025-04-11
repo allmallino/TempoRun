@@ -1,11 +1,7 @@
 import { Mode, ModeOptionType, ModeType, MusicTempo } from "@/state/mode/types";
-import { PlaylistType } from "@/state/playlists/types";
+import { PlaylistType, TrackType } from "@/state/playlists/types";
 import { StreamingServiceCredentialsType } from "@/state/streaming/types";
-import {
-  UserModeType,
-  UserPlaylistsType,
-  UserStreamingType,
-} from "@/types/firebase";
+import { UserModeType, UserStreamingType } from "@/types/firebase";
 import firestore from "@react-native-firebase/firestore";
 
 // User mode settings
@@ -93,32 +89,158 @@ export async function setUserStreamingInfo(
 }
 
 // Playlists
-export async function getUserPlaylistInfo(userId: string) {
+export async function getUserPlaylistInfo(
+  userId: string
+): Promise<PlaylistType[]> {
   const playlists = await firestore()
     .collection("user_playlists")
     .doc(userId)
+    .collection("playlists")
     .get();
-  return playlists.data() as UserPlaylistsType;
+  const res = await Promise.all(
+    playlists.docs.map(async (doc) => {
+      const playlist = doc.data() as PlaylistType;
+      const tracks = await getUserPlaylistTracks(userId, playlist.id);
+      return {
+        ...playlist,
+        tracks,
+      };
+    })
+  );
+  return res;
 }
 
 export async function initUserPlaylistInfo(userId: string) {
-  await firestore().collection("user_playlists").doc(userId).set({
-    playlists: [],
-  });
+  await firestore().collection("user_playlists").doc(userId).set({});
 }
 
-export async function setUserPlaylistInfo(
+export async function addUserPlaylistInfo(
   userId: string,
-  playlists: Array<PlaylistType>
+  playlist: PlaylistType
 ) {
   await firestore()
     .collection("user_playlists")
     .doc(userId)
+    .collection("playlists")
+    .doc(playlist.id)
     .set({
-      playlists: playlists.map((v) => ({
-        id: v.id,
-        active: v.active,
-        streamingServiceId: v.streamingServiceId,
-      })),
+      id: playlist.id,
+      active: false,
+      streamingServiceId: playlist.streamingServiceId,
     });
+  if (playlist.tracks) {
+    setUserPlaylistTracks(userId, playlist.id, playlist.tracks);
+  }
+}
+
+export async function removeUserPlaylistInfo(
+  userId: string,
+  playlist: PlaylistType
+) {
+  await firestore()
+    .collection("user_playlists")
+    .doc(userId)
+    .collection("playlists")
+    .doc(playlist.id)
+    .delete();
+}
+export async function setUserPlaylistActive(
+  userId: string,
+  playlistId: string,
+  active: boolean
+) {
+  await firestore()
+    .collection("user_playlists")
+    .doc(userId)
+    .collection("playlists")
+    .doc(playlistId)
+    .update({ active });
+}
+
+// Playlists Tracks
+export async function getUserPlaylistTracks(
+  userId: string,
+  playlistId: string
+): Promise<TrackType[]> {
+  const tracks = await firestore()
+    .collection("user_playlists")
+    .doc(userId)
+    .collection("playlists")
+    .doc(playlistId)
+    .collection("tracks")
+    .get();
+  return tracks.docs.map((doc) => doc.data()) as TrackType[];
+}
+
+export async function setUserPlaylistTracks(
+  userId: string,
+  playlistId: string,
+  tracks: TrackType[]
+) {
+  tracks.forEach(async (track) => {
+    await firestore()
+      .collection("user_playlists")
+      .doc(userId)
+      .collection("playlists")
+      .doc(playlistId)
+      .collection("tracks")
+      .doc(track.id)
+      .set({
+        id: track.id,
+        active: track.active,
+      });
+  });
+}
+
+export async function removeUserPlaylistTracks(
+  userId: string,
+  playlistId: string,
+  trackIds: string[]
+) {
+  trackIds.forEach(async (trackId) => {
+    await firestore()
+      .collection("user_playlists")
+      .doc(userId)
+      .collection("playlists")
+      .doc(playlistId)
+      .collection("tracks")
+      .doc(trackId)
+      .delete();
+  });
+}
+
+export async function addUserPlaylistTracks(
+  userId: string,
+  playlistId: string,
+  tracks: TrackType[]
+) {
+  tracks.forEach(async (track) => {
+    await firestore()
+      .collection("user_playlists")
+      .doc(userId)
+      .collection("playlists")
+      .doc(playlistId)
+      .collection("tracks")
+      .doc(track.id)
+      .set({
+        id: track.id,
+        active: track.active,
+      });
+  });
+}
+
+export async function toggleUserPlaylistTrackActive(
+  userId: string,
+  playlistId: string,
+  trackId: string,
+  active: boolean
+) {
+  await firestore()
+    .collection("user_playlists")
+    .doc(userId)
+    .collection("playlists")
+    .doc(playlistId)
+    .collection("tracks")
+    .doc(trackId)
+    .update({ active });
 }

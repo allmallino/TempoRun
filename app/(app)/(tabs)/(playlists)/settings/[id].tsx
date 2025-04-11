@@ -5,23 +5,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPlaylistById } from "@/state/playlists/selectors";
 import IconButton from "@/components/ui/IconButton";
 import ThemedButton from "@/components/ThemedButton";
-import { toggleImported } from "@/state/playlists/playlistSlice";
+import { toggleImportedAsync } from "@/state/playlists/playlistSlice";
 import TracksLists from "@/components/playlistMenu/TracksLists";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AppDispatch } from "@/state/store";
 
 export default function PlaylistSettingsScreen() {
   const { theme } = useContext(ThemeContext);
   const { id } = useLocalSearchParams();
   const playlist = useSelector(getPlaylistById(id.toString()));
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const color = theme.onSurfaceVariant;
 
   const toggleImport = () => {
-    dispatch(toggleImported(id));
+    dispatch(toggleImportedAsync(id as string));
     router.back();
   };
   const { t } = useTranslation();

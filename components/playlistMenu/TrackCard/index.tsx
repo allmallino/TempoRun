@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleTrackActive } from "@/state/playlists/playlistSlice";
+import { toggleTrackActiveAsync } from "@/state/playlists/playlistSlice";
 import CardInfo from "../CardInfo";
 import { getTrackInfoById } from "@/state/tracks/selectors";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -10,7 +10,7 @@ import useTheme from "@/hooks/useTheme";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { Theme } from "@/theme/types";
 import { Image } from "expo-image";
-
+import { AppDispatch } from "@/state/store";
 type TrackCardProps = {
   trackId: string;
   active?: boolean;
@@ -22,12 +22,12 @@ export default function TrackCard({ trackId, active }: TrackCardProps) {
 
   const trackInfo = useSelector(getTrackInfoById(trackId));
   const { id } = useLocalSearchParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const color = theme.onSurface;
 
   const toggleActivation = () => {
-    dispatch(toggleTrackActive({ playlistId: id, trackId }));
+    dispatch(toggleTrackActiveAsync({ playlistId: id as string, trackId }));
   };
 
   return (
