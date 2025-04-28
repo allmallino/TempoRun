@@ -6,6 +6,7 @@ import { View, StyleSheet } from "react-native";
 import useLogo from "@/hooks/useLogo";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
   const logo = useLogo();
@@ -19,6 +20,9 @@ export default function HomeScreen() {
         <ThemedButton
           title={t(`${i18nRoot}.run`)}
           style={styles.letsRunButton}
+          onPress={() => {
+            router.navigate("../(running)");
+          }}
         />
       </View>
       <ActiveModeCard />

@@ -111,6 +111,11 @@ export default {
       },
     },
 
+    running: {
+      distance: "Distance",
+      timer: "Timer",
+      pace: "Pace",
+    },
     stats: {
       title: "Stats",
     },

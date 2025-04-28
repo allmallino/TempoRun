@@ -32,6 +32,8 @@ export default function TabLayout() {
           },
           animation: "shift",
         }}
+        initialRouteName="index"
+        backBehavior="initialRoute"
       >
         <Tabs.Screen
           name="statistic"
@@ -76,6 +78,12 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <IconSymbol size={28} name="gear" color={color} />
             ),
+          }}
+        />
+        <Tabs.Screen
+          name="(running)"
+          options={{
+            href: null,
           }}
         />
       </Tabs>

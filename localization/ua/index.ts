@@ -110,6 +110,11 @@ export default {
       },
     },
 
+    running: {
+      distance: "Відстань",
+      timer: "Таймер",
+      pace: "Темп",
+    },
     stats: {
       title: "Статистика",
     },

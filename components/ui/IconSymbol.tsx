@@ -30,6 +30,7 @@ const MAPPING = {
   "map.fill": "map",
   speedometer: "speed",
   "location.north.line.fill": "route",
+  stop: "stop",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],
