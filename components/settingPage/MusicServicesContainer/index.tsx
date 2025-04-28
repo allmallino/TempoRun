@@ -6,6 +6,7 @@ import { StyleSheet, View } from "react-native";
 import MusicServicesCard from "../MusicServicesCard";
 import { useSelector } from "react-redux";
 import { getStreamingService } from "@/state/streaming/selectors";
+import React from "react";
 
 export default function MusicServicesContainer() {
   const { t } = useTranslation();
@@ -27,7 +28,6 @@ export default function MusicServicesContainer() {
           </View>
         </>
       ) : null}
-
       <AddMusicServicesContainer />
     </ElevatedContainer>
   );

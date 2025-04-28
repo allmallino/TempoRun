@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  isAnyOf,
+  Reducer,
+} from "@reduxjs/toolkit";
 import { Mode, ModeOptionType, ModeType, MusicTempo } from "./types";
 import { revertAll } from "../actions";
 import {
@@ -127,7 +132,9 @@ export const removeOptionAsync = createAsyncThunk(
     const userId = getUserUId(state);
     const modsInfo = getSelectedOption(state);
 
-    const result = modsInfo.filter((_, i) => i !== index);
+    const result = modsInfo.filter(
+      (_: ModeOptionType, i: number) => i !== index
+    );
     if (userId) await updateUserModeInfo(userId, selectedMode, result);
 
     return result;
@@ -182,4 +189,4 @@ export const changeIndicatorAsync = createAsyncThunk(
   }
 );
 
-export default modeSlice.reducer;
+export default modeSlice.reducer as Reducer<typeof initialState>;

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, Reducer } from "@reduxjs/toolkit";
 import { PlaylistType, TrackType } from "./types";
 import { revertAll } from "../actions";
 import {
@@ -116,7 +116,7 @@ export const initPlaylistsStateAsync = createAsyncThunk(
   async (userId: string, { getState, dispatch }) => {
     const state = getState() as RootState;
     const playlistInfo = await getUserPlaylistInfo(userId);
-    const { accessToken } = getStreamingServiceCredetials(state);
+    const accessToken = getStreamingServiceCredetials(state)?.accessToken;
     if (!playlistInfo) {
       await initUserPlaylistInfo(userId);
     } else if (accessToken) {
@@ -187,10 +187,12 @@ export const toggleImportedAsync = createAsyncThunk(
     const state = getState() as RootState;
     const userId = getUserUId(state);
     const playlistInfo = getPlaylistById(id)(state) as PlaylistType;
-    if (!playlistInfo.imported) {
-      await addUserPlaylistInfo(userId, playlistInfo);
-    } else {
-      await removeUserPlaylistInfo(userId, playlistInfo);
+    if (userId) {
+      if (!playlistInfo.imported) {
+        await addUserPlaylistInfo(userId, playlistInfo);
+      } else {
+        await removeUserPlaylistInfo(userId, playlistInfo);
+      }
     }
 
     return id;
@@ -203,9 +205,11 @@ export const toggleActiveAsync = createAsyncThunk(
     const state = getState() as RootState;
     const userId = getUserUId(state);
     const playlistId = getActivatedPlaylist(state)?.id;
-    await setUserPlaylistActive(userId, id, playlistId !== id);
-    if (playlistId && playlistId !== id) {
-      await setUserPlaylistActive(userId, playlistId, false);
+    if (userId) {
+      await setUserPlaylistActive(userId, id, playlistId !== id);
+      if (playlistId && playlistId !== id) {
+        await setUserPlaylistActive(userId, playlistId, false);
+      }
     }
     return id;
   }
@@ -222,7 +226,7 @@ export const toggleTrackActiveAsync = createAsyncThunk(
     const track = getPlaylistById(playlistId)(state)?.tracks?.find(
       (v: TrackType) => v.id === trackId
     );
-    if (track) {
+    if (track && userId) {
       await toggleUserPlaylistTrackActive(
         userId,
         playlistId,
@@ -235,4 +239,4 @@ export const toggleTrackActiveAsync = createAsyncThunk(
   }
 );
 
-export default playlistSlice.reducer;
+export default playlistSlice.reducer as Reducer<typeof initialState>;
