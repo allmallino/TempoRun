@@ -5,6 +5,8 @@ export default ({ config }) => ({
     bundleIdentifier: "com.temporun.temporun",
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      NSLocationWhenInUseUsageDescription:
+        "This permission is needed to display your current location on the map",
     },
     googleServicesFile:
       process.env.GOOGLE_SERVICES_PLIST ?? "./GoogleService-Info.plist",
@@ -15,7 +17,13 @@ export default ({ config }) => ({
       backgroundColor: "#1A1C18",
     },
     package: "com.temporun.temporun",
+    permissions: ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
     googleServicesFile:
       process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
+    config: {
+      googleMaps: {
+        apiKey: process.env.GOOGLE_MAPS_API_KEY,
+      },
+    },
   },
 });

@@ -25,7 +25,7 @@ export async function initUserModeInfo(userId: string) {
         ],
         [Mode.MAP]: [
           {
-            indicator: "A",
+            indicator: "0,0",
             musicTempo: MusicTempo.MEDIUM,
           },
         ],

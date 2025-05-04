@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import SegmentedButtonsContainer from "../SegmentedButtonsContainer";
 import { Mode } from "@/state/mode/types";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedOption, getSelectedMode } from "@/state/mode/selectors";
+import { getSelectedMode } from "@/state/mode/selectors";
 import { setSelectedModeAsync } from "@/state/mode/modeSlice";
 import TableHeader from "../TableHeader";
 import { Theme } from "@/theme/types";
@@ -13,6 +13,7 @@ import { useContext, useState } from "react";
 import TableContainer from "../TableContainer";
 import AddingModal from "../AddingModal";
 import { AppDispatch } from "@/state/store";
+import Map from "../Map";
 
 export default function Table() {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,18 +24,15 @@ export default function Table() {
   const titles = ["time", "tempo"];
 
   const selectedMode = useSelector(getSelectedMode);
-  const options = useSelector(getSelectedOption);
   const mods = Object.values(Mode);
 
-  const [selectedItem, selectItem] = useState("");
   const [visible, setVisible] = useState(false);
-  const [selectedId, setSelectedId] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const onClickFactory = (id: number) => {
-    return id !== 0
+  const onClickFactory = (index: number) => {
+    return index !== 0 && selectedMode !== Mode.MAP
       ? () => {
-          setSelectedId(id);
-          selectItem(options[id].indicator);
+          setSelectedIndex(index);
           setVisible(true);
         }
       : null;
@@ -43,11 +41,9 @@ export default function Table() {
   return (
     <View style={styles.container}>
       <AddingModal
-        minutes={selectedItem.split(":")[0]}
-        seconds={selectedItem.split(":")[1]}
         visible={visible}
         setVisible={setVisible}
-        index={selectedId}
+        index={selectedIndex}
       />
       <SegmentedButtonsContainer
         values={mods}
@@ -57,11 +53,14 @@ export default function Table() {
           dispatch(setSelectedModeAsync(v));
         }}
       />
-      <View style={styles.table}>
-        <TableHeader titles={titles} />
-        <Divider color={theme.surfaceContainerHighest} />
-        <TableContainer values={options} onClickFactory={onClickFactory} />
-      </View>
+      {selectedMode === Mode.MAP ? <Map /> : null}
+      {selectedMode !== Mode.PACE ? (
+        <View style={styles.table}>
+          <TableHeader titles={titles} />
+          <Divider color={theme.surfaceContainerHighest} />
+          <TableContainer onClickFactory={onClickFactory} />
+        </View>
+      ) : null}
     </View>
   );
 }

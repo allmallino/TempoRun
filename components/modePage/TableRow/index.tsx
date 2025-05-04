@@ -8,7 +8,7 @@ import TableSelector from "../TableSelector";
 import { useTranslation } from "react-i18next";
 
 type TableRowProps = {
-  value: string;
+  title: string;
   tempo: MusicTempo;
   onClick: (() => void) | null;
   onRemoveClick: (() => void) | null;
@@ -16,7 +16,7 @@ type TableRowProps = {
 };
 
 export default function TableRow({
-  value,
+  title,
   tempo,
   onClick,
   onRemoveClick,
@@ -30,7 +30,7 @@ export default function TableRow({
   return (
     <View style={styles.container}>
       <Pressable onPress={onClick} style={[styles.cellContainer, { flex: 1 }]}>
-        <ThemedText>{value}</ThemedText>
+        <ThemedText>{title}</ThemedText>
       </Pressable>
       <View style={[styles.cellContainer, { flex: 1.5 }]}>
         <TableSelector

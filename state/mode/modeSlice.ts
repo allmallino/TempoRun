@@ -14,7 +14,7 @@ import {
 } from "@/services/firestoreService";
 import { RootState } from "../store";
 import { getUserUId } from "../user/selectors";
-import { getSelectedMode, getSelectedOption } from "./selectors";
+import { getSelectedMode, getSelectedOptions } from "./selectors";
 
 interface modeState {
   value: ModeType;
@@ -32,7 +32,7 @@ const initialState: modeState = {
       ],
       [Mode.MAP]: [
         {
-          indicator: "A",
+          indicator: "0, 0",
           musicTempo: MusicTempo.MEDIUM,
         },
       ],
@@ -114,8 +114,18 @@ export const addOptionAsync = createAsyncThunk(
 
     const selectedMode = getSelectedMode(state);
     const userId = getUserUId(state);
-    const modsInfo = getSelectedOption(state);
+    const modsInfo = getSelectedOptions(state);
 
+    if (selectedMode === Mode.MAP) {
+      const lastLocation = modsInfo[modsInfo.length - 1].indicator
+        .split(",")
+        .map((v) => parseFloat(v));
+
+      option.indicator =
+        lastLocation[0] && lastLocation[1]
+          ? `${lastLocation[0] + 0.001},${lastLocation[1] + 0.001}`
+          : "0, 0";
+    }
     const result = [...modsInfo, option];
     if (userId) await updateUserModeInfo(userId, selectedMode, result);
 
@@ -130,7 +140,7 @@ export const removeOptionAsync = createAsyncThunk(
 
     const selectedMode = getSelectedMode(state);
     const userId = getUserUId(state);
-    const modsInfo = getSelectedOption(state);
+    const modsInfo = getSelectedOptions(state);
 
     const result = modsInfo.filter(
       (_: ModeOptionType, i: number) => i !== index
@@ -151,7 +161,7 @@ export const changeTempoAsync = createAsyncThunk(
 
     const selectedMode = getSelectedMode(state);
     const userId = getUserUId(state);
-    const modsInfo = getSelectedOption(state);
+    const modsInfo = getSelectedOptions(state);
 
     const result = modsInfo.map((v: ModeOptionType, i: number) => {
       return i === index ? { ...v, musicTempo } : v;
@@ -171,18 +181,20 @@ export const changeIndicatorAsync = createAsyncThunk(
 
     const selectedMode = getSelectedMode(state);
     const userId = getUserUId(state);
-    const modsInfo = getSelectedOption(state);
+    const modsInfo = getSelectedOptions(state);
 
     const result: ModeOptionType[] = modsInfo.map(
       (v: ModeOptionType, i: number) => {
         return i === index ? { ...v, indicator } : v;
       }
     );
-    result.sort((a, b) => {
-      if (!a.indicator.length) return 1;
-      if (!b.indicator.length) return -1;
-      return a.indicator > b.indicator ? 1 : -1;
-    });
+    if (selectedMode !== Mode.MAP) {
+      result.sort((a, b) => {
+        if (!a.indicator.length) return 1;
+        if (!b.indicator.length) return -1;
+        return a.indicator > b.indicator ? 1 : -1;
+      });
+    }
 
     if (userId) await updateUserModeInfo(userId, selectedMode, result);
     return result;

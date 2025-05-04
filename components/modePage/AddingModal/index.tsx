@@ -11,18 +11,16 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, StyleSheet, TextInput, View } from "react-native";
 import { useDispatch } from "react-redux";
+import { getSelectedOptionByIndex } from "@/state/mode/selectors";
+import { useSelector } from "react-redux";
 
 type AddingModalType = {
-  minutes?: string;
-  seconds?: string;
   visible: boolean;
   setVisible: (v: boolean) => void;
   index: number;
 };
 
 export default function AddingModal({
-  minutes,
-  seconds,
   visible,
   setVisible,
   index,
@@ -31,14 +29,20 @@ export default function AddingModal({
   const styles = useTheme(getStyles);
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
-  const [min, setMin] = useState("");
-  const [sec, setSec] = useState("");
-  const i18nRoot = "app:mode:addingModal";
+
+  const option = useSelector(getSelectedOptionByIndex(index));
+
+  const [min, setMin] = useState("00");
+  const [sec, setSec] = useState("00");
 
   useEffect(() => {
-    setMin(minutes || "");
-    setSec(seconds || "");
-  }, [minutes, seconds]);
+    if (option) {
+      setMin(option.indicator.split(":")[0]);
+      setSec(option.indicator.split(":")[1]);
+    }
+  }, [option]);
+
+  const i18nRoot = "app:mode:addingModal";
 
   return (
     <Modal transparent={true} visible={visible}>
