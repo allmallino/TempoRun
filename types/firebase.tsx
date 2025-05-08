@@ -15,6 +15,6 @@ export type UserPlaylistsType =
     }
   | undefined;
 
-export type UserModeType = ModeType | undefined;
+export type UserModeType = Omit<ModeType, "currentOptionIndex"> | undefined;
 
 export type UserStreamingType = StreamingServiceCredentialsType | undefined;

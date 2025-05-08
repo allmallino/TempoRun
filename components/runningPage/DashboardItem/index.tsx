@@ -7,9 +7,14 @@ import { useTranslation } from "react-i18next";
 type DashboardItemProps = {
   label: string;
   value: string;
+  unit?: string;
 };
 
-export default function DashboardItem({ label, value }: DashboardItemProps) {
+export default function DashboardItem({
+  label,
+  value,
+  unit,
+}: DashboardItemProps) {
   const styles = useTheme(getStyles);
 
   const i18nRoot = "app:running";
@@ -18,6 +23,7 @@ export default function DashboardItem({ label, value }: DashboardItemProps) {
     <View style={styles.container}>
       <ThemedText style={styles.label}>{t(`${i18nRoot}.${label}`)}</ThemedText>
       <ThemedText style={styles.value}>{value}</ThemedText>
+      {unit && <ThemedText style={styles.unit}>{unit}</ThemedText>}
     </View>
   );
 }
@@ -42,4 +48,5 @@ const getStyles = (theme: Theme) =>
       fontWeight: "bold",
       lineHeight: 56,
     },
+    unit: {},
   });

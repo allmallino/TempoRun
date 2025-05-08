@@ -36,15 +36,6 @@ export default function TabLayout() {
         backBehavior="initialRoute"
       >
         <Tabs.Screen
-          name="statistic"
-          options={{
-            title: t(`${i18nRoot}.stats`),
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="person.fill" color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
           name="mode"
           options={{
             title: t(`${i18nRoot}.mode`),

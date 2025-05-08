@@ -12,3 +12,12 @@ export const getSelectedOptionByIndex = (index: number) =>
       state.mode.value.modsInfo[state.mode.value.selectedMode],
     (modsInfo) => modsInfo[index]
   );
+
+export const getSelectedOptionsLength = createSelector(
+  (state: RootState) =>
+    state.mode.value.modsInfo[state.mode.value.selectedMode],
+  (modsInfo) => modsInfo.length
+);
+
+export const getCurrentOptionIndex = (state: RootState) =>
+  state.mode.value.currentOptionIndex;

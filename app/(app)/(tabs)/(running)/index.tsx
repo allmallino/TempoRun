@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PlayingMusic from "@/components/runningPage/PlayingMusic";
+import CurrentOption from "@/components/runningPage/CurrentOption";
 import Dashboard from "@/components/runningPage/Dashboard";
 import StopButton from "@/components/runningPage/StopButton";
 export default function RunningPage() {
@@ -10,7 +10,7 @@ export default function RunningPage() {
       edges={["left", "right", "top", "bottom"]}
     >
       <Dashboard />
-      <PlayingMusic />
+      <CurrentOption />
       <StopButton />
     </SafeAreaView>
   );

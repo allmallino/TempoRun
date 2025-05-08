@@ -13,6 +13,7 @@ export default function PlaylistsLayout() {
       }}
     >
       <Stack.Screen name="index" />
+      <Stack.Screen name="results" />
     </Stack>
   );
 }

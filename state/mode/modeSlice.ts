@@ -23,6 +23,7 @@ interface modeState {
 const initialState: modeState = {
   value: {
     selectedMode: Mode.TIMER,
+    currentOptionIndex: 0,
     modsInfo: {
       [Mode.TIMER]: [
         {
@@ -55,13 +56,20 @@ const initialState: modeState = {
 const modeSlice = createSlice({
   name: "mode",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentOptionIndex: (state, action) => {
+      state.value.currentOptionIndex = action.payload;
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(revertAll, () => initialState)
       .addCase(initModeStateAsync.fulfilled, (state, action) => {
         if (action.payload) {
-          state.value = action.payload;
+          state.value = {
+            ...action.payload,
+            currentOptionIndex: 0,
+          };
         }
       })
       .addCase(setSelectedModeAsync.fulfilled, (state, action) => {
@@ -201,4 +209,5 @@ export const changeIndicatorAsync = createAsyncThunk(
   }
 );
 
+export const { setCurrentOptionIndex } = modeSlice.actions;
 export default modeSlice.reducer as Reducer<typeof initialState>;

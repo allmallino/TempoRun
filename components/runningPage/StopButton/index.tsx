@@ -17,7 +17,8 @@ export default function StopButton() {
       size={64}
       style={styles.stopButton}
       onPress={() => {
-        router.back();
+        router.dismissAll();
+        router.replace("/results");
       }}
     />
   );

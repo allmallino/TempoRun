@@ -15,16 +15,24 @@ import AddingModal from "../AddingModal";
 import { AppDispatch } from "@/state/store";
 import Map from "../Map";
 
+const titlesByMode = {
+  [Mode.TIMER]: ["time", "tempo"],
+  [Mode.MAP]: ["point", "tempo"],
+  [Mode.PACE]: ["pace", "tempo"],
+  [Mode.LENGTH]: ["length", "tempo"],
+};
+
 export default function Table() {
   const dispatch = useDispatch<AppDispatch>();
   const styles = useTheme(getStyle);
   const { theme } = useContext(ThemeContext);
 
   const i18nRoot = "app:mode:mods";
-  const titles = ["time", "tempo"];
 
   const selectedMode = useSelector(getSelectedMode);
   const mods = Object.values(Mode);
+
+  const titles = titlesByMode[selectedMode];
 
   const [visible, setVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);

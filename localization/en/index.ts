@@ -102,6 +102,9 @@ export default {
         header: {
           time: "Time",
           tempo: "Tempo",
+          point: "Point",
+          length: "Length",
+          pace: "Pace",
         },
         tempo: {
           low: "Low",
@@ -116,8 +119,14 @@ export default {
       timer: "Timer",
       pace: "Pace",
     },
-    stats: {
-      title: "Stats",
+
+    results: {
+      wellDone: "Well done!",
+      distance: "Distance",
+      time: "Time",
+      pace: "Pace",
+      goBack: "Go back",
+      checkpoints: "Completed options",
     },
   },
 };

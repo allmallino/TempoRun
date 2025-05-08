@@ -101,6 +101,9 @@ export default {
         header: {
           time: "Час",
           tempo: "Темп",
+          point: "Точка",
+          length: "Відстань",
+          pace: "Темп",
         },
         tempo: {
           low: "Малий",
@@ -115,8 +118,14 @@ export default {
       timer: "Таймер",
       pace: "Темп",
     },
-    stats: {
-      title: "Статистика",
+
+    results: {
+      wellDone: "Відмінно!",
+      distance: "Відстань",
+      time: "Час",
+      pace: "Темп",
+      checkpoints: "Пройдено опцій",
+      goBack: "Повернутися",
     },
   },
 };

@@ -45,7 +45,10 @@ export async function initUserModeInfo(userId: string) {
     });
 }
 
-export async function setUserModeInfo(userId: string, mode: ModeType) {
+export async function setUserModeInfo(
+  userId: string,
+  mode: Omit<ModeType, "currentOptionIndex">
+) {
   await firestore().collection("user_mode").doc(userId).set(mode);
 }
 

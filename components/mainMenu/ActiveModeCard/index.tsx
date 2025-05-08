@@ -10,19 +10,19 @@ import { getSelectedMode } from "@/state/mode/selectors";
 import { useSelector } from "react-redux";
 import { Mode } from "@/state/mode/types";
 
+const modeIcon = {
+  [Mode.TIMER]: "watch.analog",
+  [Mode.MAP]: "map.fill",
+  [Mode.LENGTH]: "location.north.line.fill",
+  [Mode.PACE]: "speedometer",
+} as Record<Mode, IconSymbolName>;
+
 export default function ActiveModeCard() {
   const { theme } = useContext(ThemeContext);
   const color = theme.onSurface;
   const mode = useSelector(getSelectedMode);
   const { t } = useTranslation();
   const i18nRoot = "app:menu";
-
-  const modeIcon = {
-    [Mode.TIMER]: "watch.analog",
-    [Mode.MAP]: "map.fill",
-    [Mode.LENGTH]: "location.north.line.fill",
-    [Mode.PACE]: "speedometer",
-  } as Record<Mode, IconSymbolName>;
 
   return (
     <View style={styles.container}>
