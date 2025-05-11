@@ -3,6 +3,7 @@ export default ({ config }) => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.temporun.temporun",
+    backgroundColor: "#1A1C18",
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       NSLocationWhenInUseUsageDescription:
@@ -16,6 +17,7 @@ export default ({ config }) => ({
       foregroundImage: "./assets/images/icon.png",
       backgroundColor: "#1A1C18",
     },
+    backgroundColor: "#1A1C18",
     package: "com.temporun.temporun",
     permissions: ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
     googleServicesFile:

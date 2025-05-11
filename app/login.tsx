@@ -3,7 +3,7 @@ import useLogo from "@/hooks/useLogo";
 import useTheme from "@/hooks/useTheme";
 import { Theme } from "@/theme/types";
 import { Image } from "expo-image";
-import { StyleSheet } from "react-native";
+import { StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
@@ -15,8 +15,13 @@ export default function LoginScreen() {
       style={styles.mainContainer}
       edges={["left", "right", "top", "bottom"]}
     >
-      <Image source={logo} style={styles.logo} />
-      <LoginInputs />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <Image source={logo} style={styles.logo} />
+        <LoginInputs />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -25,11 +30,14 @@ const getStyle = (theme: Theme) =>
   StyleSheet.create({
     mainContainer: {
       flex: 1,
+      backgroundColor: theme.surfaceContainerLow,
+    },
+    keyboardAvoidingView: {
+      flex: 1,
       alignItems: "center",
       gap: 25,
       paddingHorizontal: 16,
       paddingTop: 45,
-      backgroundColor: theme.surfaceContainerLow,
     },
     buttonContainer: {
       flex: 1,

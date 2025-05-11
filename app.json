@@ -8,6 +8,15 @@
     "scheme": "temporun",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#1C1B1F"
+    },
+    "ios": {
+      "backgroundColor": "#1C1B1F"
+    },
+    "android": {
+      "backgroundColor": "#1C1B1F"
+    },
     "plugins": [
       "expo-router",
       "expo-localization",

@@ -10,6 +10,7 @@ export default function RunningLayout() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: theme.surfaceContainerLow },
+        animation: "fade",
       }}
     >
       <Stack.Screen name="index" />
