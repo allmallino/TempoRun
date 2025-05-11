@@ -2,7 +2,7 @@ import { ThemeContext } from "@/theme/ThemeContext";
 import { Stack } from "expo-router";
 import React, { useContext } from "react";
 
-export default function RunningLayout() {
+export default function SettingsLayout() {
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -10,10 +10,11 @@ export default function RunningLayout() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: theme.surfaceContainerLow },
+        animation: "fade",
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen name="results" />
+      <Stack.Screen name="account" />
     </Stack>
   );
 }

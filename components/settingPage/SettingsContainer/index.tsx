@@ -7,14 +7,14 @@ import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useRouter } from "expo-router";
 export default function SettingsContainer() {
   const { signOut } = useAuth();
   const { theme, changeTheme } = useContext(ThemeContext);
   const { t, i18n } = useTranslation();
   const i18nRoot = "app:settings";
   const themeText = t(`${i18nRoot}.theme.${theme.dark ? "dark" : "light"}`);
-
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <SettingsSection title={t(`${i18nRoot}:appSettings.title`)}>
@@ -39,7 +39,9 @@ export default function SettingsContainer() {
         <SettingButton
           title={t(`${i18nRoot}:accountSettings.changeInfo`)}
           icon="person.crop.circle.fill"
-          onPress={() => {}}
+          onPress={() => {
+            router.push("/account");
+          }}
         />
         <SettingButton
           title={t(`${i18nRoot}:accountSettings.logout`)}

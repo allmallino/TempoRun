@@ -22,7 +22,7 @@ export default function ImportPlaylistsScreen() {
           icon="gear"
           color={color}
           onPress={() => {
-            router.navigate("/(app)/(tabs)/appSettings");
+            router.navigate("/(app)/(tabs)/(settings)");
           }}
         />
       </View>

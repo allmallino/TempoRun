@@ -31,6 +31,10 @@ const MAPPING = {
   speedometer: "speed",
   "location.north.line.fill": "route",
   stop: "stop",
+  "minus.circle.fill": "delete",
+  "person.crop.circle.fill.badge.minus": "no-accounts",
+  "envelope.fill": "email",
+  "lock.fill": "lock",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],
