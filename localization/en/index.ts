@@ -115,8 +115,11 @@ export default {
       },
       addingModal: {
         selectTime: "Select Time",
+        selectLength: "Select Length",
         minutes: "Minutes",
         seconds: "Seconds",
+        kilometers: "Kilometers",
+        meters: "Meters",
         cancel: "Cancel",
         ok: "OK",
       },

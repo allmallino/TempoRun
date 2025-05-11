@@ -114,8 +114,11 @@ export default {
       },
       addingModal: {
         selectTime: "Обрати час",
+        selectLength: "Обрати відстань",
         minutes: "Хвилини",
         seconds: "Секунди",
+        kilometers: "Кілометри",
+        meters: "Метри",
         cancel: "Відмінити",
         ok: "Прийняти",
       },

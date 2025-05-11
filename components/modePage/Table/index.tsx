@@ -3,7 +3,10 @@ import SegmentedButtonsContainer from "../SegmentedButtonsContainer";
 import { Mode } from "@/state/mode/types";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedMode } from "@/state/mode/selectors";
-import { setSelectedModeAsync } from "@/state/mode/modeSlice";
+import {
+  changeIndicatorAsync,
+  setSelectedModeAsync,
+} from "@/state/mode/modeSlice";
 import TableHeader from "../TableHeader";
 import { Theme } from "@/theme/types";
 import useTheme from "@/hooks/useTheme";
@@ -46,13 +49,26 @@ export default function Table() {
       : null;
   };
 
+  const onSubmit = (indicator: string) => {
+    dispatch(
+      changeIndicatorAsync({
+        index: selectedIndex,
+        indicator: indicator,
+      })
+    );
+    setVisible(false);
+  };
+
   return (
     <View style={styles.container}>
-      <AddingModal
-        visible={visible}
-        setVisible={setVisible}
-        index={selectedIndex}
-      />
+      {selectedMode !== Mode.PACE && selectedMode !== Mode.MAP && (
+        <AddingModal
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          onSubmit={onSubmit}
+          index={selectedIndex}
+        />
+      )}
       <SegmentedButtonsContainer
         values={mods}
         selectedValue={selectedMode}

@@ -1,129 +1,217 @@
 import ThemedButton from "@/components/ThemedButton";
 import ThemedText from "@/components/ThemedText";
-import ElevatedContainer from "@/components/ui/ElevatedContainer";
-import { Colors } from "@/constants/Colors";
 import useTheme from "@/hooks/useTheme";
-import { changeIndicatorAsync } from "@/state/mode/modeSlice";
-import { AppDispatch } from "@/state/store";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { Theme } from "@/theme/types";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, StyleSheet, TextInput, View } from "react-native";
-import { useDispatch } from "react-redux";
-import { getSelectedOptionByIndex } from "@/state/mode/selectors";
+import { StyleSheet, TextInput, View } from "react-native";
+import {
+  getSelectedMode,
+  getSelectedOptionByIndex,
+} from "@/state/mode/selectors";
 import { useSelector } from "react-redux";
+import ModalBase from "@/components/ui/ModalBase";
+import { Mode } from "@/state/mode/types";
+
+type inputInfoType = {
+  inputTitles: string[];
+  inputWidthes: number[];
+  defaultValues: string[];
+  valueValidators: ((value: string) => boolean)[];
+  modalTitle: string;
+  inputSeparator?: string;
+  fromInputToIndicator: (inputValues: string[]) => string;
+  fromIndicatorToInput: (indicator: string) => string[];
+};
+
+const inputInfoByMode: Record<Mode, inputInfoType> = {
+  [Mode.TIMER]: {
+    inputTitles: ["minutes", "seconds"],
+    inputWidthes: [2, 2],
+    defaultValues: ["00", "00"],
+    valueValidators: [
+      (value) => Number(value) <= 60 && Number(value) >= 0,
+      (value) => Number(value) < 60 && Number(value) >= 0,
+    ],
+    modalTitle: "selectTime",
+    inputSeparator: ":",
+    fromInputToIndicator: (inputValues) =>
+      inputValues.map((v) => v.padStart(2, "0")).join(":"),
+    fromIndicatorToInput: (indicator) => indicator.split(":"),
+  },
+  [Mode.LENGTH]: {
+    inputTitles: ["kilometers", "meters"],
+    inputWidthes: [2, 3],
+    defaultValues: ["0", "0"],
+    valueValidators: [
+      (value) => Number(value) < 100 && Number(value) >= 0,
+      (value) => Number(value) < 1000 && Number(value) >= 0,
+    ],
+    modalTitle: "selectLength",
+    inputSeparator: ",",
+    fromInputToIndicator: (inputValues) =>
+      `${Number(inputValues[0] ?? 0)
+        .toString()
+        .padStart(1, "0")},${Number(inputValues[1] ?? 0)
+        .toString()
+        .padStart(3, "0")}`,
+    fromIndicatorToInput: (indicator) => indicator.split(","),
+  },
+  [Mode.MAP]: {
+    inputTitles: ["latitude", "longitude"],
+    inputWidthes: [2, 2],
+    defaultValues: ["0", "0"],
+    valueValidators: [
+      (value) => !isNaN(Number(value)),
+      (value) => !isNaN(Number(value)),
+    ],
+    modalTitle: "selectMap",
+    inputSeparator: ",",
+    fromInputToIndicator: (inputValues) =>
+      inputValues.map((v) => v.padStart(2, "0")).join(","),
+    fromIndicatorToInput: (indicator) => indicator.split(","),
+  },
+  [Mode.PACE]: {
+    inputTitles: ["minutes", "seconds"],
+    inputWidthes: [2, 2],
+    defaultValues: ["00", "00"],
+    valueValidators: [
+      (value) => Number(value) <= 60 && Number(value) >= 0,
+      (value) => Number(value) < 60 && Number(value) >= 0,
+    ],
+    modalTitle: "selectTime",
+    inputSeparator: ":",
+    fromInputToIndicator: (inputValues) =>
+      inputValues.map((v) => v.padStart(2, "0")).join(":"),
+    fromIndicatorToInput: (indicator) => indicator.split(":"),
+  },
+};
 
 type AddingModalType = {
   visible: boolean;
-  setVisible: (v: boolean) => void;
+  onCancel: () => void;
+  onSubmit: (indicator: string) => void;
   index: number;
 };
 
 export default function AddingModal({
   visible,
-  setVisible,
+  onCancel,
+  onSubmit,
   index,
 }: AddingModalType) {
-  const dispatch = useDispatch<AppDispatch>();
   const styles = useTheme(getStyles);
   const { theme } = useContext(ThemeContext);
   const { t } = useTranslation();
 
   const option = useSelector(getSelectedOptionByIndex(index));
+  const mode = useSelector(getSelectedMode);
+  const inputInfo = inputInfoByMode[mode];
 
-  const [min, setMin] = useState("00");
-  const [sec, setSec] = useState("00");
+  const [inputValues, setInputValues] = useState<string[]>(
+    inputInfo.defaultValues
+  );
 
   useEffect(() => {
     if (option) {
-      setMin(option.indicator.split(":")[0]);
-      setSec(option.indicator.split(":")[1]);
+      setInputValues(inputInfo.fromIndicatorToInput(option.indicator));
     }
   }, [option]);
 
   const i18nRoot = "app:mode:addingModal";
 
   return (
-    <Modal transparent={true} visible={visible}>
-      <View style={styles.modal}>
-        <View>
-          <ElevatedContainer elevation={3} style={styles.container}>
-            <ThemedText>{t(`${i18nRoot}.selectTime`)}</ThemedText>
-            <View style={styles.inputContainer}>
-              <View>
-                <TextInput
-                  style={[styles.input, styles.inputText]}
-                  value={min}
-                  maxLength={2}
-                  keyboardType="numeric"
-                  placeholder="00"
-                  placeholderTextColor={theme.onSurface}
-                  onChangeText={(v) => {
-                    if (Number(v) <= 60 && Number(v) >= 0) setMin(v);
-                  }}
-                />
-                <ThemedText type="small">{t(`${i18nRoot}.minutes`)}</ThemedText>
-              </View>
-              <ThemedText style={styles.inputText}>:</ThemedText>
-              <View>
-                <TextInput
-                  style={[styles.input, styles.inputText]}
-                  value={sec}
-                  maxLength={2}
-                  keyboardType="numeric"
-                  placeholder="00"
-                  placeholderTextColor={theme.onSurface}
-                  onChangeText={(v) => {
-                    if (Number(v) < 60 && Number(v) >= 0) setSec(v);
-                  }}
-                />
-                <ThemedText type="small">{t(`${i18nRoot}.seconds`)}</ThemedText>
-              </View>
-            </View>
-            <View style={styles.buttonContainer}>
-              <ThemedButton
-                title={t(`${i18nRoot}.cancel`)}
-                type="text"
-                onPress={() => {
-                  setVisible(false);
-                }}
-              />
-              <View style={{ flex: 1 }} />
-              <ThemedButton
-                title={t(`${i18nRoot}.ok`)}
-                type="text"
-                onPress={() => {
-                  dispatch(
-                    changeIndicatorAsync({
-                      index,
-                      indicator: `${min.padStart(2, "0")}:${sec.padStart(
-                        2,
-                        "0"
-                      )}`,
-                    })
-                  );
-                  setVisible(false);
-                }}
-              />
-            </View>
-          </ElevatedContainer>
+    <ModalBase visible={visible} onClose={onCancel} style={styles.modal}>
+      <View style={styles.container}>
+        <ThemedText type="small">
+          {t(`${i18nRoot}.${inputInfo.modalTitle}`)}
+        </ThemedText>
+        <View style={styles.inputContainer}>
+          <View>
+            <TextInput
+              style={[
+                styles.input,
+                styles.inputText,
+                { width: inputInfo.inputWidthes[0] === 2 ? 96 : 144 },
+              ]}
+              value={inputValues[0]}
+              maxLength={inputInfo.inputWidthes[0]}
+              keyboardType="numeric"
+              placeholder={inputInfo.defaultValues[0]}
+              placeholderTextColor={theme.onSurface}
+              onChangeText={(v) => {
+                if (inputInfo.valueValidators[0](v))
+                  setInputValues((prev) => {
+                    const newInputValues = [...prev];
+                    newInputValues[0] = v;
+                    return newInputValues;
+                  });
+              }}
+            />
+            <ThemedText type="small" style={{ textAlign: "center" }}>
+              {t(`${i18nRoot}.${inputInfo.inputTitles[0]}`)}
+            </ThemedText>
+          </View>
+          {inputInfo.inputSeparator && (
+            <ThemedText style={styles.inputText}>
+              {inputInfo.inputSeparator}
+            </ThemedText>
+          )}
+          <View>
+            <TextInput
+              style={[
+                styles.input,
+                styles.inputText,
+                { width: inputInfo.inputWidthes[1] === 2 ? 96 : 116 },
+              ]}
+              value={inputValues[1]}
+              maxLength={inputInfo.inputWidthes[1]}
+              keyboardType="numeric"
+              placeholder={inputInfo.defaultValues[1]}
+              placeholderTextColor={theme.onSurface}
+              onChangeText={(v) => {
+                if (inputInfo.valueValidators[1](v))
+                  setInputValues((prev) => {
+                    const newInputValues = [...prev];
+                    newInputValues[1] = v;
+                    return newInputValues;
+                  });
+              }}
+            />
+            <ThemedText type="small" style={{ textAlign: "center" }}>
+              {t(`${i18nRoot}.${inputInfo.inputTitles[1]}`)}
+            </ThemedText>
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <ThemedButton
+            title={t(`${i18nRoot}.cancel`)}
+            type="text"
+            onPress={onCancel}
+          />
+          <View style={{ flex: 1 }} />
+          <ThemedButton
+            title={t(`${i18nRoot}.ok`)}
+            type="text"
+            onPress={() => {
+              if (inputValues.some((v) => v !== "" && Number(v) !== 0)) {
+                onSubmit(inputInfo.fromInputToIndicator(inputValues));
+              }
+            }}
+          />
         </View>
       </View>
-    </Modal>
+    </ModalBase>
   );
 }
 
 const getStyles = (theme: Theme) =>
   StyleSheet.create({
     modal: {
-      backgroundColor: Colors.shadowBackdrop,
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
+      paddingHorizontal: 64,
     },
     container: {
-      padding: 24,
       gap: 20,
     },
     inputContainer: {
@@ -137,7 +225,6 @@ const getStyles = (theme: Theme) =>
       lineHeight: 52,
     },
     input: {
-      width: 96,
       textAlign: "center",
       paddingHorizontal: 20,
       borderRadius: 8,
