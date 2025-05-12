@@ -21,6 +21,9 @@ import { RootState } from "../store";
 import { getUserUId } from "../user/selectors";
 import { getActivatedPlaylist, getPlaylistById } from "./selectors";
 import { updateTracks } from "../tracks/trackSlice";
+import { getTrackAnalysisFeatures } from "@/services/soundstatService";
+import { getTempo } from "@/helpers";
+import { MusicTempo } from "../mode/types";
 
 interface playlistState {
   value: PlaylistType[];
@@ -137,8 +140,21 @@ export const initPlaylistsStateAsync = createAsyncThunk(
           const tracksIDs = tracks.map((v) => v.id);
           const tracksInfo =
             (await getSpotifyTracksInfo(accessToken, tracksIDs)) ?? [];
-
-          dispatch(updateTracks(tracksInfo));
+          const tracksCompleteInfo = await Promise.all(
+            tracksInfo.map(async (trackInfo) => {
+              const analysis = await getTrackAnalysisFeatures(trackInfo.id);
+              return {
+                ...trackInfo,
+                info: {
+                  ...trackInfo.info,
+                  tempo: analysis
+                    ? getTempo(analysis.tempo)
+                    : MusicTempo.MEDIUM,
+                },
+              };
+            })
+          );
+          dispatch(updateTracks(tracksCompleteInfo));
 
           fullPlaylistInfo.active = playlist.active;
           fullPlaylistInfo.imported = true;

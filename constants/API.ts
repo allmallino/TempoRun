@@ -13,3 +13,12 @@ export const Spotify = {
     }),
   },
 };
+
+export const Soundstat = {
+  url: {
+    apiV1Endpoint: "https://soundstat.info/api/v1",
+  },
+  env: {
+    apiKey: process.env.EXPO_PUBLIC_SOUNDSTAT_API_KEY ?? "",
+  },
+};

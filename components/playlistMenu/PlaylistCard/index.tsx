@@ -22,6 +22,10 @@ import { updateTracks } from "@/state/tracks/trackSlice";
 import { setLoaderVisibility } from "@/state/loader/loaderSlice";
 import { useStreamingServiceToken } from "@/hooks/useStreamingServiceToken";
 import { AppDispatch } from "@/state/store";
+import { getTrackAnalysisFeatures } from "@/services/soundstatService";
+import { TrackType } from "@/state/tracks/types";
+import { getTempo } from "@/helpers";
+import { MusicTempo } from "@/state/mode/types";
 
 type PlaylistCardProps = {
   id: string;
@@ -53,7 +57,19 @@ export default function PlaylistCard({
       const tracksIDs = tracks.map((v) => v.id);
       const tracksInfo =
         (await getSpotifyTracksInfo(accessToken, tracksIDs)) ?? [];
-      dispatch(updateTracks(tracksInfo));
+      const tracksCompleteInfo: Array<TrackType> = await Promise.all(
+        tracksInfo.map(async (trackInfo) => {
+          const analysis = await getTrackAnalysisFeatures(trackInfo.id);
+          return {
+            ...trackInfo,
+            info: {
+              ...trackInfo.info,
+              tempo: analysis ? getTempo(analysis.tempo) : MusicTempo.MEDIUM,
+            },
+          };
+        })
+      );
+      dispatch(updateTracks(tracksCompleteInfo));
       dispatch(updatePlaylistTracks({ id, tracks }));
       dispatch(setLoaderVisibility(false));
     }
