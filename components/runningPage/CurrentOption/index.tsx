@@ -2,11 +2,11 @@ import ThemedText from "@/components/ThemedText";
 import ElevatedContainer from "@/components/ui/ElevatedContainer";
 import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
 import {
-  getCurrentOptionIndex,
   getSelectedMode,
   getSelectedOptionsLength,
 } from "@/state/mode/selectors";
 import { Mode } from "@/state/mode/types";
+import { useSession } from "@/contexts/SessionContext";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,8 @@ export default function CurrentOption() {
   const { t } = useTranslation();
   const i18nRoot = "app:menu";
   const songPace = "Medium";
-  const currentOptionIndex = useSelector(getCurrentOptionIndex) + 1;
+  const { sessionData } = useSession();
+  const currentOptionIndex = sessionData!.currentOptionIndex + 1;
   const totalOptions = useSelector(getSelectedOptionsLength);
 
   return (

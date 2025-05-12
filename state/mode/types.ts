@@ -1,6 +1,5 @@
 export type ModeType = {
   selectedMode: Mode;
-  currentOptionIndex: number;
   modsInfo: ModInfoType;
 };
 

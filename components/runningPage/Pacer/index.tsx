@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { formatPace } from "@/helpers";
 import DashboardItem from "../DashboardItem";
+import { useSession } from "@/contexts/SessionContext";
 
 export default function Pacer() {
-  const [pace, setPace] = useState("05:50");
+  const { sessionData } = useSession();
+  const pace = formatPace(sessionData!.pace);
+
   return <DashboardItem label="pace" value={pace} unit="/km" />;
 }

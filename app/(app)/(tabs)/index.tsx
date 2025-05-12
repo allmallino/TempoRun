@@ -7,7 +7,6 @@ import useLogo from "@/hooks/useLogo";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { setCurrentOptionIndex } from "@/state/mode/modeSlice";
 import { useDispatch } from "react-redux";
 
 export default function HomeScreen() {
@@ -24,7 +23,6 @@ export default function HomeScreen() {
           title={t(`${i18nRoot}.run`)}
           style={styles.letsRunButton}
           onPress={() => {
-            dispatch(setCurrentOptionIndex(0));
             router.navigate("../(running)");
           }}
         />

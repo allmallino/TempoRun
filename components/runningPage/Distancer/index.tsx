@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { formatDistance } from "@/helpers";
 import DashboardItem from "../DashboardItem";
+import { useSession } from "@/contexts/SessionContext";
 
 export default function Distancer() {
-  const [distance, setDistance] = useState("0.23");
-  return <DashboardItem label={"distance"} value={distance} unit="km" />;
+  const { sessionData } = useSession();
+  const distance = formatDistance(sessionData!.distance);
+
+  return <DashboardItem label="distance" value={distance} unit="km" />;
 }

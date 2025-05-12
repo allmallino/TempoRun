@@ -18,6 +18,3 @@ export const getSelectedOptionsLength = createSelector(
     state.mode.value.modsInfo[state.mode.value.selectedMode],
   (modsInfo) => modsInfo.length
 );
-
-export const getCurrentOptionIndex = (state: RootState) =>
-  state.mode.value.currentOptionIndex;
