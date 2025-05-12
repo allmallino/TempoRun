@@ -17,7 +17,7 @@ export default function RunningPage() {
       return () => {
         endSession();
       };
-    }, [])
+    }, [startSession, endSession])
   );
   return (
     <SafeAreaView

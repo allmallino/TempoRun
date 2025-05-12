@@ -74,25 +74,38 @@ export default {
       account: {
         title: "Налаштування облікового запису",
         deleteAccount: "Видалити обліковий запис",
-        deleteAccountModal: {
-          title: "Видалити обліковий запис",
-          description: "Ви впевнені, що хочете видалити свій обліковий запис?",
+        confirmationModal: {
+          title: "Підтвердження",
+          description: "Ви впевнені, що хочете продовжити?",
           cancel: "Відмінити",
-          delete: "Видалити",
+          confirm: "Підтвердити",
+        },
+        inputModal: {
+          errors: {
+            invalidEmail: "Неправильна електронна пошта",
+            passwordTooShort: "Пароль має бути не менше 8 символів",
+            passwordsDoNotMatch: "Паролі не співпадають",
+            saveFailed: "Помилка при збереженні змін",
+          },
+          title: {
+            email: "Введіть нову електронну пошту",
+            password: "Введіть новий пароль",
+          },
+          description: {
+            email: "Введіть нову електронну пошту",
+            password: "Введіть новий пароль",
+          },
+          placeholder: {
+            email: "Нова електронна пошта",
+            password: "Новий пароль",
+            repeatPassword: "Повторіть новий пароль",
+          },
+          save: "Зберегти",
+          cancel: "Відмінити",
         },
         changeEmail: "Змінити електронну пошту",
         changePassword: "Змінити пароль",
         disconnectSpotify: "Відключити Spotify",
-        newEmail: "Нова електронна пошта",
-        enterNewEmail: "Введіть нову електронну пошту",
-        newPassword: "Новий пароль",
-        enterNewPassword: "Введіть новий пароль",
-        success: "Успішно",
-        error: "Помилка",
-        emailUpdated: "Електронна пошта оновлена",
-        passwordUpdated: "Пароль оновлено",
-        spotifyDisconnected: "Spotify відключено",
-        spotifyDisconnectError: "Помилка при відключенні Spotify",
       },
     },
 

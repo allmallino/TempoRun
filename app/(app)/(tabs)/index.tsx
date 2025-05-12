@@ -7,13 +7,11 @@ import useLogo from "@/hooks/useLogo";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { useDispatch } from "react-redux";
 
 export default function HomeScreen() {
   const logo = useLogo();
   const { t } = useTranslation();
   const i18nRoot = "app:menu";
-  const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.mainContainer} edges={["left", "right", "top"]}>

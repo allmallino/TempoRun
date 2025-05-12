@@ -75,25 +75,38 @@ export default {
       account: {
         title: "Account settings",
         deleteAccount: "Delete account",
-        deleteAccountModal: {
-          title: "Delete account",
-          description: "Are you sure you want to delete your account?",
+        confirmationModal: {
+          title: "Confirmation",
+          description: "Are you sure you want to proceed?",
           cancel: "Cancel",
-          delete: "Delete",
+          confirm: "Confirm",
+        },
+        inputModal: {
+          errors: {
+            invalidEmail: "Invalid email address",
+            passwordTooShort: "Password must be at least 8 characters long",
+            passwordsDoNotMatch: "Passwords do not match",
+            saveFailed: "Failed to save changes",
+          },
+          title: {
+            email: "Enter new email",
+            password: "Enter new password",
+          },
+          description: {
+            email: "Enter new email",
+            password: "Enter new password",
+          },
+          placeholder: {
+            email: "New email",
+            password: "New password",
+            repeatPassword: "Repeat new password",
+          },
+          cancel: "Cancel",
+          save: "Save",
         },
         changeEmail: "Change email",
         changePassword: "Change password",
         disconnectSpotify: "Disconnect Spotify",
-        newEmail: "New email",
-        enterNewEmail: "Enter new email",
-        newPassword: "New password",
-        enterNewPassword: "Enter new password",
-        success: "Success",
-        error: "Error",
-        emailUpdated: "Email updated",
-        passwordUpdated: "Password updated",
-        spotifyDisconnected: "Spotify disconnected",
-        spotifyDisconnectError: "Error disconnecting Spotify",
       },
     },
 

@@ -73,6 +73,7 @@ export default function ThemedButton({
         android_ripple={{
           color: disabled ? null : theme.primaryOpacity[12],
         }}
+        disabled={disabled}
         style={[
           styles.button,
           type === "text" && { paddingHorizontal: 12 },

@@ -1,9 +1,9 @@
 import { StyleSheet, View } from "react-native";
-import SettingButton from "../SettingButton";
-import DeleteAccountButton from "../DeleteAccountButton";
 import { useTranslation } from "react-i18next";
 import auth from "@react-native-firebase/auth";
 import React from "react";
+import SettingButtonWithConfirmationModal from "../SettingButtonWithConfirmationModal";
+import SettingButtonWithInputModal from "../SettingButtonWithInputModal";
 
 export default function AccountSettingsContainer() {
   const { t } = useTranslation();
@@ -17,26 +17,30 @@ export default function AccountSettingsContainer() {
     <View style={styles.container}>
       {!isEmailProvider && (
         <>
-          <SettingButton
+          <SettingButtonWithInputModal
             title={`${t(`${i18nRoot}.changeEmail`)}`}
             icon="envelope.fill"
-            onPress={() => {}}
+            type="email"
+            onSave={() => {}}
           />
-
-          <SettingButton
+          <SettingButtonWithInputModal
             title={`${t(`${i18nRoot}.changePassword`)}`}
             icon="lock.fill"
-            onPress={() => {}}
+            type="password"
+            onSave={() => {}}
           />
         </>
       )}
-
-      <SettingButton
+      <SettingButtonWithConfirmationModal
         title={t(`${i18nRoot}.disconnectSpotify`)}
         icon="person.crop.circle.fill.badge.minus"
-        onPress={() => {}}
+        onConfirm={() => {}}
       />
-      <DeleteAccountButton />
+      <SettingButtonWithConfirmationModal
+        title={t(`${i18nRoot}.deleteAccount`)}
+        icon="minus.circle.fill"
+        onConfirm={() => {}}
+      />
     </View>
   );
 }

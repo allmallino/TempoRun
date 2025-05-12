@@ -5,19 +5,19 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import ModalBase from "@/components/ui/ModalBase";
 
-type DeleteAccountModalProps = {
+type ConfirmationModalProps = {
   visible: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-export default function DeleteAccountModal({
+export default function ConfirmationModal({
   visible,
   onConfirm,
   onCancel,
-}: DeleteAccountModalProps) {
+}: ConfirmationModalProps) {
   const { t } = useTranslation();
-  const i18nRoot = "app:settings:account:deleteAccountModal";
+  const i18nRoot = "app:settings:account:confirmationModal";
 
   return (
     <ModalBase visible={visible} onClose={onCancel} style={styles.modal}>
@@ -28,7 +28,7 @@ export default function DeleteAccountModal({
         </View>
         <View style={styles.buttonsContainer}>
           <ThemedButton title={t(`${i18nRoot}.cancel`)} onPress={onCancel} />
-          <ThemedButton title={t(`${i18nRoot}.delete`)} onPress={onConfirm} />
+          <ThemedButton title={t(`${i18nRoot}.confirm`)} onPress={onConfirm} />
         </View>
       </View>
     </ModalBase>

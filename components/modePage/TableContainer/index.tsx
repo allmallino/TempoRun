@@ -14,6 +14,7 @@ type TableContainerProps = {
   onClickFactory: (index: number) => (() => void) | null;
 };
 
+const MAX_OPTIONS = 15;
 export default function TableContainer({
   onClickFactory,
 }: TableContainerProps) {
@@ -52,7 +53,7 @@ export default function TableContainer({
           <Divider color={theme.surfaceContainer} />
         </View>
       ))}
-      <AddOptionButton />
+      {options.length < MAX_OPTIONS && <AddOptionButton />}
     </ScrollView>
   );
 }

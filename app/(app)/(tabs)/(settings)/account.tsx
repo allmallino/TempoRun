@@ -1,8 +1,7 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ThemedText from "@/components/ThemedText";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
-import DeleteAccountButton from "@/components/settingPage/DeleteAccountButton";
 import IconButton from "@/components/ui/IconButton";
 import { useContext } from "react";
 import { ThemeContext } from "@/theme/ThemeContext";
