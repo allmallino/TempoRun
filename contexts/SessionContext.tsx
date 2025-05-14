@@ -7,8 +7,11 @@ import React, {
 } from "react";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-import { calculateAveragePace, calculatePace } from "@/helpers/Session";
-import { calculateDistance } from "@/helpers/Session";
+import {
+  calculateAveragePace,
+  calculatePace,
+  calculateDistance,
+} from "@/helpers";
 
 const LOCATION_TRACKING = "background-location-tracking";
 const TIME_UPDATE_INTERVAL = 1000;
@@ -36,12 +39,53 @@ interface FitnessData {
 
 interface SessionContextType {
   sessionData: SessionData | null;
-  startSession: () => void;
-  endSession: () => void;
+  startSession: () => Promise<void>;
+  endSession: () => Promise<void>;
   getAveragePace: () => number;
 }
 
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
+
+const handleLocationUpdate = (
+  location: Location.LocationObject,
+  prevData: FitnessData
+): FitnessData => {
+  const paceHistory = [...prevData.paceHistory];
+  let currentKilometerPaces = [...prevData.currentKilometerPaces];
+
+  const travelledDistance = prevData.lastLocation
+    ? calculateDistance(prevData.lastLocation, location)
+    : 0;
+  const newDistance = prevData.sessionData.distance + travelledDistance;
+
+  const timeElapsed =
+    location.timestamp -
+    (prevData.lastLocation?.timestamp ?? prevData.sessionData.startTime);
+  const currentPace = calculatePace(travelledDistance, timeElapsed);
+
+  const currentKilometer = Math.floor(newDistance / 1000);
+  const lastKilometer = prevData.lastLocation
+    ? Math.floor(prevData.sessionData.distance / 1000)
+    : currentKilometer;
+
+  if (currentKilometer !== lastKilometer) {
+    paceHistory.push(calculateAveragePace(currentKilometerPaces));
+    currentKilometerPaces = [currentPace];
+  } else {
+    currentKilometerPaces.push(currentPace);
+  }
+
+  return {
+    sessionData: {
+      ...prevData.sessionData,
+      distance: newDistance,
+      pace: calculateAveragePace(currentKilometerPaces),
+    },
+    paceHistory,
+    currentKilometerPaces,
+    lastLocation: location,
+  };
+};
 
 TaskManager.defineTask(
   LOCATION_TRACKING,
@@ -54,15 +98,33 @@ TaskManager.defineTask(
       console.error(body.error);
       return;
     }
-    if (body.data) {
-      const { locations } = body.data;
-      const location = locations[0];
-      if (location) {
-        window.sessionUpdateCallback?.(location);
-      }
+    if (body.data?.locations[0]) {
+      window.sessionUpdateCallback?.(body.data.locations[0]);
     }
   }
 );
+
+const createInitialFitnessData = (): FitnessData => ({
+  sessionData: {
+    startTime: Date.now(),
+    distance: 0,
+    pace: 0,
+    currentOptionIndex: 0,
+  },
+  paceHistory: [],
+  currentKilometerPaces: [],
+  lastLocation: null,
+});
+
+const startLocationUpdates = async () => {
+  await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
+    accuracy: Location.Accuracy.High,
+    timeInterval: TIME_UPDATE_INTERVAL,
+    distanceInterval: DISTANCE_UPDATE_INTERVAL,
+    pausesUpdatesAutomatically: false,
+    activityType: Location.ActivityType.Fitness,
+  });
+};
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [fitnessData, setFitnessData] = useState<FitnessData | null>(null);
@@ -71,43 +133,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     window.sessionUpdateCallback = (location: Location.LocationObject) => {
       setFitnessData((prev) => {
         if (!prev) return null;
-
-        const paceHistory = [...prev.paceHistory];
-        let currentKilometerPaces = [...prev.currentKilometerPaces];
-
-        const travelledDistance = prev.lastLocation
-          ? calculateDistance(prev.lastLocation, location)
-          : 0;
-        const newDistance = prev.sessionData.distance + travelledDistance;
-
-        const timeElapsed =
-          location.timestamp -
-          (prev.lastLocation?.timestamp ?? prev.sessionData.startTime);
-        const currentPace = calculatePace(travelledDistance, timeElapsed);
-
-        const currentKilometer = Math.floor(newDistance / 1000);
-        const lastKilometer = prev.lastLocation
-          ? Math.floor(prev.sessionData.distance / 1000)
-          : currentKilometer;
-
-        if (currentKilometer !== lastKilometer) {
-          paceHistory.push(calculateAveragePace(currentKilometerPaces));
-          currentKilometerPaces = [currentPace];
-        } else {
-          currentKilometerPaces.push(currentPace);
-        }
-
-        return {
-          ...prev,
-          sessionData: {
-            ...prev.sessionData,
-            distance: newDistance,
-            pace: calculateAveragePace(currentKilometerPaces),
-          },
-          paceHistory,
-          currentKilometerPaces,
-          lastLocation: location,
-        };
+        return handleLocationUpdate(location, prev);
       });
     };
 
@@ -116,29 +142,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const startLocationUpdates = async () => {
-    await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
-      accuracy: Location.Accuracy.High,
-      timeInterval: TIME_UPDATE_INTERVAL,
-      distanceInterval: DISTANCE_UPDATE_INTERVAL,
-      pausesUpdatesAutomatically: false,
-      activityType: Location.ActivityType.Fitness,
-    });
-  };
-
   const startSession = async () => {
-    setFitnessData({
-      sessionData: {
-        startTime: Date.now(),
-        distance: 0,
-        pace: 0,
-        currentOptionIndex: 0,
-      },
-      paceHistory: [],
-      currentKilometerPaces: [],
-      lastLocation: null,
-    });
-
+    setFitnessData(createInitialFitnessData());
     await startLocationUpdates();
   };
 
@@ -151,10 +156,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   };
 
   const getAveragePace = () => {
-    return calculateAveragePace([
-      ...(fitnessData?.currentKilometerPaces ?? []),
-      calculateAveragePace(fitnessData?.currentKilometerPaces ?? []),
-    ]);
+    if (!fitnessData?.currentKilometerPaces) return 0;
+    const allPaces = [
+      ...fitnessData.currentKilometerPaces,
+      calculateAveragePace(fitnessData.currentKilometerPaces),
+    ];
+    return calculateAveragePace(allPaces);
   };
 
   return (
@@ -173,7 +180,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
 export function useSession() {
   const context = useContext(SessionContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useSession must be used within a SessionProvider");
   }
   return context;
