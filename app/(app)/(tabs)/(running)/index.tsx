@@ -4,21 +4,20 @@ import CurrentOption from "@/components/runningPage/CurrentOption";
 import Dashboard from "@/components/runningPage/Dashboard";
 import StopButton from "@/components/runningPage/StopButton";
 import { useSession } from "@/contexts/SessionContext";
-import React, { useCallback, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ThemeContext } from "@/theme/ThemeContext";
-import { useFocusEffect } from "expo-router";
+
 export default function RunningPage() {
   const { startSession, endSession, sessionData } = useSession();
   const { theme } = useContext(ThemeContext);
 
-  useFocusEffect(
-    useCallback(() => {
-      startSession();
-      return () => {
-        endSession();
-      };
-    }, [startSession, endSession])
-  );
+  useEffect(() => {
+    startSession();
+    return () => {
+      endSession();
+    };
+  }, []);
+
   return (
     <SafeAreaView
       style={styles.mainContainer}

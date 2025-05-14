@@ -15,7 +15,15 @@
       "backgroundColor": "#1C1B1F"
     },
     "android": {
-      "backgroundColor": "#1C1B1F"
+      "backgroundColor": "#1C1B1F",
+      "package": "com.temporun.app",
+      "softwareKeyboardLayoutMode": "pan",
+      "allowBackup": true,
+      "foregroundService": {
+        "name": "TempoRun Service",
+        "notificationTitle": "TempoRun",
+        "notificationBody": "TempoRun is running"
+      }
     },
     "plugins": [
       "expo-router",
@@ -33,7 +41,15 @@
       ],
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow TempoRun to use your location for tracking even when the app is inactive.",
+          "locationAlwaysPermission": "Allow TempoRun to use your location for tracking even when the app is inactive.",
+          "locationWhenInUsePermission": "Allow TempoRun to use your location for tracking."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

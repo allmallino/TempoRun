@@ -30,6 +30,15 @@ export default {
   },
 
   app: {
+    permissions: {
+      location: {
+        title: "Location permissions",
+        foregroundMessage: "Allow TempoRun to use your location for tracking.",
+        backgroundMessage:
+          "Allow TempoRun to use your location for tracking even when the app is inactive.",
+        error: "Error requesting location permissions",
+      },
+    },
     tabs: {
       stats: "Stats",
       mode: "Mode",

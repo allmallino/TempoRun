@@ -22,6 +22,13 @@ export default ({ config }) => ({
     permissions: ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
     googleServicesFile:
       process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
+    softwareKeyboardLayoutMode: "pan",
+    allowBackup: true,
+    foregroundService: {
+      name: "TempoRun Service",
+      notificationTitle: "TempoRun",
+      notificationBody: "TempoRun is running",
+    },
     config: {
       googleMaps: {
         apiKey: process.env.GOOGLE_MAPS_API_KEY,
