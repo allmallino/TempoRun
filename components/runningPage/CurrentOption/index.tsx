@@ -1,17 +1,12 @@
 import ThemedText from "@/components/ThemedText";
 import ElevatedContainer from "@/components/ui/ElevatedContainer";
 import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
-import {
-  getSelectedMode,
-  getSelectedOptionsLength,
-} from "@/state/mode/selectors";
 import { Mode } from "@/state/mode/types";
-import { useSession } from "@/contexts/SessionContext";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useAlgorithm } from "@/hooks/useAlgorithm";
 
 const modeIcon = {
   [Mode.TIMER]: "watch.analog",
@@ -23,13 +18,10 @@ const modeIcon = {
 export default function CurrentOption() {
   const { theme } = useContext(ThemeContext);
   const color = theme.onSurface;
-  const mode = useSelector(getSelectedMode);
   const { t } = useTranslation();
   const i18nRoot = "app:menu";
-  const songPace = "Medium";
-  const { sessionData } = useSession();
-  const currentOptionIndex = sessionData!.currentOptionIndex + 1;
-  const totalOptions = useSelector(getSelectedOptionsLength);
+  const { currentOptionIndex, currentTempo, totalOptions, mode } =
+    useAlgorithm();
 
   return (
     <ElevatedContainer style={styles.container} elevation={4}>
@@ -41,11 +33,11 @@ export default function CurrentOption() {
         </ThemedText>
         <ThemedText type="default">
           Current song pace:{" "}
-          <ThemedText type="defaultSemiBold">{songPace}</ThemedText>
+          <ThemedText type="defaultSemiBold">{currentTempo}</ThemedText>
         </ThemedText>
       </View>
       <ThemedText type="defaultSemiBold">
-        {`${currentOptionIndex} / ${totalOptions}`}
+        {`${currentOptionIndex + 1} / ${totalOptions}`}
       </ThemedText>
     </ElevatedContainer>
   );

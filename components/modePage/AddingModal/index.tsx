@@ -38,7 +38,8 @@ const inputInfoByMode: Record<Mode, inputInfoType> = {
     inputSeparator: ":",
     fromInputToIndicator: (inputValues) =>
       inputValues.map((v) => v.padStart(2, "0")).join(":"),
-    fromIndicatorToInput: (indicator) => indicator.split(":"),
+    fromIndicatorToInput: (indicator) =>
+      indicator.split(":").map((v) => `${parseInt(v)}`),
   },
   [Mode.LENGTH]: {
     inputTitles: ["kilometers", "meters"],
@@ -49,14 +50,14 @@ const inputInfoByMode: Record<Mode, inputInfoType> = {
       (value) => Number(value) < 1000 && Number(value) >= 0,
     ],
     modalTitle: "selectLength",
-    inputSeparator: ",",
+    inputSeparator: ".",
     fromInputToIndicator: (inputValues) =>
       `${Number(inputValues[0] ?? 0)
         .toString()
-        .padStart(1, "0")},${Number(inputValues[1] ?? 0)
+        .padStart(1, "0")}.${Number(inputValues[1] ?? 0)
         .toString()
         .padStart(3, "0")}`,
-    fromIndicatorToInput: (indicator) => indicator.split(","),
+    fromIndicatorToInput: (indicator) => indicator.split("."),
   },
   [Mode.MAP]: {
     inputTitles: ["latitude", "longitude"],

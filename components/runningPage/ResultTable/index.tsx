@@ -14,11 +14,10 @@ export default function ResultTable() {
   const { t } = useTranslation();
   const i18nRoot = "app:results";
 
-  const { sessionData, getAveragePace } = useSession();
+  const { sessionData, getAveragePace, currentOptionIndex } = useSession();
   const totalOptions = useSelector(getSelectedOptionsLength);
 
   const time = formatTime((Date.now() - sessionData!.startTime) / 1000);
-  const currentOptionIndex = sessionData!.currentOptionIndex + 1;
   const distance = formatDistance(sessionData!.distance);
   const pace = formatPace(getAveragePace());
 
@@ -34,7 +33,7 @@ export default function ResultTable() {
         <ResultTableRow title={t(`${i18nRoot}.pace`)} value={`${pace}/km`} />
         <ResultTableRow
           title={t(`${i18nRoot}.checkpoints`)}
-          value={`${currentOptionIndex}/${totalOptions}`}
+          value={`${currentOptionIndex + 1}/${totalOptions}`}
         />
       </View>
     </ElevatedContainer>

@@ -23,11 +23,10 @@ declare global {
   }
 }
 
-interface SessionData {
+export interface SessionData {
   startTime: number;
   distance: number;
   pace: number;
-  currentOptionIndex: number;
 }
 
 interface FitnessData {
@@ -42,6 +41,8 @@ interface SessionContextType {
   startSession: () => Promise<void>;
   endSession: () => Promise<void>;
   getAveragePace: () => number;
+  currentOptionIndex: number;
+  setCurrentOptionIndex: (index: number) => void;
 }
 
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
@@ -109,7 +110,6 @@ const createInitialFitnessData = (): FitnessData => ({
     startTime: Date.now(),
     distance: 0,
     pace: 0,
-    currentOptionIndex: 0,
   },
   paceHistory: [],
   currentKilometerPaces: [],
@@ -128,7 +128,7 @@ const startLocationUpdates = async () => {
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [fitnessData, setFitnessData] = useState<FitnessData | null>(null);
-
+  const [currentOptionIndex, setCurrentOptionIndex] = useState<number>(-1);
   useEffect(() => {
     window.sessionUpdateCallback = (location: Location.LocationObject) => {
       setFitnessData((prev) => {
@@ -144,6 +144,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   const startSession = async () => {
     setFitnessData(createInitialFitnessData());
+    setCurrentOptionIndex(-1);
     await startLocationUpdates();
   };
 
@@ -171,6 +172,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         startSession,
         endSession,
         getAveragePace,
+        currentOptionIndex,
+        setCurrentOptionIndex,
       }}
     >
       {children}
