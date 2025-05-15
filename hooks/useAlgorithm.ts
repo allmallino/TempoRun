@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { MusicTempo } from "@/state/mode/types";
+import { Mode, MusicTempo } from "@/state/mode/types";
 import { useState } from "react";
 import { useSession } from "@/contexts/SessionContext";
 import { useSelector } from "react-redux";
@@ -13,9 +13,7 @@ import { convertDictionary } from "@/helpers";
 const INTERVAL_DELAY = 1000;
 
 export function useAlgorithm() {
-  const [currentTempo, setCurrentTempo] = useState<MusicTempo>(
-    MusicTempo.MEDIUM
-  );
+  const [currentTempo, setCurrentTempo] = useState<MusicTempo | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const { sessionData, currentOptionIndex, setCurrentOptionIndex } =
@@ -48,7 +46,7 @@ export function useAlgorithm() {
       }
     };
 
-    if (isLastOption) {
+    if (isLastOption && mode !== Mode.PACE) {
       clearIntervalIfExists();
       return;
     }

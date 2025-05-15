@@ -43,8 +43,17 @@ const convertPosition: ConvertFunction = (data, option) => {
   return distanceToTarget <= RADIUS_METERS ? option.musicTempo : null;
 };
 
+const convertPace: ConvertFunction = (data) => {
+  const pace = data.pace;
+  if (!pace) return MusicTempo.MEDIUM;
+
+  if (pace < 5 * 60) return MusicTempo.HIGH;
+  else if (pace < 6 * 60) return MusicTempo.MEDIUM;
+  else return MusicTempo.LOW;
+};
+
 export const convertDictionary: Record<Mode, ConvertFunction> = {
-  [Mode.PACE]: () => null, // TODO: Implement
+  [Mode.PACE]: convertPace,
   [Mode.MAP]: convertPosition,
   [Mode.LENGTH]: convertLength,
   [Mode.TIMER]: convertTimer,

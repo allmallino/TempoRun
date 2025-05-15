@@ -39,9 +39,11 @@ export default function CurrentOption() {
               <ThemedText type="defaultSemiBold">{currentTempo}</ThemedText>
             </ThemedText>
           </View>
-          <ThemedText type="defaultSemiBold">
-            {`${currentOptionIndex + 1} / ${totalOptions}`}
-          </ThemedText>
+          {mode !== Mode.PACE && (
+            <ThemedText type="defaultSemiBold">
+              {`${currentOptionIndex + 1} / ${totalOptions}`}
+            </ThemedText>
+          )}
         </>
       ) : (
         <View style={styles.activityIndicatorContainer}>
