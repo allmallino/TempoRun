@@ -8,7 +8,7 @@ import React, { useContext, useEffect } from "react";
 import { ThemeContext } from "@/theme/ThemeContext";
 
 export default function RunningPage() {
-  const { startSession, endSession, sessionData } = useSession();
+  const { startSession, endSession, sessionStarted } = useSession();
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function RunningPage() {
       style={styles.mainContainer}
       edges={["left", "right", "top", "bottom"]}
     >
-      {sessionData ? (
+      {sessionStarted ? (
         <>
           <Dashboard />
           <CurrentOption />

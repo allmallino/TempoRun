@@ -38,6 +38,7 @@ interface FitnessData {
 
 interface SessionContextType {
   sessionData: SessionData | null;
+  sessionStarted: boolean;
   startSession: () => Promise<void>;
   endSession: () => Promise<void>;
   getAveragePace: () => number;
@@ -133,6 +134,7 @@ const startLocationUpdates = async () => {
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [fitnessData, setFitnessData] = useState<FitnessData | null>(null);
   const [currentOptionIndex, setCurrentOptionIndex] = useState<number>(-1);
+  const [sessionStarted, setSessionStarted] = useState<boolean>(false);
   useEffect(() => {
     window.sessionUpdateCallback = (location: Location.LocationObject) => {
       setFitnessData((prev) => {
@@ -150,11 +152,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setFitnessData(createInitialFitnessData());
     setCurrentOptionIndex(-1);
     await startLocationUpdates();
+    setSessionStarted(true);
   };
 
   const endSession = async () => {
     try {
       await Location.stopLocationUpdatesAsync(LOCATION_TRACKING);
+      setSessionStarted(false);
     } catch (error) {
       console.error("Error stopping location updates:", error);
     }
@@ -178,6 +182,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         getAveragePace,
         currentOptionIndex,
         setCurrentOptionIndex,
+        sessionStarted,
       }}
     >
       {children}

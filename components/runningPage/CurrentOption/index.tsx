@@ -5,8 +5,9 @@ import { Mode } from "@/state/mode/types";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useAlgorithm } from "@/hooks/useAlgorithm";
+import React from "react";
 
 const modeIcon = {
   [Mode.TIMER]: "watch.analog",
@@ -25,20 +26,28 @@ export default function CurrentOption() {
 
   return (
     <ElevatedContainer style={styles.container} elevation={4}>
-      <IconSymbol size={28} name={modeIcon[mode]} color={color} />
+      {currentOptionIndex !== -1 ? (
+        <>
+          <IconSymbol size={28} name={modeIcon[mode]} color={color} />
 
-      <View style={styles.textContainer}>
-        <ThemedText type="defaultSemiBold">
-          {t(`${i18nRoot}:mods.${mode}`)}
-        </ThemedText>
-        <ThemedText type="default">
-          Current song pace:{" "}
-          <ThemedText type="defaultSemiBold">{currentTempo}</ThemedText>
-        </ThemedText>
-      </View>
-      <ThemedText type="defaultSemiBold">
-        {`${currentOptionIndex + 1} / ${totalOptions}`}
-      </ThemedText>
+          <View style={styles.textContainer}>
+            <ThemedText type="defaultSemiBold">
+              {t(`${i18nRoot}:mods.${mode}`)}
+            </ThemedText>
+            <ThemedText type="default">
+              Current song pace:{" "}
+              <ThemedText type="defaultSemiBold">{currentTempo}</ThemedText>
+            </ThemedText>
+          </View>
+          <ThemedText type="defaultSemiBold">
+            {`${currentOptionIndex + 1} / ${totalOptions}`}
+          </ThemedText>
+        </>
+      ) : (
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator size="large" color={color} />
+        </View>
+      )}
     </ElevatedContainer>
   );
 }
@@ -54,5 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
+  },
+  activityIndicatorContainer: {
+    flex: 1,
+    padding: 6,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
