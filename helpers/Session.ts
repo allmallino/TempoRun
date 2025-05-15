@@ -1,4 +1,7 @@
-import { LocationObject } from "expo-location";
+type Position = {
+  latitude: number;
+  longitude: number;
+};
 
 export const formatTime = (time: number) => {
   const hours = Math.floor(time / 3600).toString();
@@ -24,17 +27,14 @@ export const formatDistance = (distance: number) => {
   return `${kilometers}.${meters.toString().padStart(2, "0")}`;
 };
 
-export const calculateDistance = (
-  loc1: LocationObject,
-  loc2: LocationObject
-) => {
-  if (!loc1.coords || !loc2.coords) return 0;
+export const calculateDistance = (loc1: Position, loc2: Position) => {
+  if (!loc1.latitude || !loc2.latitude) return 0;
 
   const R = 6371e3;
-  const φ1 = (loc1.coords.latitude * Math.PI) / 180;
-  const φ2 = (loc2.coords.latitude * Math.PI) / 180;
-  const Δφ = ((loc2.coords.latitude - loc1.coords.latitude) * Math.PI) / 180;
-  const Δλ = ((loc2.coords.longitude - loc1.coords.longitude) * Math.PI) / 180;
+  const φ1 = (loc1.latitude * Math.PI) / 180;
+  const φ2 = (loc2.latitude * Math.PI) / 180;
+  const Δφ = ((loc2.latitude - loc1.latitude) * Math.PI) / 180;
+  const Δλ = ((loc2.longitude - loc1.longitude) * Math.PI) / 180;
 
   const a =
     Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +

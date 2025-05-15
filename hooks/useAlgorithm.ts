@@ -28,6 +28,8 @@ export function useAlgorithm() {
   const convert = useMemo(() => convertDictionary[mode], [mode]);
 
   useEffect(() => {
+    const isLastOption = currentOptionIndex === totalOptions - 1;
+
     const checkAndUpdateTempo = () => {
       if (!sessionData) return;
 
@@ -39,14 +41,22 @@ export function useAlgorithm() {
       }
     };
 
-    intervalRef.current = setInterval(checkAndUpdateTempo, INTERVAL_DELAY);
-
-    return () => {
+    const clearIntervalIfExists = () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-  }, [sessionData, currentOption, nextIndex, convert]);
+
+    if (isLastOption) {
+      clearIntervalIfExists();
+      return;
+    }
+
+    intervalRef.current = setInterval(checkAndUpdateTempo, INTERVAL_DELAY);
+
+    return clearIntervalIfExists;
+  }, [sessionData, currentOptionIndex]);
 
   useEffect(() => {
     if (currentOptionIndex >= 0) {

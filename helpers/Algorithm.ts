@@ -1,5 +1,8 @@
 import { Mode, ModeOptionType, MusicTempo } from "@/state/mode/types";
 import { SessionData } from "@/contexts/SessionContext";
+import { calculateDistance } from "./Session";
+
+const RADIUS_METERS = 100;
 
 type ConvertFunction = (
   data: SessionData,
@@ -21,9 +24,28 @@ const convertTimer: ConvertFunction = (data, option) => {
   return time >= optionTime ? option.musicTempo : null;
 };
 
+const convertPosition: ConvertFunction = (data, option) => {
+  const [latitude, longitude] = option.indicator.split(",").map(parseFloat);
+  const optionPosition = { latitude, longitude };
+
+  const isDefaultPosition = latitude === 0 && longitude === 0;
+  if (isDefaultPosition) return option.musicTempo;
+
+  if (!data.lastLocation) return null;
+
+  const currentPosition = {
+    latitude: data.lastLocation.coords.latitude,
+    longitude: data.lastLocation.coords.longitude,
+  };
+
+  const distanceToTarget = calculateDistance(currentPosition, optionPosition);
+
+  return distanceToTarget <= RADIUS_METERS ? option.musicTempo : null;
+};
+
 export const convertDictionary: Record<Mode, ConvertFunction> = {
   [Mode.PACE]: () => null, // TODO: Implement
-  [Mode.MAP]: () => null, // TODO: Implement
+  [Mode.MAP]: convertPosition,
   [Mode.LENGTH]: convertLength,
   [Mode.TIMER]: convertTimer,
 };

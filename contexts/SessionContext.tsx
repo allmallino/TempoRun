@@ -27,13 +27,13 @@ export interface SessionData {
   startTime: number;
   distance: number;
   pace: number;
+  lastLocation?: Location.LocationObject | null;
 }
 
 interface FitnessData {
   sessionData: SessionData;
   paceHistory: number[];
   currentKilometerPaces: number[];
-  lastLocation?: Location.LocationObject | null;
 }
 
 interface SessionContextType {
@@ -54,18 +54,22 @@ const handleLocationUpdate = (
   const paceHistory = [...prevData.paceHistory];
   let currentKilometerPaces = [...prevData.currentKilometerPaces];
 
-  const travelledDistance = prevData.lastLocation
-    ? calculateDistance(prevData.lastLocation, location)
+  const travelledDistance = prevData.sessionData.lastLocation
+    ? calculateDistance(
+        prevData.sessionData.lastLocation.coords,
+        location.coords
+      )
     : 0;
   const newDistance = prevData.sessionData.distance + travelledDistance;
 
   const timeElapsed =
     location.timestamp -
-    (prevData.lastLocation?.timestamp ?? prevData.sessionData.startTime);
+    (prevData.sessionData.lastLocation?.timestamp ??
+      prevData.sessionData.startTime);
   const currentPace = calculatePace(travelledDistance, timeElapsed);
 
   const currentKilometer = Math.floor(newDistance / 1000);
-  const lastKilometer = prevData.lastLocation
+  const lastKilometer = prevData.sessionData.lastLocation
     ? Math.floor(prevData.sessionData.distance / 1000)
     : currentKilometer;
 
@@ -81,10 +85,10 @@ const handleLocationUpdate = (
       ...prevData.sessionData,
       distance: newDistance,
       pace: calculateAveragePace(currentKilometerPaces),
+      lastLocation: location,
     },
     paceHistory,
     currentKilometerPaces,
-    lastLocation: location,
   };
 };
 
@@ -110,10 +114,10 @@ const createInitialFitnessData = (): FitnessData => ({
     startTime: Date.now(),
     distance: 0,
     pace: 0,
+    lastLocation: null,
   },
   paceHistory: [],
   currentKilometerPaces: [],
-  lastLocation: null,
 });
 
 const startLocationUpdates = async () => {

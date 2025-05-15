@@ -35,12 +35,12 @@ export default function Map() {
 
   useEffect(() => {
     const requestLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setError("Permission to access location was denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync();
+      const location = await Location.getCurrentPositionAsync();
       setCurrentLocation(location);
       setIsLoading(false);
     };
