@@ -160,6 +160,9 @@ export default {
           high: "High",
         },
       },
+      paceSlider: {
+        title: "Slider for the running pace",
+      },
     },
 
     running: {

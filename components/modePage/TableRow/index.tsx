@@ -10,9 +10,9 @@ import { useTranslation } from "react-i18next";
 type TableRowProps = {
   title: string;
   tempo: MusicTempo;
-  onClick: (() => void) | null;
-  onRemoveClick: (() => void) | null;
-  onTempoChange: (tempo: MusicTempo) => void;
+  onClick?: (() => void) | null;
+  onRemoveClick?: (() => void) | null;
+  onTempoChange?: ((tempo: MusicTempo) => void) | null;
 };
 
 export default function TableRow({
@@ -33,14 +33,20 @@ export default function TableRow({
         <ThemedText>{title}</ThemedText>
       </Pressable>
       <View style={[styles.cellContainer, { flex: 1.5 }]}>
-        <TableSelector
-          value={tempo}
-          items={tempoItems.map((tempo) => ({
-            label: t(`${i18nRoot}.${tempo}`),
-            value: tempo,
-          }))}
-          onValueChange={onTempoChange}
-        />
+        {onTempoChange ? (
+          <TableSelector
+            value={tempo}
+            items={tempoItems.map((tempo) => ({
+              label: t(`${i18nRoot}.${tempo}`),
+              value: tempo,
+            }))}
+            onValueChange={onTempoChange}
+          />
+        ) : (
+          <ThemedText style={styles.tempoText}>
+            {t(`${i18nRoot}.${tempo}`)}
+          </ThemedText>
+        )}
       </View>
       <View style={styles.removeButtonContainer}>
         {onRemoveClick && (
@@ -70,6 +76,10 @@ const styles = StyleSheet.create({
   cellContainer: {
     paddingHorizontal: 16,
     paddingVertical: 14,
+  },
+  tempoText: {
+    paddingVertical: 15,
+    paddingHorizontal: 10,
   },
   removeButtonContainer: {
     width: 48,

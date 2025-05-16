@@ -37,7 +37,7 @@ export async function initUserModeInfo(userId: string) {
         ],
         [Mode.PACE]: [
           {
-            indicator: "00:00",
+            indicator: "300:360",
             musicTempo: MusicTempo.MEDIUM,
           },
         ],

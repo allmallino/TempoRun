@@ -17,6 +17,8 @@ import TableContainer from "../TableContainer";
 import AddingModal from "../AddingModal";
 import { AppDispatch } from "@/state/store";
 import Map from "../Map";
+import PaceSlider from "../PaceSlider";
+import PaceInfoTable from "../PaceInfoTable";
 
 const titlesByMode = {
   [Mode.TIMER]: ["time", "tempo"],
@@ -78,13 +80,17 @@ export default function Table() {
         }}
       />
       {selectedMode === Mode.MAP ? <Map /> : null}
-      {selectedMode !== Mode.PACE ? (
-        <View style={styles.table}>
-          <TableHeader titles={titles} />
-          <Divider color={theme.surfaceContainerHighest} />
+      {selectedMode === Mode.PACE ? <PaceSlider /> : null}
+
+      <View style={styles.table}>
+        <TableHeader titles={titles} />
+        <Divider color={theme.surfaceContainerHighest} />
+        {selectedMode !== Mode.PACE ? (
           <TableContainer onClickFactory={onClickFactory} />
-        </View>
-      ) : null}
+        ) : (
+          <PaceInfoTable />
+        )}
+      </View>
     </View>
   );
 }

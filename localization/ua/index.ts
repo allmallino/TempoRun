@@ -160,6 +160,9 @@ export default {
           high: "Великий",
         },
       },
+      paceSlider: {
+        title: "Слайдер для темпу бігу",
+      },
     },
 
     running: {

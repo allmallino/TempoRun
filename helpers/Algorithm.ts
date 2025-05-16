@@ -43,12 +43,13 @@ const convertPosition: ConvertFunction = (data, option) => {
   return distanceToTarget <= RADIUS_METERS ? option.musicTempo : null;
 };
 
-const convertPace: ConvertFunction = (data) => {
+const convertPace: ConvertFunction = (data, option) => {
+  const [min, max] = option.indicator.split(":").map(Number);
   const pace = data.pace;
   if (!pace) return MusicTempo.MEDIUM;
 
-  if (pace < 5 * 60) return MusicTempo.HIGH;
-  else if (pace < 6 * 60) return MusicTempo.MEDIUM;
+  if (pace <= min) return MusicTempo.HIGH;
+  else if (pace <= max) return MusicTempo.MEDIUM;
   else return MusicTempo.LOW;
 };
 
