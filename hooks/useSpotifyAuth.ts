@@ -30,7 +30,12 @@ export default function useSpotifyAuth() {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: Spotify.env.clientId,
-      scopes: ["user-read-private", "playlist-read-private"],
+      scopes: [
+        "user-read-private",
+        "playlist-read-private",
+        "user-modify-playback-state",
+        "user-read-playback-state",
+      ],
       usePKCE: true,
       redirectUri: Spotify.env.redirectUri,
       extraParams: {

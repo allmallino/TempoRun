@@ -8,7 +8,11 @@ import {
   getSelectedOptionByIndex,
   getSelectedOptionsLength,
 } from "@/state/mode/selectors";
-import { convertDictionary } from "@/helpers";
+import { convertDictionary, groupBy, randomizeArray } from "@/helpers";
+import { getActivatedPlaylist } from "@/state/playlists/selectors";
+import { getTracksByIds } from "@/state/tracks/selectors";
+import { useStreamingServiceToken } from "./useStreamingServiceToken";
+import { setPlayback } from "@/services/spotifyService";
 
 const INTERVAL_DELAY = 1000;
 
@@ -21,46 +25,63 @@ export function useAlgorithm() {
   const totalOptions = useSelector(getSelectedOptionsLength);
   const mode = useSelector(getSelectedMode);
 
-  const nextIndex = Math.min(currentOptionIndex + 1, totalOptions - 1);
-  const currentOption = useSelector(getSelectedOptionByIndex(nextIndex));
+  const { getToken } = useStreamingServiceToken();
+
+  const activePlaylist = useSelector(getActivatedPlaylist);
+  const activeTrackIds =
+    activePlaylist?.tracks
+      ?.filter((track) => track.active)
+      .map((track) => track.id) ?? [];
+
+  const tracks = useSelector(getTracksByIds(activeTrackIds));
+  const tracksByTempo = groupBy(tracks, (track) => track.info.tempo);
+
+  const nextOptionIndex = Math.min(currentOptionIndex + 1, totalOptions - 1);
+  const nextOption = useSelector(getSelectedOptionByIndex(nextOptionIndex));
   const convert = useMemo(() => convertDictionary[mode], [mode]);
+
+  const updateTempoAndTrack = async (tempo: MusicTempo) => {
+    setCurrentTempo(tempo);
+    setCurrentOptionIndex(nextOptionIndex);
+    if (tempo === currentTempo) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    const trackQueue = randomizeArray(
+      tracksByTempo[tempo]?.map((track) => track.id) ?? activeTrackIds
+    );
+    await setPlayback(token, trackQueue);
+  };
 
   useEffect(() => {
     const isLastOption = currentOptionIndex === totalOptions - 1;
+    if (isLastOption && mode !== Mode.PACE) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
 
     const checkAndUpdateTempo = () => {
       if (!sessionData) return;
 
-      const tempo = convert(sessionData, currentOption);
-
+      const tempo = convert(sessionData, nextOption);
       if (tempo) {
-        setCurrentTempo(tempo);
-        setCurrentOptionIndex(nextIndex);
+        updateTempoAndTrack(tempo);
       }
     };
 
-    const clearIntervalIfExists = () => {
+    intervalRef.current = setInterval(checkAndUpdateTempo, INTERVAL_DELAY);
+
+    return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
-
-    if (isLastOption && mode !== Mode.PACE) {
-      clearIntervalIfExists();
-      return;
-    }
-
-    intervalRef.current = setInterval(checkAndUpdateTempo, INTERVAL_DELAY);
-
-    return clearIntervalIfExists;
   }, [sessionData, currentOptionIndex]);
-
-  useEffect(() => {
-    if (currentOptionIndex >= 0) {
-      console.log("Music tempo has changed, new tempo:", currentTempo);
-    }
-  }, [currentTempo]);
 
   return {
     currentOptionIndex,

@@ -113,7 +113,7 @@ export type trackInfoType = {
   href: string;
   id: string;
   is_playable: boolean;
-  linked_from: {};
+  linked_from: object;
   restrictions: { reason: string };
   name: string;
   popularity: number;
@@ -122,4 +122,20 @@ export type trackInfoType = {
   type: string;
   uri: string;
   is_local: boolean;
+};
+
+export enum DeviceType {
+  Computer = "Computer",
+  Smartphone = "Smartphone",
+  Speaker = "Speaker",
+}
+export type deviceInfoType = {
+  id: string;
+  is_active: boolean;
+  is_private_session: boolean;
+  is_restricted: boolean;
+  name: string;
+  type: DeviceType;
+  volume_percent: number;
+  supports_volume: true;
 };

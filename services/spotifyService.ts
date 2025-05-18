@@ -1,5 +1,7 @@
 import { PlaylistType, TrackType } from "@/state/playlists/types";
 import {
+  deviceInfoType,
+  DeviceType,
   playlistInfoType,
   playlistTrackInfo,
   trackInfoType,
@@ -196,4 +198,107 @@ export async function getValidSpotifyToken(
   }
 
   return credentials;
+}
+
+export async function getAvailableDevices(
+  accessToken: string
+): Promise<deviceInfoType[] | null> {
+  try {
+    const response = await fetch(
+      `${Spotify.url.apiV1Endpoint}/me/player/devices`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch devices: ${response.status}`);
+    }
+
+    const { devices = [] } = await response.json();
+    return devices.filter(
+      (device: deviceInfoType) => device.type === DeviceType.Smartphone
+    );
+  } catch (error) {
+    console.error("Failed to get available devices:", error);
+    return null;
+  }
+}
+
+export async function setPlayback(
+  accessToken: string,
+  trackIds: Array<string>,
+  position = 0,
+  positionMs = 0
+) {
+  try {
+    const devices = await getAvailableDevices(accessToken);
+    const deviceId = devices?.[0]?.id;
+    if (!deviceId) {
+      throw new Error("No device found");
+    }
+
+    const playbackOptions = {
+      uris: trackIds.map((id) => `spotify:track:${id}`),
+      offset: { position },
+      position_ms: positionMs,
+    };
+
+    const response = await fetch(
+      `${Spotify.url.apiV1Endpoint}/me/player/play?device_id=${deviceId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(playbackOptions),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Failed to start playback:", error);
+    return null;
+  }
+}
+
+export async function pausePlayback(
+  accessToken: string
+): Promise<boolean | null> {
+  try {
+    const devices = await getAvailableDevices(accessToken);
+    const deviceId = devices?.[0]?.id;
+    if (!deviceId) {
+      throw new Error("No device found");
+    }
+
+    const response = await fetch(
+      `${Spotify.url.apiV1Endpoint}/me/player/pause?device_id=${deviceId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Failed to pause playback:", error);
+    return null;
+  }
 }

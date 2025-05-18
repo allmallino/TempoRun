@@ -15,6 +15,21 @@ export function groupBy<T, K extends string | number | symbol>(
   }, {} as Record<K, T[]>);
 }
 
+export function randomizeArray<T>(array: T[]): T[] {
+  const randomizedArray = [...array];
+  let currentIndex = randomizedArray.length;
+  while (currentIndex != 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [randomizedArray[currentIndex], randomizedArray[randomIndex]] = [
+      randomizedArray[randomIndex],
+      randomizedArray[currentIndex],
+    ];
+  }
+  return randomizedArray;
+}
+
 export function getPlatformIcon(platform: PlatformType) {
   switch (platform) {
     case "Spotify":

@@ -12,6 +12,8 @@ import {
   calculatePace,
   calculateDistance,
 } from "@/helpers";
+import { useStreamingServiceToken } from "@/hooks/useStreamingServiceToken";
+import { pausePlayback } from "@/services/spotifyService";
 
 const LOCATION_TRACKING = "background-location-tracking";
 const TIME_UPDATE_INTERVAL = 1000;
@@ -135,6 +137,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [fitnessData, setFitnessData] = useState<FitnessData | null>(null);
   const [currentOptionIndex, setCurrentOptionIndex] = useState<number>(-1);
   const [sessionStarted, setSessionStarted] = useState<boolean>(false);
+  const { getToken } = useStreamingServiceToken();
   useEffect(() => {
     window.sessionUpdateCallback = (location: Location.LocationObject) => {
       setFitnessData((prev) => {
@@ -158,6 +161,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const endSession = async () => {
     try {
       await Location.stopLocationUpdatesAsync(LOCATION_TRACKING);
+      const accessToken = await getToken();
+      if (accessToken) {
+        await pausePlayback(accessToken);
+      }
       setSessionStarted(false);
     } catch (error) {
       console.error("Error stopping location updates:", error);
