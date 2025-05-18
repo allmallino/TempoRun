@@ -39,7 +39,7 @@ const inputInfoByMode: Record<Mode, inputInfoType> = {
     fromInputToIndicator: (inputValues) =>
       inputValues.map((v) => v.padStart(2, "0")).join(":"),
     fromIndicatorToInput: (indicator) =>
-      indicator.split(":").map((v) => `${parseInt(v)}`),
+      indicator.split(":").map((v) => (v ? `${parseInt(v)}` : "")),
   },
   [Mode.LENGTH]: {
     inputTitles: ["kilometers", "meters"],
