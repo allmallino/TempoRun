@@ -30,15 +30,6 @@ export default {
   },
 
   app: {
-    permissions: {
-      location: {
-        title: "Location permissions",
-        foregroundMessage: "Allow TempoRun to use your location for tracking.",
-        backgroundMessage:
-          "Allow TempoRun to use your location for tracking even when the app is inactive.",
-        error: "Error requesting location permissions",
-      },
-    },
     tabs: {
       stats: "Stats",
       mode: "Mode",
@@ -57,6 +48,24 @@ export default {
         map: "Map",
         length: "Length",
         pace: "Pace",
+      },
+      infoModal: {
+        title: "Error",
+        noActivePlaylist:
+          "No active playlist was found. Please select a playlist to continue.",
+        noSongs:
+          "No songs were found in the active playlist. Please add some songs to the playlist.",
+        noOptions:
+          "No options were found for the selected mode. Please add some options to the table on the mode page.",
+        noToken:
+          "No integrated Spotify account was found. Please connect your Spotify account to the app.",
+        noDevices:
+          "Active Spotify client was not found. Please start Spotify on your device and try again.",
+        noForegroundPermissions:
+          "No foreground permissions. Please grant foreground permissions to the app.",
+        noBackgroundPermissions:
+          "No background permissions. Please grant background permissions to the app.",
+        close: "Ok",
       },
     },
 
