@@ -6,6 +6,7 @@ import {
   addUserPlaylistTracks,
   getUserPlaylistInfo,
   initUserPlaylistInfo,
+  resetUserPlaylistInfo,
   removeUserPlaylistInfo,
   removeUserPlaylistTracks,
   setUserPlaylistActive,
@@ -109,6 +110,9 @@ const playlistSlice = createSlice({
             }
           }
         }
+      })
+      .addCase(removeAllPlaylistsAsync.fulfilled, (state) => {
+        state.value = [];
       }),
 });
 
@@ -252,6 +256,13 @@ export const toggleTrackActiveAsync = createAsyncThunk(
     }
 
     return { playlistId, trackId };
+  }
+);
+
+export const removeAllPlaylistsAsync = createAsyncThunk(
+  "playlists/removeAllPlaylistsAsync",
+  async (userId: string) => {
+    await resetUserPlaylistInfo(userId);
   }
 );
 

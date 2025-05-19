@@ -3,4 +3,7 @@ export type UserType = {
   email: string;
   displayName: string;
   photoURL: string;
+  providerData: {
+    providerId: string;
+  }[];
 } | null;

@@ -91,6 +91,10 @@ export async function setUserStreamingInfo(
   await firestore().collection("user_streaming").doc(userId).set(service);
 }
 
+export async function resetUserStreamingInfo(userId: string) {
+  await firestore().collection("user_streaming").doc(userId).set({});
+}
+
 // Playlists
 export async function getUserPlaylistInfo(
   userId: string
@@ -114,7 +118,9 @@ export async function getUserPlaylistInfo(
 }
 
 export async function initUserPlaylistInfo(userId: string) {
-  await firestore().collection("user_playlists").doc(userId).set({});
+  const userPlaylistsRef = firestore().collection("user_playlists").doc(userId);
+  await userPlaylistsRef.set({});
+  await userPlaylistsRef.collection("playlists").doc().set({});
 }
 
 export async function addUserPlaylistInfo(
@@ -145,8 +151,42 @@ export async function removeUserPlaylistInfo(
     .doc(userId)
     .collection("playlists")
     .doc(playlist.id)
+    .collection("tracks")
+    .get()
+    .then((docs) => {
+      docs.docs.forEach((doc) => {
+        doc.ref.delete();
+      });
+    });
+  await firestore()
+    .collection("user_playlists")
+    .doc(userId)
+    .collection("playlists")
+    .doc(playlist.id)
     .delete();
 }
+
+export async function resetUserPlaylistInfo(userId: string) {
+  await firestore()
+    .collection("user_playlists")
+    .doc(userId)
+    .collection("playlists")
+    .get()
+    .then((docs) => {
+      docs.docs.forEach(async (doc) => {
+        await doc.ref
+          .collection("tracks")
+          .get()
+          .then((docs) => {
+            docs.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          });
+        doc.ref.delete();
+      });
+    });
+}
+
 export async function setUserPlaylistActive(
   userId: string,
   playlistId: string,
@@ -246,4 +286,11 @@ export async function toggleUserPlaylistTrackActive(
     .collection("tracks")
     .doc(trackId)
     .update({ active });
+}
+
+export async function deleteUserData(userId: string) {
+  await resetUserPlaylistInfo(userId);
+  await firestore().collection("user_playlists").doc(userId).delete();
+  await firestore().collection("user_streaming").doc(userId).delete();
+  await firestore().collection("user_mode").doc(userId).delete();
 }

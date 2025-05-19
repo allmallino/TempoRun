@@ -4,6 +4,7 @@ import { revertAll } from "../actions";
 import {
   getUserStreamingInfo,
   initUserStreamingInfo,
+  resetUserStreamingInfo,
   setUserStreamingInfo,
 } from "@/services/firestoreService";
 import {
@@ -23,11 +24,7 @@ const initialState: streamingServicesState = {
 const streamingServicesSlice = createSlice({
   name: "streamingServices",
   initialState,
-  reducers: {
-    removeStreamingService: (state) => {
-      state.value = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) =>
     builder
       .addCase(revertAll, () => initialState)
@@ -44,10 +41,11 @@ const streamingServicesSlice = createSlice({
       .addCase(updateStreamingCredentialsAsync.fulfilled, (state, action) => {
         if (state.value && action.payload)
           state.value.credentials = action.payload;
+      })
+      .addCase(removeStreamingServiceAsync.fulfilled, (state) => {
+        state.value = null;
       }),
 });
-
-export const { removeStreamingService } = streamingServicesSlice.actions;
 
 export const initStreamingStateAsync = createAsyncThunk(
   "streamingServices/initStreamingStateAsync",
@@ -106,6 +104,15 @@ export const updateStreamingCredentialsAsync = createAsyncThunk(
       await setUserStreamingInfo(userId, credentials);
     }
     return credentials;
+  }
+);
+
+export const removeStreamingServiceAsync = createAsyncThunk(
+  "streamingServices/removeStreamingServiceAsync",
+  async (userId: string) => {
+    if (userId) {
+      await resetUserStreamingInfo(userId);
+    }
   }
 );
 export default streamingServicesSlice.reducer;

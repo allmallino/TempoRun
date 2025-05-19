@@ -29,6 +29,7 @@ export default function AppLayout() {
         email: user.email ?? "",
         displayName: user.displayName ?? "",
         photoURL: user.photoURL ?? "",
+        providerData: user.providerData,
       };
       login(userData);
       setIsInitialized(true);

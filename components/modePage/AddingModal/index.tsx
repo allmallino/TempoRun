@@ -37,9 +37,14 @@ const inputInfoByMode: Record<Mode, inputInfoType> = {
     modalTitle: "selectTime",
     inputSeparator: ":",
     fromInputToIndicator: (inputValues) =>
-      inputValues.map((v) => v.padStart(2, "0")).join(":"),
+      inputValues
+        .map((v) => v.padStart(2, "0"))
+        .join(":")
+        .padEnd(5, ":00"),
     fromIndicatorToInput: (indicator) =>
-      indicator.split(":").map((v) => (v ? `${parseInt(v)}` : "")),
+      indicator
+        .split(":")
+        .map((v) => (v ? `${parseInt(v)}`.padStart(2, "0") : "")),
   },
   [Mode.LENGTH]: {
     inputTitles: ["kilometers", "meters"],

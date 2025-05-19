@@ -22,7 +22,10 @@ export default function SettingButtonWithInputModal({
       <InputModal
         type={type}
         visible={isModalVisible}
-        onSave={onSave}
+        onSave={(value) => {
+          onSave(value);
+          setIsModalVisible(false);
+        }}
         onCancel={() => {
           setIsModalVisible(false);
         }}

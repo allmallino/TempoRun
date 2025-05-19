@@ -19,7 +19,10 @@ export default function SettingButtonWithConfirmationModal({
     <>
       <ConfirmationModal
         visible={isModalVisible}
-        onConfirm={onConfirm}
+        onConfirm={() => {
+          onConfirm();
+          setIsModalVisible(false);
+        }}
         onCancel={() => {
           setIsModalVisible(false);
         }}
