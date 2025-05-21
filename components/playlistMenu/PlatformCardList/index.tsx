@@ -23,8 +23,8 @@ export default function PlatformCardList() {
       contentContainerStyle={styles.list}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
-        <ThemedText type="defaultSemiBold">
-          {t(`${i18nRoot}.noPlaylists`)}
+        <ThemedText type="defaultSemiBold" style={styles.text}>
+          {t(`${i18nRoot}.noAccounts`)}
         </ThemedText>
       }
     />
@@ -37,5 +37,8 @@ const styles = StyleSheet.create({
   },
   list: {
     gap: 25,
+  },
+  text: {
+    textAlign: "center",
   },
 });

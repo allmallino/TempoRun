@@ -134,6 +134,7 @@ export default {
       delete: "Delete",
       noPlaylists: "No playlists to import",
       noTracks: "No music tracks to manage",
+      noAccounts: "No accounts to import from",
     },
 
     mode: {
