@@ -106,7 +106,7 @@ export async function getUserPlaylistInfo(
     .get();
   const res = await Promise.all(
     playlists.docs.map(async (doc) => {
-      const playlist = doc.data() as PlaylistType;
+      const playlist = { ...doc.data(), id: doc.id } as PlaylistType;
       const tracks = await getUserPlaylistTracks(userId, playlist.id);
       return {
         ...playlist,
@@ -133,7 +133,6 @@ export async function addUserPlaylistInfo(
     .collection("playlists")
     .doc(playlist.id)
     .set({
-      id: playlist.id,
       active: false,
       streamingServiceId: playlist.streamingServiceId,
     });
@@ -212,7 +211,10 @@ export async function getUserPlaylistTracks(
     .doc(playlistId)
     .collection("tracks")
     .get();
-  return tracks.docs.map((doc) => doc.data()) as TrackType[];
+  return tracks.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  })) as TrackType[];
 }
 
 export async function setUserPlaylistTracks(
@@ -229,7 +231,6 @@ export async function setUserPlaylistTracks(
       .collection("tracks")
       .doc(track.id)
       .set({
-        id: track.id,
         active: track.active,
       });
   });
@@ -266,7 +267,6 @@ export async function addUserPlaylistTracks(
       .collection("tracks")
       .doc(track.id)
       .set({
-        id: track.id,
         active: track.active,
       });
   });
