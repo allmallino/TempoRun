@@ -20,6 +20,8 @@ import {
   isErrorWithCode,
   isSuccessResponse,
 } from "@react-native-google-signin/google-signin";
+import React from "react";
+import LoadingScreen from "@/components/LoadingScreen";
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
@@ -106,52 +108,55 @@ export default function LoginInputs() {
   };
 
   return (
-    <View style={styles.container}>
-      <ThemedInput
-        value={values.email}
-        onChangeText={handleChange("email")}
-        state={errors.email ? "error" : "default"}
-        label={t(`${i18nRoot}.email`)}
-        textContentType="emailAddress"
-        keyboardType="email-address"
-        supportingText={t(errors.email)}
-        autoCapitalize="none"
-      />
+    <>
+      <LoadingScreen isVisible={isLoading} />
+      <View style={styles.container}>
+        <ThemedInput
+          value={values.email}
+          onChangeText={handleChange("email")}
+          state={errors.email ? "error" : "default"}
+          label={t(`${i18nRoot}.email`)}
+          textContentType="emailAddress"
+          keyboardType="email-address"
+          supportingText={t(errors.email)}
+          autoCapitalize="none"
+        />
 
-      <ThemedInput
-        state={errors.password ? "error" : "default"}
-        label={t(`${i18nRoot}.password`)}
-        value={values.password}
-        onChangeText={handleChange("password")}
-        secureTextEntry={isBlured}
-        textContentType="password"
-        trailingIcon={iconButton}
-        supportingText={t(errors.password)}
-      />
+        <ThemedInput
+          state={errors.password ? "error" : "default"}
+          label={t(`${i18nRoot}.password`)}
+          value={values.password}
+          onChangeText={handleChange("password")}
+          secureTextEntry={isBlured}
+          textContentType="password"
+          trailingIcon={iconButton}
+          supportingText={t(errors.password)}
+        />
 
-      <View style={styles.buttonContainer}>
-        <ThemedButton
-          title={t(`${i18nRoot}.signUp`)}
-          onPress={() => handleSubmit(handleRegistrationClick)}
-          type="outlined"
-          style={styles.button}
-        />
-        <ThemedButton
-          title={t(`${i18nRoot}.logIn`)}
-          onPress={() => handleSubmit(handleLoginClick)}
-          type="filled"
-          style={styles.button}
-        />
+        <View style={styles.buttonContainer}>
+          <ThemedButton
+            title={t(`${i18nRoot}.signUp`)}
+            onPress={() => handleSubmit(handleRegistrationClick)}
+            type="outlined"
+            style={styles.button}
+          />
+          <ThemedButton
+            title={t(`${i18nRoot}.logIn`)}
+            onPress={() => handleSubmit(handleLoginClick)}
+            type="filled"
+            style={styles.button}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SocialLoginButton
+            title="Google"
+            style={styles.button}
+            logo={Images.social.google.icon}
+            onPress={onGoogleButtonPress}
+          />
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <SocialLoginButton
-          title="Google"
-          style={styles.button}
-          logo={Images.social.google.icon}
-          onPress={onGoogleButtonPress}
-        />
-      </View>
-    </View>
+    </>
   );
 }
 

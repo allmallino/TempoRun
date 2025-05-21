@@ -1,21 +1,30 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { useContext } from "react";
+import { ThemeContext } from "@/theme/ThemeContext";
+import { Colors } from "@/constants/Colors";
 
-type LoadingScreen = {
+type LoadingScreenProps = {
   isVisible: boolean;
 };
 
-export default function LoadingScreen() {
+export default function LoadingScreen({ isVisible }: LoadingScreenProps) {
+  const { theme } = useContext(ThemeContext);
+  const color = theme.primary;
+
   return (
-    <View style={[StyleSheet.absoluteFill, styles.backgroundContainer]}>
-      <ActivityIndicator color="white" size="large" />
-    </View>
+    isVisible && (
+      <View style={[StyleSheet.absoluteFill, styles.backgroundContainer]}>
+        <ActivityIndicator color={color} size="large" />
+      </View>
+    )
   );
 }
 
 const styles = StyleSheet.create({
   backgroundContainer: {
-    backgroundColor: "#000000a6",
+    backgroundColor: Colors.shadowBackdrop,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 1000,
   },
 });

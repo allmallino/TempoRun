@@ -49,7 +49,7 @@ export default function TabLayout() {
           options={{
             title: t(`${i18nRoot}.menu`),
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="directions.run" color={color} />
+              <IconSymbol size={28} name="play.fill" color={color} />
             ),
           }}
         />
@@ -78,7 +78,7 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-      {loaderIsVisible && <LoadingScreen />}
+      <LoadingScreen isVisible={loaderIsVisible} />
     </View>
   );
 }

@@ -13,7 +13,6 @@ export default function useForm<T>(
 
   const handleSubmit = (callback: () => void) => {
     const errors = validate ? validate(values) : {};
-    console.log({ errors });
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {

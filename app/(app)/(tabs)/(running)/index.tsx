@@ -1,15 +1,14 @@
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CurrentOption from "@/components/runningPage/CurrentOption";
 import Dashboard from "@/components/runningPage/Dashboard";
 import StopButton from "@/components/runningPage/StopButton";
 import { useSession } from "@/contexts/SessionContext";
-import React, { useContext, useEffect } from "react";
-import { ThemeContext } from "@/theme/ThemeContext";
+import React, { useEffect } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function RunningPage() {
   const { startSession, endSession, sessionStarted } = useSession();
-  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     startSession();
@@ -30,11 +29,7 @@ export default function RunningPage() {
           <StopButton />
         </>
       ) : (
-        <ActivityIndicator
-          size="large"
-          color={theme.primary}
-          style={styles.loading}
-        />
+        <LoadingScreen isVisible={true} />
       )}
     </SafeAreaView>
   );
@@ -46,14 +41,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 164,
     paddingTop: -48,
-  },
-  loading: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

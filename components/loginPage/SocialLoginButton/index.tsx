@@ -1,19 +1,19 @@
 import { Colors } from "@/constants/Colors";
 import {
   StyleSheet,
-  Pressable,
   View,
-  PressableProps,
   StyleProp,
   ViewStyle,
+  ImageSourcePropType,
+  TouchableOpacity,
+  TouchableOpacityProps,
 } from "react-native";
 import { Image } from "expo-image";
 import ThemedText from "@/components/ThemedText";
 import { useTranslation } from "react-i18next";
 
-export type SocialLoginButtonProps = PressableProps & {
-  type?: "filled" | "outlined" | "text" | "elevated" | "tonal";
-  logo?: any;
+export type SocialLoginButtonProps = TouchableOpacityProps & {
+  logo?: ImageSourcePropType;
   title: string;
   backgroundColor?: string;
   color?: string;
@@ -22,11 +22,9 @@ export type SocialLoginButtonProps = PressableProps & {
 
 export default function SocialLoginButton({
   onPress,
-  type = "filled",
   logo,
   title,
   backgroundColor = Colors.neutral[35],
-  color = Colors.white,
   style,
   ...rest
 }: SocialLoginButtonProps) {
@@ -34,14 +32,12 @@ export default function SocialLoginButton({
   const i18nRoot = "auth:login";
   return (
     <View style={[styles.container, { backgroundColor }, style]}>
-      <Pressable onPress={onPress} style={styles.button} {...rest}>
+      <TouchableOpacity onPress={onPress} style={styles.button} {...rest}>
         {logo && <Image source={logo} style={styles.logo} />}
-        <ThemedText
-          type="defaultSemiBold"
-          style={styles.text}
-          children={`${t(`${i18nRoot}.logInWith`)} ${title}`}
-        />
-      </Pressable>
+        <ThemedText type="defaultSemiBold" style={styles.text}>
+          {`${t(`${i18nRoot}.logInWith`)} ${title}`}
+        </ThemedText>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -10,7 +10,7 @@ const MAPPING = {
   // See MaterialIcons here: https://icons.expo.fyi
   // See SF Symbols in the SF Symbols app on Mac.
   "person.fill": "person",
-  "directions.run": "directions-run",
+  "play.fill": "directions-run",
   "music.note": "music-note",
   headphones: "headset",
   gear: "settings",

@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from "react-native";
 import ElevatedContainer from "@/components/ui/ElevatedContainer";
+import { Colors } from "@/constants/Colors";
 
 type ModalBaseProps = {
   visible: boolean;
@@ -49,6 +50,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: Colors.shadowBackdrop,
   },
 });
