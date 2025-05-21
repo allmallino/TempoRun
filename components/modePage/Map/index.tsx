@@ -40,7 +40,9 @@ export default function Map() {
         setError("Permission to access location was denied");
         return;
       }
-      const location = await Location.getCurrentPositionAsync();
+      const location =
+        (await Location.getLastKnownPositionAsync()) ??
+        (await Location.getCurrentPositionAsync());
       setCurrentLocation(location);
       setIsLoading(false);
     };
