@@ -24,7 +24,7 @@ export default function PlatformCard({ name, data }: PlatformCardProps) {
         scrollEnabled={false}
         ListEmptyComponent={
           <ThemedText type="defaultSemiBold" style={styles.text}>
-            {t(`${i18nRoot}.noPlaylists`)}
+            {t(`${i18nRoot}.noPlaylistsToImport`)}
           </ThemedText>
         }
       />

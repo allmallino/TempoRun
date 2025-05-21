@@ -13,7 +13,7 @@ type ModalBaseProps = {
   visible: boolean;
   style?: StyleProp<ViewStyle>;
   children: React.ReactNode;
-  onClose: () => void;
+  onClose: (() => void) | undefined;
 };
 
 export default function ModalBase({

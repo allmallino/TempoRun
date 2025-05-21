@@ -9,6 +9,7 @@ type InfoModalProps = {
   visible: boolean;
   title: string;
   description: string;
+  isClosableOutside?: boolean;
   onClose: () => void;
 };
 
@@ -17,12 +18,17 @@ export default function InfoModal({
   onClose,
   title,
   description,
+  isClosableOutside = true,
 }: InfoModalProps) {
   const { t } = useTranslation();
   const i18nRoot = "app:menu:infoModal";
 
   return (
-    <ModalBase visible={visible} onClose={onClose} style={styles.modal}>
+    <ModalBase
+      visible={visible}
+      onClose={isClosableOutside ? onClose : undefined}
+      style={styles.modal}
+    >
       <View style={styles.container}>
         <View style={styles.contentContainer}>
           <ThemedText type="subtitle">{title}</ThemedText>

@@ -28,7 +28,7 @@ export default function PlaylistCardList() {
     />
   ) : (
     <ThemedText type="defaultSemiBold">
-      {t(`${i18nRoot}.noPlaylists`)}
+      {t(`${i18nRoot}.noPlaylistsToActivate`)}
     </ThemedText>
   );
 }

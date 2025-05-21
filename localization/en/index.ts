@@ -37,7 +37,11 @@ export default {
       playlists: "Playlists",
       settings: "Settings",
     },
-
+    noInternetModal: {
+      title: "No internet connection",
+      description:
+        "Please check your internet connection and try again. The app will exit.",
+    },
     menu: {
       mode: "Mode",
       run: "Run",
@@ -137,7 +141,8 @@ export default {
       title: "Playlists",
       import: "Import playlist",
       delete: "Delete",
-      noPlaylists: "No playlists to import",
+      noPlaylistsToActivate: "No playlists to activate",
+      noPlaylistsToImport: "No playlists to import",
       noTracks: "No music tracks to manage",
       noAccounts: "No accounts to import from",
     },
