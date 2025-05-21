@@ -84,6 +84,11 @@ export default {
       accountLinkage: {
         title: "Linked account",
         link: "Link: ",
+        error: {
+          title: "Error",
+          description:
+            "Failed to link account, please try again. Error message: ",
+        },
       },
 
       theme: {

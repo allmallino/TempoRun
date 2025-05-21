@@ -19,11 +19,13 @@ const discovery = {
   tokenEndpoint: Spotify.url.tokenEndpoint,
 };
 
+type useSpotifyAuthType = [string | null, boolean, () => void];
+
 maybeCompleteAuthSession();
 
-export default function useSpotifyAuth() {
+export default function useSpotifyAuth(): useSpotifyAuthType {
   const dispatch = useDispatch<AppDispatch>();
-  const [error, setError] = useState<any | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const isAuthenticated = useSelector(getStreamingServiceStatus);
   const userId = useSelector(getUserUId);
 
@@ -50,7 +52,7 @@ export default function useSpotifyAuth() {
       if (response === null) {
         return;
       } else if (response.type === "error") {
-        setError(response.error);
+        setError(response.error?.message ?? null);
         return;
       } else if (response.type === "success" && !!request?.codeVerifier) {
         const { code } = response.params;
@@ -94,7 +96,7 @@ export default function useSpotifyAuth() {
             throw Error("Failed to get user profile info.");
           }
         } catch (e) {
-          setError(e);
+          setError(e as string);
         } finally {
           dispatch(setLoaderVisibility(false));
         }
